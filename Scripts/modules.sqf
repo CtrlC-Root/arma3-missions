@@ -14,11 +14,12 @@
  */
 CC_Module_init = {
   // retrieve parameters
-  private ["_name", "_debug", "_events"];
-  _name = [_this, 0, "", [""]] call BIS_fnc_param;
-  _events = [_this, 1, [], [[]]] call BIS_fnc_param;
-  _debugStatus = [_this, 2, {""}, [{}]] call BIS_fnc_param;
-  _debugActions = [_this, 3, [], [[]]] call BIS_fnc_param;
+  params [
+    ["_name", "", [""]],
+    ["_events", [], [[]]],
+    ["_debugStatus", {""}, [{}]],
+    ["_debugActions", [], [[]]]
+  ];
 
   // validate module name
   if (_name == "") exitWith {
@@ -91,8 +92,9 @@ CC_Module_loaded = {
  */
 CC_Module_events = {
   // retrieve parameters
-  private "_name";
-  _name = [_this, 0, "", [""]] call BIS_fnc_param;
+  params [
+    ["_name", "", [""]]
+  ];
 
   // validate parameters
   if (_name == "") exitWith {
@@ -130,9 +132,10 @@ CC_Module_events = {
  */
 CC_Module_event_add = {
   // retrieve parameters
-  private ["_name", "_event"];
-  _name = [_this, 0, "", [""]] call BIS_fnc_param;
-  _event = [_this, 1, "", [""]] call BIS_fnc_param;
+  params [
+    ["_name", "", [""]],
+    ["_event", "", [""]]
+  ];
 
   // validate parameters
   if (_name == "") exitWith {
@@ -182,9 +185,10 @@ CC_Module_event_add = {
  */
 CC_Module_event_remove = {
   // retrieve parameters
-  private ["_name", "_event"];
-  _name = [_this, 0, "", [""]] call BIS_fnc_param;
-  _event = [_this, 1, "", [""]] call BIS_fnc_param;
+  params [
+    ["_name", "", [""]],
+    ["_event", "", [""]]
+  ];
 
   // validate parameters
   if (_name == "") exitWith {
@@ -228,10 +232,11 @@ CC_Module_event_remove = {
  */
 CC_Module_event_register = {
   // retrieve parameters
-  private ["_name", "_event", "_handler"];
-  _name = [_this, 0, "", [""]] call BIS_fnc_param;
-  _event = [_this, 1, "", [""]] call BIS_fnc_param;
-  _handler = [_this, 2, {}, [{}]] call BIS_fnc_param;
+  params [
+    ["_name", "", [""]],
+    ["_event", "", [""]],
+    ["_handler", {}, [{}]]
+  ];
 
   // validate parameters
   if (_name == "") exitWith {
@@ -290,11 +295,12 @@ CC_Module_event_register = {
  */
 CC_Module_event_fire = {
   // retrieve parameters
-  private ["_name", "_event", "_args", "_async"];
-  _name = [_this, 0, "", [""]] call BIS_fnc_param;
-  _event = [_this, 1, "", [""]] call BIS_fnc_param;
-  _args = [_this, 2, [], [[]]] call BIS_fnc_param;
-  _async = [_this, 3, true, [true]] call BIS_fnc_param;
+  params [
+    ["_name", "", [""]],
+    ["_event", "", [""]],
+    ["_args", [], [[]]],
+    ["_async", true, [true]]
+  ];
 
   // validate parameters
   if (_name == "") exitWith {
@@ -375,11 +381,12 @@ CC_Module_event_fire = {
  */
 CC_Module_debug = {
   // retrieve parameters
-  private ["_module", "_part", "_msg", "_args"];
-  _module = [_this, 0, "", [""]] call BIS_fnc_param;
-  _part = [_this, 1, "", [""]] call BIS_fnc_param;
-  _msg = [_this, 2, "", [""]] call BIS_fnc_param;
-  _args = [_this, 3, [], [[]]] call BIS_fnc_param;
+  params [
+    ["_module", "", [""]],
+    ["_part", "", [""]],
+    ["_msg", "", [""]],
+    ["_args", [], [[]]]
+  ];
 
   // validate parameters
   if (_module == "" || _part == "" || _msg == "") exitWith {
@@ -414,8 +421,9 @@ CC_Module_debug = {
  */
 CC_Module_debug_enable = {
   // retrieve parameters
-  private "_unit";
-  _unit = [_this, 0, player, [objNull]] call BIS_fnc_param;
+  params [
+    ["_unit", player, [objNull]]
+  ];
 
   // corner case: function called with default arguments on server so player is objNull
   // XXX: this seems to avoid the problem but the message below is never written to the log?
@@ -508,8 +516,9 @@ CC__module_debug_enable_local = {
  */
 CC_Module_debug_disable = {
   // retrieve parameters
-  private "_unit";
-  _unit = [_this, 0, player, [objNull]] call BIS_fnc_param;
+  params [
+    ["_unit", player, [objNull]]
+  ];
 
   // verify the unit has the interface enabled
   if (!(_unit getVariable ["cc_debug", false])) exitWith {
