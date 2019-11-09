@@ -6,8 +6,8 @@ private "_scripts";
 _scripts = [
   "cc\util\math.sqf",
 
-  "cc\modules.sqf",
-  "cc\multiplayer.sqf"
+  "cc\module.sqf",
+  "cc\mod\multiplayer.sqf"
 ];
 
 {
