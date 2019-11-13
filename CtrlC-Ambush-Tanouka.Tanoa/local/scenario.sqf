@@ -48,12 +48,6 @@ CC__scenario_client_init = {
   // client settings
   if (!isServer) exitWith { };
 
-  // run the scenario state machine
-  CC__scenario_fsm = [
-    CC__scenario_fsm_state,
-    CC__scenario_story_units
-  ] execFSM "local\scenario.fsm";
-
   // register server event handlers
   ["scenario", "fsm_intro", CC__scenario_fsm_intro] call CC_Module_event_register;
   ["scenario", "fsm_ambush", CC__scenario_fsm_ambush] call CC_Module_event_register;
@@ -63,6 +57,12 @@ CC__scenario_client_init = {
   ["scenario", "fsm_rescue", CC__scenario_fsm_rescue] call CC_Module_event_register;
   ["scenario", "fsm_nato_win", CC__scenario_fsm_nato_win] call CC_Module_event_register;
   ["scenario", "fsm_syndikat_win", CC__scenario_fsm_syndikat_win] call CC_Module_event_register;
+
+  // run the scenario state machine
+  CC__scenario_fsm = [
+    CC__scenario_fsm_state,
+    CC__scenario_story_units
+  ] execFSM "local\scenario.fsm";
 };
 
 CC__scenario_debug_status = {
