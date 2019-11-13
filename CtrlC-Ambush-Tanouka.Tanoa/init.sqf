@@ -20,7 +20,6 @@ _scripts = [
 
 // initialize modules
 hintSilent "Initializing modules...";
-[] call CC_Multiplayer_init;
 [] call CC_Convoy_init;
 
 // initialize scenario
