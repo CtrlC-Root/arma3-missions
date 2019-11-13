@@ -20,10 +20,10 @@ class EditorData
 	};
 	class Camera
 	{
-		pos[]={9816.083,89.365868,9719.6152};
-		dir[]={0.25658298,-0.82427388,0.50478107};
-		up[]={0.37351796,0.5661298,0.73483157};
-		aside[]={0.89147717,-1.3452955e-006,-0.45313931};
+		pos[]={9811.1357,91.965736,9710.6924};
+		dir[]={0.28654835,-0.64941245,0.70447558};
+		up[]={0.24471235,0.7603631,0.60162622};
+		aside[]={0.92637497,-1.7156854e-006,-0.37680304};
 	};
 };
 binarizationWanted=0;
@@ -1491,7 +1491,7 @@ class Mission
 						{
 							dataType="Trigger";
 							position[]={8821.4287,17.879633,10233.722};
-							angle=0.45479771;
+							angle=0.45479789;
 							class Attributes
 							{
 								name="triggerAmbush";
@@ -1499,6 +1499,7 @@ class Mission
 								sizeB=8;
 								sizeC=10;
 								isRectangle=1;
+								isServerOnly=1;
 							};
 							id=128;
 							type="EmptyDetectorArea10x10";
@@ -1825,19 +1826,21 @@ class Mission
 				class Item2
 				{
 					dataType="Trigger";
-					position[]={8853.6465,18.537539,10210.926};
+					position[]={8871.7344,19.417925,10163.062};
 					class Attributes
 					{
 						name="triggerTanouka";
 						sizeA=160;
 						sizeB=160;
+						sizeC=100;
+						isServerOnly=1;
 					};
 					id=130;
 					type="EmptyDetectorAreaR250";
 				};
 			};
 			id=88;
-			atlOffset=0.58247757;
+			atlOffset=0.70666504;
 		};
 		class Item2
 		{
@@ -1850,13 +1853,15 @@ class Mission
 				{
 					dataType="Trigger";
 					position[]={8384.7715,19.43,10304.615};
-					angle=5.3284373;
+					angle=5.3284378;
 					class Attributes
 					{
 						name="triggerFactory";
 						sizeA=140;
 						sizeB=240;
+						sizeC=100;
 						isRectangle=1;
+						isServerOnly=1;
 					};
 					id=132;
 					type="EmptyDetectorArea10x10";
