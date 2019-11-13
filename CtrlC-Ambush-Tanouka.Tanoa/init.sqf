@@ -4,7 +4,8 @@ hintSilent "Loading scripts...";
 private "_scripts";
 _scripts = [
   "cc\init.sqf",
-  "local\scenario.sqf"
+  "local\scenario.sqf",
+  "local\nato_route.sqf"
 ];
 
 {
@@ -20,6 +21,7 @@ _scripts = [
 // initialize modules
 hintSilent "Initializing modules...";
 [] call CC_Multiplayer_init;
+[] call CC_Convoy_init;
 
 // initialize scenario
 hintSilent "Initializing scenario...";
