@@ -146,7 +146,7 @@ CC_Module_event_register = {
   // XXX: assuming CC__modules and CC__modules_local keys are in the same order
   private _localModule = (CC__modules_local select _moduleIndex) select 1;
   private _localEvents = _localModule select 0;
-  [_localEvents, _name, [_handler]] call BIS_fnc_addToPairs;
+  [_localEvents, _event, [_handler]] call BIS_fnc_addToPairs;
 };
 
 /**
