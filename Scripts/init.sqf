@@ -7,7 +7,6 @@ _scripts = [
   "cc\util\math.sqf",
 
   "cc\module.sqf",
-  "cc\mod\multiplayer.sqf",
   "cc\mod\convoy.sqf"
 ];
 
