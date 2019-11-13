@@ -5,16 +5,23 @@
 CC_Convoy_init = {
   [
     "convoy",
-    [
-      "start",
-      "stop"
-    ],
+    CC__convoy_server_init,
+    CC__convoy_client_init
+  ] call CC_Module_init;
+};
+
+CC__convoy_server_init = {
+  [
+    ["depart", "arrive"],
+    { False },
     CC__convoy_debug_status,
     [
       ["Toggle Recording", CC__convoy_record_toggle]
     ]
-  ] call CC_Module_init;
+  ];
 };
+
+CC__convoy_client_init = { };
 
 /**************************************
  * Debug Interface                    *

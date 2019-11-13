@@ -4,228 +4,108 @@
 
 /**
  * Initialize a module. This method should be called at the beginning of
- * all module init methods.
+ * all module init methods. The server init function will be called on
+ * the server machine first. It can optionally return settings in the form of:
+ * [
+ *   string array of event names,
+ *   server task function,
+ *   debug status function,
+ *   key value array of debug action names and functions
+ * ]. After the server init function is called the module will be registered
+ * on the server and the list of loaded modules will be sent to all clients.
+ * Lastly the client init function will be called on all clients excluding
+ * a dedicated server. It can optionally return settings in the form of:
+ * [
+ *   key value array of event handler names and functions
+ * ].
  *
- * @locality global
  * @param 0 module name
- * @param 1 event names
- * @param 2 block that returns module status as string
- * @Param 3 kv array of debug action names and handlers
+ * @param 1 server init function
+ * @param 2 client init function
  */
 CC_Module_init = {
   // retrieve parameters
   params [
     ["_name", "", [""]],
-    ["_events", [], [[]]],
-    ["_debugStatus", {""}, [{}]],
-    ["_debugActions", [], [[]]]
+    ["_serverInit", {[]}, [{}]],
+    ["_clientInit", {[]}, [{}]]
   ];
 
   // validate module name
   if (_name == "") exitWith {
-    ["Module", "init", "empty module name"] call CC_Module_debug;
+    ["module", "init", "empty module name"] call CC_Module_debug;
   };
 
-  // create the module list if it doesn't already exist
-  if (isNil "CC__modules") then {
-    CC__modules = [];
+  // initialize client and exit early
+  if (isServer) then {
+    ["module", "init", "server: %1", [_name]] call CC_Module_debug;
+
+    // initialize global and local module lists
+    if (isNil "CC__modules" || isNil "CC__modules_local") then {
+      CC__modules = [];
+      CC__modules_local = [];
+    };
+
+    // check if the module is already initialized
+    private _moduleIndex = [CC__modules, _name] call BIS_fnc_findInPairs;
+    if (_moduleIndex >= 0) exitWith {
+      ["module", "init", "already initialized: %1", [_name]] call CC_Module_debug;
+    };
+
+    // initialize the module on the server
+    private _serverSettings = [] call _serverInit;
+    _serverSettings params [
+      ["_events", [], [[]]],
+      ["_serverTask", {False}, [{}]],
+      ["_debugStatus", {""}, [{}]],
+      ["_debugActions", [], [[]]]
+    ];
+
+    // register the module globally and notify all clients
+    [
+      CC__modules,
+      _name,
+      [_events, _serverTask, _debugStatus, _debugActions]
+    ] call BIS_fnc_setToPairs;
+    publicVariable "CC__modules";
+
+    // TODO: start the server worker if necessary
+  } else {
+    ["module", "init", "client: %1", [_name]] call CC_Module_debug;
+
+    // initialize the local module list
+    if (isNil "CC__modules_local") then {
+      CC__modules_local = [];
+    };
+
+    // check if the module is already initialized
+    private _moduleIndex = [CC__modules_local, _name] call BIS_fnc_findInPairs;
+    if (_moduleIndex >= 0) exitWith {
+      ["module", "init", "already initialized: %1", [_name]] call CC_Module_debug;
+    };
+
+    // wait until the module has initialized on the server
+    waitUntil { !(isNil "CC__modules") };
+    waitUntil { ([CC__modules, _name] call BIS_fnc_findInPairs) >= 0 };
   };
+
+  // nothing left to do for dedicated servers
+  if (isDedicated) exitWith {};
 
   // debug
-  ["Module", "init", "%1", [_name]] call CC_Module_debug;
+  ["module", "init", "local client: %1", [_name]] call CC_Module_debug;
 
-  // check if the module is already initialized
-  private "_moduleIndex";
-  _moduleIndex = [CC__modules, _name] call BIS_fnc_findInPairs;
+  // register the module locally
+  private _eventHandlers = [];
+  [CC__modules_local, _name, [_eventHandlers]] call BIS_fnc_setToPairs;
 
-  if (_moduleIndex >= 0) exitWith {
-    ["Module", "init", "already initialized"] call CC_Module_debug;
-  };
-
-  // create initial module events
-  private "_eventHandlers";
-  _eventHandlers = [];
-
-  {
-    _eventHandlers pushBack [_x, []];
-  } forEach _events;
-
-  // keep track of the module
-  [
-    CC__modules,
-    _name,
-    [_eventHandlers, _debugStatus, _debugActions]
-  ] call BIS_fnc_setToPairs;
-
-  // update clients
-  publicVariable "CC__modules";
+  // initialize the module on the local client
+  [] call _clientInit;
 };
 
 /**
- * Get loaded modules.
+ * Register a local event handler for a module event.
  *
- * @locality local
- * @returns list of loaded module names
- */
-CC_Module_loaded = {
-  private "_loaded";
-  _loaded = [];
-
-  // corner case: no loaded modules
-  if (isNil "CC__modules") exitWith { _loaded };
-
-  // retrieve module names
-  {
-    _loaded pushBack (_x select 0);
-  } forEach CC__modules;
-
-  // return module names
-  _loaded;
-};
-
-/**
- * Get module events.
- *
- * @locality local
- * @param 0 module name
- * @returns array of event names
- */
-CC_Module_events = {
-  // retrieve parameters
-  params [
-    ["_name", "", [""]]
-  ];
-
-  // validate parameters
-  if (_name == "") exitWith {
-    ["Module", "events", "missing module name"] call CC_Module_debug;
-  };
-
-  // retrieve the module
-  private "_moduleIndex";
-  _moduleIndex = [CC__modules, _name] call BIS_fnc_findInPairs;
-
-  if (_moduleIndex < 0) exitWith {
-    ["Module", "events", "no module %1", [_name]] call CC_Module_debug;
-  };
-
-  private "_module";
-  _module = (CC__modules select _moduleIndex) select 1;
-
-  // return the event names
-  private "_events";
-  _events = [];
-
-  {
-    _events pushBack (_x select 0);
-  } forEach (_module select 0);
-
-  _events;
-};
-
-/**
- * Add a module event.
- *
- * @locality global
- * @param 0 module name
- * @param 1 event name
- */
-CC_Module_event_add = {
-  // retrieve parameters
-  params [
-    ["_name", "", [""]],
-    ["_event", "", [""]]
-  ];
-
-  // validate parameters
-  if (_name == "") exitWith {
-    ["Module", "event add", "missing module name"] call CC_Module_debug;
-  };
-
-  if (_event == "") exitWith {
-    ["Module", "event add", "missing event name"] call CC_Module_debug;
-  };
-
-  // debug
-  ["Module", "event add", "%1, %2", [_name, _event]] call CC_Module_debug;
-
-  // retrieve the module data
-  private "_moduleIndex";
-  _moduleIndex = [CC__modules, _name] call BIS_fnc_findInPairs;
-
-  if (_moduleIndex < 0) exitWith {
-    ["Module", "event add", "no module %1", [_name]] call CC_Module_debug;
-  };
-
-  private "_module";
-  _module = (CC__modules select _moduleIndex) select 1;
-
-  // check if the event already exists
-  private ["_eventHandlers", "_eventIndex"];
-  _eventHandlers = _module select 0;
-  _eventIndex = [_eventHandlers, _event] call BIS_fnc_findInPairs;
-
-  if (_eventIndex >= 0) exitWith {
-    ["Module", "event add", "event %1 already exists", [_event]] call CC_Module_debug;
-  };
-
-  // add the new event
-  _eventHandlers pushBack [_event, []];
-
-  // update clients
-  publicVariable "CC__modules";
-};
-
-/**
- * Remove a module event.
- *
- * @locality global
- * @param 0 module name
- * @param 1 event name
- */
-CC_Module_event_remove = {
-  // retrieve parameters
-  params [
-    ["_name", "", [""]],
-    ["_event", "", [""]]
-  ];
-
-  // validate parameters
-  if (_name == "") exitWith {
-    ["Module", "event add", "missing module name"] call CC_Module_debug;
-  };
-
-  if (_event == "") exitWith {
-    ["Module", "event add", "missing event name"] call CC_Module_debug;
-  };
-
-  // debug
-  ["Module", "event remove", "%1, %2", [_name, _event]] call CC_Module_debug;
-
-  // retrieve the module data
-  private "_moduleIndex";
-  _moduleIndex = [CC__modules, _name] call BIS_fnc_findInPairs;
-
-  if (_moduleIndex < 0) exitWith {
-    ["Module", "event add", "no module %1", [_name]] call CC_Module_debug;
-  };
-
-  private "_module";
-  _module = (CC__modules select _moduleIndex) select 1;
-
-  // remove the event
-  private "_eventHandlers";
-  _eventHandlers = _module select 0;
-  [_eventHandlers, _event] call BIS_fnc_removeFromPairs;
-
-  // update clients
-  publicVariable "CC__modules";
-};
-
-/**
- * Add an event handler for a module event.
- *
- * @locality global
  * @param 0 module name
  * @param 1 event name
  * @param 2 event handler
@@ -240,52 +120,38 @@ CC_Module_event_register = {
 
   // validate parameters
   if (_name == "") exitWith {
-    ["Module", "event register", "missing module name"] call CC_Module_debug;
+    ["module", "event_register", "empty module name"] call CC_Module_debug;
   };
 
   if (_event == "") exitWith {
-    ["Module", "event register", "missing event name"] call CC_Module_debug;
+    ["module", "event_register", "empty event name"] call CC_Module_debug;
   };
 
-  // retrieve the module
-  private "_moduleIndex";
-  _moduleIndex = [CC__modules, _name] call BIS_fnc_findInPairs;
-
+  private _moduleIndex = [CC__modules, _name] call BIS_fnc_findInPairs;
   if (_moduleIndex < 0) exitWith {
-    ["Module", "event register", "no module %1", [_name]] call CC_Module_debug;
+    ["module", "event_register", "invalid module: %1", [_name]] call CC_Module_debug;
   };
 
-  private "_module";
-  _module = (CC__modules select _moduleIndex) select 1;
-
-  // retrieve the event
-  private ["_events", "_eventIndex"];
-  _events = _module select 0;
-  _eventIndex = [_events, _event] call BIS_fnc_findInPairs;
-
-  if (_eventIndex < 0) exitWith {
+  private _globalModule = (CC__modules select _moduleIndex) select 1;
+  private _eventNames = _globalModule select 0;
+  if (!(_event in _eventNames)) exitWith {
     [
-      "Module",
-      "event register",
-      "module %1 has no event %2",
-      [_name, _event]
+      "module",
+      "event_register",
+      "invalid module event: %1", [_name, _event]
     ] call CC_Module_debug;
   };
 
-  private "_event";
-  _event = _events select _eventIndex;
-
-  // add the event handler to the list
-  (_event select 1) pushBack _handler;
-
-  // update clients
-  publicVariable "CC__modules";
+  // register the event handler
+  // XXX: assuming CC__modules and CC__modules_local keys are in the same order
+  private _localModule = (CC__modules_local select _moduleIndex) select 1;
+  private _localEvents = _localModule select 0;
+  [_localEvents, _name, [_handler]] call BIS_fnc_addToPairs;
 };
 
 /**
- * Run event handlers for a module event.
+ * Run local event handlers for a module event.
  *
- * @locality local
  * @param 0 module name
  * @param 1 event name
  * @param 2 event handler arguments, defaults to []
@@ -304,44 +170,34 @@ CC_Module_event_fire = {
 
   // validate parameters
   if (_name == "") exitWith {
-    ["Module", "event fire", "missing module name"] call CC_Module_debug;
+    ["module", "event_fire", "empty module name"] call CC_Module_debug;
   };
 
   if (_event == "") exitWith {
-    ["Module", "event fire", "missing event name"] call CC_Module_debug;
+    ["module", "event_fire", "empty event name"] call CC_Module_debug;
   };
 
-  // retrieve the module
-  private "_moduleIndex";
-  _moduleIndex = [CC__modules, _name] call BIS_fnc_findInPairs;
-
-  if (_moduleIndex < 0) exitWith {
-    ["Module", "event fire", "no module %1", [_name]] call CC_Module_debug;
+  // retrieve the local module
+  private _index = [CC__modules_local, _name] call BIS_fnc_findInPairs;
+  if (_index < 0) exitWith {
+    ["module", "event_fire", "invalid module: %1", [_name]] call CC_Module_debug;
   };
 
-  private "_module";
-  _module = (CC__modules select _moduleIndex) select 1;
+  private _localModule = (CC__modules_local select _index) select 1;
 
-  // retrieve the event
-  private ["_events", "_eventIndex"];
-  _events = _module select 0;
-  _eventIndex = [_events, _event] call BIS_fnc_findInPairs;
-
-  if (_eventIndex < 0) exitWith {
+  // retrieve the event handlers
+  private _localEvents = _localModule select 0;
+  _index = [_localEvents, _event] call BIS_fnc_findInPairs;
+  if (_index < 0) exitWith {
     [
-      "Module",
-      "event fire",
-      "module %1 has no event %2",
+      "module",
+      "event_fire",
+      "invalid module event: %1, %2",
       [_name, _event]
     ] call CC_Module_debug;
   };
 
-  private "_event";
-  _event = _events select _eventIndex;
-
-  // retrieve the event handlers
-  private "_handlers";
-  _handlers = _event select 1;
+  private _handlers = (_localEvents select _index) select 1;
 
   // run the event handlers asynchronously
   if (_async) exitWith {
@@ -414,9 +270,8 @@ CC_Module_debug = {
 };
 
 /**
- * Enable the debug interface for a player.
+ * Enable the debug interface for a player unit.
  *
- * @locality global
  * @param 0 player unit
  */
 CC_Module_debug_enable = {
@@ -428,7 +283,7 @@ CC_Module_debug_enable = {
   // corner case: function called with default arguments on server so player is objNull
   // XXX: this seems to avoid the problem but the message below is never written to the log?
   if (isNull _unit) exitWith {
-    ["module", "debug enable", "ignoring call on dedicated server"] call CC_Module_debug;
+    ["module", "debug_enable", "null unit"] call CC_Module_debug;
   };
 
   // verify the unit is a player
@@ -436,31 +291,31 @@ CC_Module_debug_enable = {
   _players = ([] call BIS_fnc_listPlayers) - (entities "HeadlessClient_F");
 
   if (!(_unit in _players)) exitWith {
-    ["module", "debug player enable", "%1 not a player", [_unit]] call CC_Module_debug;
+    [
+      "module",
+      "debug_enable",
+      "unit not a player: %1",
+      [_unit]
+    ] call CC_Module_debug;
   };
 
-  // verify the unit doesn't already have the interface enabled
-  if (_unit getVariable ["cc_debug", false]) exitWith {
-    ["module", "debug enable", "%1 already enabled", [_unit]] call CC_Module_debug;
-  };
-
-  // enable the player locally
+  // enable the interface on the local client
   [_unit] remoteExec ["CC__module_debug_enable_local", _unit, false];
 };
 
 /**
- * Enable the debug interface for a local player.
+ * Enable the debug interface for a local unit.
  *
- * @locality local
- * @param 0 player unit
+ * @param 0 local unit
  */
 CC__module_debug_enable_local = {
   // retrieve parameters
-  private "_unit";
-  _unit = _this select 0;
+  params [
+    ["_unit", objNull, [objNull]]
+  ];
 
   // variables
-  _unit setVariable ["cc_debug", true, true];
+  _unit setVariable ["cc_debug", true];
   _unit setVariable ["cc_debug_hud", false];
 
   // add user actions
@@ -478,10 +333,9 @@ CC__module_debug_enable_local = {
 
   {
     // retrieve module debug actions
-    private ["_name", "_settings", "_debugActions"];
-    _name = _x select 0;
-    _settings = _x select 1;
-    _debugActions = _settings select 2;
+    private _name = _x select 0;
+    private _settings = _x select 1;
+    private _debugActions = _settings select 3;
 
     // create actions for module debug actions
     {
@@ -509,9 +363,8 @@ CC__module_debug_enable_local = {
 };
 
 /**
- * Disable the debug interface for a player.
+ * Disable the debug interface for a player unit.
  *
- * @locality global
  * @param 0 player unit
  */
 CC_Module_debug_disable = {
@@ -520,25 +373,30 @@ CC_Module_debug_disable = {
     ["_unit", player, [objNull]]
   ];
 
-  // verify the unit has the interface enabled
-  if (!(_unit getVariable ["cc_debug", false])) exitWith {
-    ["Module", "debug player disable", "%1 already disabled", [_unit]] call CC_Module_debug;
-  };
-
-  // disable the player locally
+  // disable the interface on the local client
   [_unit] remoteExec ["CC__module_debug_disable_local", _unit, false];
 };
 
 /**
- * Disable the debug interface for a local player.
+ * Disable the debug interface for a local unit.
  *
- * @locality local
- * @param 0 player unit
+ * @param 0 local unit
  */
 CC__module_debug_disable_local = {
   // retrieve parameters
-  private "_unit";
-  _unit = _this select 0;
+  params [
+    ["_unit", objNull, [objNull]]
+  ];
+
+  // verify the interface is enabled
+  if (!(_unit getVariable ["cc_debug", false])) exitWith {
+    [
+      "debug",
+      "disable_local",
+      "not enabled for unit: %1",
+      [_unit]
+    ] call CC_Module_debug;
+  };
 
   // remove user actions
   {
@@ -548,13 +406,11 @@ CC__module_debug_disable_local = {
   // variables
   _unit setVariable ["cc_debug_actions", []];
   _unit setVariable ["cc_debug_hud", false];
-  _unit setVariable ["cc_debug", false, true];
+  _unit setVariable ["cc_debug", false];
 };
 
 /**
  * Debug user action to toggle the status HUD.
- *
- * @locality local
  */
 CC__module_debug_toggle_hud = {
   // toggle the status hud
@@ -572,8 +428,6 @@ CC__module_debug_toggle_hud = {
  * Display player and module debugging information using screen hints. This is
  * a task that needs to be spawned locally and will run until it's disabled
  * through a user action or when the debug interface is disabled entirely.
- *
- * @locality local
  */
 CC__module_debug_hud_local = {
   // display debugging information
@@ -614,7 +468,7 @@ CC__module_debug_hud_local = {
       private ["_name", "_settings", "_debugStatus"];
       _name = _x select 0;
       _settings = _x select 1;
-      _debugStatus = _settings select 1;
+      _debugStatus = _settings select 2;
 
       // display the module status if available
       private "_status";

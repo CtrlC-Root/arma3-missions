@@ -1,38 +1,12 @@
-// Intro:
-// Ambush: vehicleCarBomb
-// Factory: N/A
-// Search: N/A
-// Outro: vehicleRescueHeli, CC__scenario_rescue_heli
-
 CC_Scenario_init = {
   [
     "scenario",
-    [
-      "fsm_intro",
-      "fsm_ambush",
-      "fsm_pivot",
-      "fsm_search",
-      "fsm_rescue",
-      "fsm_nato_win",
-      "fsm_syndikat_win"
-    ],
-    CC__scenario_debug_status,
-    []
+    CC__scenario_server_init,
+    CC__scenario_client_init
   ] call CC_Module_init;
+};
 
-  // only configure scenario event handlers on the server
-  if (!isServer) exitWith {};
-
-  // register event handlers for fsm states
-  ["scenario", "fsm_intro", CC__scenario_fsm_intro] call CC_Module_event_register;
-  ["scenario", "fsm_ambush", CC__scenario_fsm_ambush] call CC_Module_event_register;
-  ["scenario", "fsm_pivot", CC__scenario_fsm_pivot] call CC_Module_event_register;
-  ["scenario", "fsm_pivot", CC__scenario_fsm_pivot] call CC_Module_event_register;
-  ["scenario", "fsm_search", CC__scenario_fsm_search] call CC_Module_event_register;
-  ["scenario", "fsm_rescue", CC__scenario_fsm_rescue] call CC_Module_event_register;
-  ["scenario", "fsm_nato_win", CC__scenario_fsm_nato_win] call CC_Module_event_register;
-  ["scenario", "fsm_syndikat_win", CC__scenario_fsm_syndikat_win] call CC_Module_event_register;
-
+CC__scenario_server_init = {
   // determine which units are critical to the story by sorting the fire team
   // units in order of rank players first followed by NPCs and picking in order
   private "_units";
@@ -44,17 +18,51 @@ CC_Scenario_init = {
   ] call BIS_fnc_sortBy;
 
   CC__scenario_story_vehicles = [vehicleNatoLead, vehicleNatoChase];
+  publicVariable "CC__scenario_story_vehicles";
+
   CC__scenario_story_units = _units select [0, 2];
+  publicVariable "CC__scenario_story_units";
 
   // initialize scenario state (updated by FSM as mission progresses)
   CC__scenario_state = "start";
   publicVariable "CC__scenario_state";
+
+  // settings
+  [
+    [
+      "fsm_intro",
+      "fsm_ambush",
+      "fsm_pivot",
+      "fsm_search",
+      "fsm_rescue",
+      "fsm_nato_win",
+      "fsm_syndikat_win"
+    ],
+    { False },
+    CC__scenario_debug_status,
+    []
+  ];
+};
+
+CC__scenario_client_init = {
+  // client settings
+  if (!isServer) exitWith { };
 
   // run the scenario state machine
   CC__scenario_fsm = [
     CC__scenario_fsm_state,
     CC__scenario_story_units
   ] execFSM "local\scenario.fsm";
+
+  // register server event handlers
+  ["scenario", "fsm_intro", CC__scenario_fsm_intro] call CC_Module_event_register;
+  ["scenario", "fsm_ambush", CC__scenario_fsm_ambush] call CC_Module_event_register;
+  ["scenario", "fsm_pivot", CC__scenario_fsm_pivot] call CC_Module_event_register;
+  ["scenario", "fsm_pivot", CC__scenario_fsm_pivot] call CC_Module_event_register;
+  ["scenario", "fsm_search", CC__scenario_fsm_search] call CC_Module_event_register;
+  ["scenario", "fsm_rescue", CC__scenario_fsm_rescue] call CC_Module_event_register;
+  ["scenario", "fsm_nato_win", CC__scenario_fsm_nato_win] call CC_Module_event_register;
+  ["scenario", "fsm_syndikat_win", CC__scenario_fsm_syndikat_win] call CC_Module_event_register;
 };
 
 CC__scenario_debug_status = {
