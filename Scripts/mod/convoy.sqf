@@ -28,8 +28,7 @@ CC__convoy_client_init = { };
  **************************************/
 
 CC__convoy_debug_status = {
-  private "_status";
-  _status = [];
+  private _status = [];
 
   if (player getVariable ["cc_convoy_record", false]) then {
     _status pushBack "Recording Enabled";
@@ -38,15 +37,14 @@ CC__convoy_debug_status = {
   };
 
   if ((vehicle player) != player) then {
-    private ["_vehicle", "_points"];
-    _vehicle = vehicle player;
-    _points = _vehicle getVariable ["cc_convoy_points", []];
+    private _vehicle = vehicle player;
+    private _route = _vehicle getVariable ["cc_convoy_route", []];
 
     if (_vehicle getVariable ["cc_convoy_record", false]) then {
-      _status pushBack format ["Vehicle: Recording (%1)", count _points];
+      _status pushBack format ["Vehicle: Recording (%1)", count _route];
     } else {
-      if ((count _points) > 0) then {
-        _status pushBack format ["Vehicle: Stored (%1)", count _points];
+      if ((count _route) > 0) then {
+        _status pushBack format ["Vehicle: Stored (%1)", count _route];
       } else {
         _status pushBack "Vehicle: Idle";
       };
@@ -70,8 +68,7 @@ CC__convoy_record_toggle = {
     };
 
     // remove enter and exit event handlers
-    private "_handler";
-    _handler = player getVariable "cc_convoy_enter_handler";
+    private _handler = player getVariable "cc_convoy_enter_handler";
     player removeEventHandler ["GetInMan", _handler];
 
     _handler = player getVariable "cc_convoy_exit_handler";
@@ -87,23 +84,20 @@ CC__convoy_record_toggle = {
   ["convoy", "record_toggle", "enable"] call CC_Module_debug;
 
   // register event handlers for entering and exiting cars
-  private ["_enterHandler", "_exitHandler"];
-  _enterHandler = player addEventHandler ["GetInMan", {
+  private _enterHandler = player addEventHandler ["GetInMan", {
     params ["_unit", "_role", "_vehicle", "_turret"];
-    private "_handler";
-    _handler = _vehicle addEventHandler ["Engine", {
+    private _handler = _vehicle addEventHandler ["Engine", {
       _this call CC__convoy_record_control;
     }];
 
     _vehicle setVariable ["cc_convoy_handler", _handler];
   }];
 
-  _exitHandler = player addEventHandler ["GetOutMan", {
+  private _exitHandler = player addEventHandler ["GetOutMan", {
     params ["_unit", "_role", "_vehicle", "_turret"];
     [_vehicle, false] call CC__convoy_record_control;
 
-    private "_handler";
-    _handler = _vehicle getVariable "cc_convoy_handler";
+    private _handler = _vehicle getVariable "cc_convoy_handler";
     _vehicle setVariable ["cc_convoy_handler", nil];
     _vehicle removeEventHandler ["Engine", _handler];
   }];
@@ -123,7 +117,7 @@ CC__convoy_record_control = {
   if (_active) then {
     ["convoy", "record_control", "%1 start", [_vehicle]] call CC_Module_debug;
     _vehicle setVariable ["cc_convoy_record", true];
-    _vehicle setVariable ["cc_convoy_points", []];
+    _vehicle setVariable ["cc_convoy_route", []];
     [_vehicle] spawn CC__convoy_record_task;
   } else {
     ["convoy", "record_control", "%1 stop", [_vehicle]] call CC_Module_debug;
@@ -142,12 +136,11 @@ CC__convoy_record_task = {
   ["convoy", "record_task", "%1: start", [_vehicle]] call CC_Module_debug;
 
   // record start point
-  private ["_lastTime", "_lastPoint", "_points"];
-  _lastTime = time;
-  _lastPoint = position _vehicle;
+  private _lastTime = time;
+  private _lastPoint = position _vehicle;
+  private _route = [[0, 0, _lastPoint, 0]];
 
-  _points = [[0, 0, _lastPoint, 0]];
-  _vehicle setVariable ["cc_convoy_points", _points];
+  _vehicle setVariable ["cc_convoy_route", _route];
 
   // record points as the player drives
   private ["_timeSinceLast", "_distanceFromLast"];
@@ -161,14 +154,14 @@ CC__convoy_record_task = {
       _lastTime = time;
       _lastPoint = position _vehicle;
 
-      _points pushBack [
+      _route pushBack [
         _timeSinceLast,
         _distanceFromLast,
         _lastPoint,
         (speed _vehicle) * (1000 / (60 * 60))
       ];
 
-      _vehicle setVariable ["cc_convoy_points", _points];
+      _vehicle setVariable ["cc_convoy_route", _route];
     };
 
     // rate limit to 20 Hz
@@ -180,14 +173,14 @@ CC__convoy_record_task = {
   _distanceFromLast = _lastPoint distance (position _vehicle);
   _lastPoint = position _vehicle;
 
-  _points pushBack [
+  _route pushBack [
     _timeSinceLast,
     _distanceFromLast,
     _lastPoint,
     0
   ];
 
-  _vehicle setVariable ["cc_convoy_points", _points];
+  _vehicle setVariable ["cc_convoy_route", _route];
 
   // debug
   ["convoy", "record_task", "%1: stop", [_vehicle]] call CC_Module_debug;
