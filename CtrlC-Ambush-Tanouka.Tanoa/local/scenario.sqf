@@ -7,8 +7,8 @@ CC_Scenario_init = {
 };
 
 CC__scenario_server_init = {
-  // determine which units are critical to the story by sorting the fire team
-  // units in order of rank players first followed by NPCs and picking in order
+  // determine which nato units are critical to the story by sorting the fire team
+  // units in order of rank, players first followed by NPCs, and picking in order
   private "_units";
   _units = [
     units groupNatoFireTeam,
@@ -17,11 +17,28 @@ CC__scenario_server_init = {
     "DESCEND"
   ] call BIS_fnc_sortBy;
 
-  CC__scenario_story_vehicles = [vehicleNatoLead, vehicleNatoChase];
-  publicVariable "CC__scenario_story_vehicles";
+  CC__scenario_nato_vehicles = [vehicleNatoLead, vehicleNatoChase];
+  publicVariable "CC__scenario_nato_vehicles";
 
-  CC__scenario_story_units = _units select [0, 2];
-  publicVariable "CC__scenario_story_units";
+  CC__scenario_nato_units = _units select [0, 2];
+  publicVariable "CC__scenario_nato_units";
+
+  // pick the informant unit and remove the rest
+  private _informants = [
+    unitInformantA,
+    unitInformantB,
+    unitInformantC,
+    unitInformantD,
+    unitInformantE
+  ];
+
+  _informants = _informants call BIS_fnc_arrayShuffle;
+  CC__scenario_informant = _informants call BIS_fnc_arrayPop;
+  publicVariable "CC__scenario_informant";
+
+  {
+    deleteVehicle _x;
+  } forEach _informants;
 
   // initialize scenario state (updated by FSM as mission progresses)
   CC__scenario_state = "start";
@@ -45,13 +62,15 @@ CC__scenario_server_init = {
 };
 
 CC__scenario_client_init = {
+  // XXX: debugging
+  [] call CC_Module_debug_enable;
+
   // client settings
   if (!isServer) exitWith { };
 
   // register server event handlers
   ["scenario", "fsm_intro", CC__scenario_fsm_intro] call CC_Module_event_register;
   ["scenario", "fsm_ambush", CC__scenario_fsm_ambush] call CC_Module_event_register;
-  ["scenario", "fsm_pivot", CC__scenario_fsm_pivot] call CC_Module_event_register;
   ["scenario", "fsm_pivot", CC__scenario_fsm_pivot] call CC_Module_event_register;
   ["scenario", "fsm_search", CC__scenario_fsm_search] call CC_Module_event_register;
   ["scenario", "fsm_rescue", CC__scenario_fsm_rescue] call CC_Module_event_register;
@@ -61,14 +80,21 @@ CC__scenario_client_init = {
   // run the scenario state machine
   CC__scenario_fsm = [
     CC__scenario_fsm_state,
-    CC__scenario_story_units
+    CC__scenario_nato_vehicles,
+    CC__scenario_nato_units,
+    CC__scenario_informant,
+    triggerAmbush,
+    triggerTanouka,
+    triggerFactory
   ] execFSM "local\scenario.fsm";
 };
 
 CC__scenario_debug_status = {
   format [
-    "FSM: %1",
-    CC__scenario_state
+    "FSM: %1\nInformant: %2\nNATO Units: %3",
+    CC__scenario_state,
+    CC__scenario_informant,
+    CC__scenario_nato_units
   ];
 };
 
@@ -95,37 +121,172 @@ CC__scenario_fsm_state = {
 };
 
 CC__scenario_fsm_intro = {
-  // TODO
+  // XXX: start convoy
+  [] call CC__scenario_convoy_setup;
+
+  // create the meet informant task
+  [
+    groupNatoFireTeam,
+    "meetInformant",
+    ["Meet the informant at the factory.", "Meet Informant", ""],
+    getMarkerPos "markerMeetInformant",
+    "ASSIGNED",
+    2,
+    false,
+    "meet",
+    false
+  ] call BIS_fnc_taskCreate;
+
+  // TODO: start radio messages
 };
 
 CC__scenario_fsm_ambush = {
-  // TODO
+  // cancel the meet informant task
+  ["CANCELED", "meetInformant"] call BIS_fnc_taskSetState;
+
+  // blow up the car bomb and lead vehicle
+  vehicleCarBomb setDamage 1;
+  vehicleNatoLead setDamage 1;
+
+  // kill the driver of the chase vehicle
+  (driver vehicleNatoChase) setDamage 1;
+
+  // disable the chase vehicle
+  private _vehicleClass = typeOf vehicleNatoChase;
+  private _enginePart = getText (configFile >> "CfgVehicles" >> _vehicleClass >> "HitPoints" >> "HitEngine" >> "name");
+  vehicleNatoChase setHit [_enginePart, 1];
+
+  // enable syndikat units in tanouka
+  private _syndikatUnits = allUnits select {
+    (faction _x == "IND_C_F") && (_x inArea triggerTanouka)
+  };
+
+  {
+    _x enableSimulation true;
+  } forEach _syndikatUnits;
+
+  // TODO: start radio messages
+
+  // XXX: create defend task (after radio messages)
+  [
+    groupNatoFireTeam,
+    "defendConvoy",
+    ["Defend the convoy from attack.", "Defend", ""],
+    position vehicleNatoChase,
+    "ASSIGNED",
+    10,
+    true,
+    "defend",
+    true
+  ] call BIS_fnc_taskCreate;
 };
 
 CC__scenario_fsm_pivot = {
-  // TODO
+  // enable syndikat units at the factory
+  private _syndikatUnits = allUnits select {
+    (faction _x == "IND_C_F") && (_x inArea triggerFactory)
+  };
+
+  {
+    _x enableSimulation true;
+  } forEach _syndikatUnits;
+
+  // complete defend task
+  ["defendConvoy", "SUCCEEDED"] call BIS_fnc_taskSetState;
+
+  // TODO: start radio messages
+
+  // XXX: delete the original meet informant task as it's no longer relevant (after radio messages)
+  ["meetInformant"] call BIS_fnc_deleteTask;
+
+  // XXX: create search task (after radio messages)
+  [
+    groupNatoFireTeam,
+    "searchFactory",
+    ["Search the factory for the informant.", "Locate Informant", ""],
+    getMarkerPos "markerSearchFactory",
+    "ASSIGNED",
+    10,
+    true,
+    "search",
+    true
+  ] call BIS_fnc_taskCreate;
 };
 
 CC__scenario_fsm_search = {
-  // TODO
+  // TODO: start radio messages
 };
 
 CC__scenario_fsm_rescue = {
-  // TODO
+  // convince the remaining Syndikat units to be defensive and run away
+  private _syndikatUnits = allUnits select { faction _x == "IND_C_F" };
+
+  {
+    // can switch to combat mode if they see an enemy
+    _x setBehaviour "AWARE";
+
+    // will only return fire if fired on
+    _x setCombatMode "GREEN";
+
+    // permanent state of running away
+    _x allowFleeing 1;
+  } forEach _syndikatUnits;
+
+  // add the informant to the nato fire team so they can command him and
+  // disable some of the annoying civilian behavior
+  [CC__scenario_informant] join groupNatoFireTeam;
+  CC__scenario_informant allowFleeing 0;
+
+  // complete search task
+  ["searchFactory", "SUCCEEDED"] call BIS_fnc_taskSetState;
+
+  // send the rescue helicopter
+  missionNamespace setVariable ["CC__scenario_nato_rescue", true];
+
+  // TODO: start radio messages
+
+  // create exfil task (after radio messages)
+  [
+    groupNatoFireTeam,
+    "exfil",
+    ["Board the rescue helicopter.", "Exfiltrate", ""],
+    position objectRescueHelipad,
+    "ASSIGNED",
+    10,
+    true,
+    "getin",
+    true
+  ] call BIS_fnc_taskCreate;
 };
 
 CC__scenario_fsm_nato_win = {
-  // TODO
+  private _players = allPlayers - entities "HeadlessClient_F";
+
+  {
+    if (faction _x == "BLU_T_F") then {
+      ["END1", true] remoteExec ["BIS_fnc_endMission", _x, true];
+    } else {
+      ["END1", false] remoteExec ["BIS_fnc_endMission", _x, true];
+    };
+  } forEach _players;
 };
 
 CC__scenario_fsm_syndikat_win = {
-  // TODO
+  private _players = allPlayers - entities "HeadlessClient_F";
+
+  {
+    if (faction _x == "IND_C_F") then {
+      ["END1", true] remoteExec ["BIS_fnc_endMission", _x, true];
+    } else {
+      ["END1", false] remoteExec ["BIS_fnc_endMission", _x, true];
+    };
+  } forEach _players;
 };
 
 CC__scenario_convoy_setup = {
   private ["_followDistance", "_vehicles", "_route"];
   _followDistance = 12;
-  _vehicles = CC__scenario_story_vehicles;
+  _vehicles = CC__scenario_nato_vehicles;
   _route = CC__scenario_nato_route apply {
     // [t, d, [x, y, z], s]
     _x set [3, 12];
@@ -134,19 +295,15 @@ CC__scenario_convoy_setup = {
 
   // initialize vehicle crew and route
   {
-    {
-      switch (toLower ((assignedVehicleRole _x) select 0)) do {
-        case "driver";
-        case "turret": {
-          // disable targeting and switching to combat behavior
-          _x disableAI "TARGET";
-          _x disableAI "AUTOCOMBAT";
+    // set group behavior to careless so they follow roads and use lights
+    private _driverGroup = group (driver _x);
+    _driverGroup setBehaviour "CARELESS";
 
-          // set the unit's group behavior
-          (group _x) setBehaviour "CARELESS";
-        };
-      };
-    } forEach (crew _x);
+    // disable unit targeting and switching behavior based on enemy units
+    {
+      _x disableAI "TARGET";
+      _x disableAI "AUTOCOMBAT";
+    } forEach (units _driverGroup);
 
     // determine the start and stop offsets
     private ["_startOffset", "_stopOffset"];

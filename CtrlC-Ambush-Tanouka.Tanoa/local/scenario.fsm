@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Steam\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, Scenario">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"Start",0,4346,-543.716675,221.103577,-453.716675,271.103577,0.000000,"Start"};
+item0[] = {"Start",0,250,-543.716675,221.103577,-453.716675,271.103577,0.000000,"Start"};
 item1[] = {"Intro",2,250,-393.946289,10.195969,-303.946289,60.195953,0.000000,"Intro"};
 item2[] = {"Ambush",2,250,-26.451111,-79.927490,63.548904,-29.927490,0.000000,"Ambush"};
 item3[] = {"Pivot",2,250,303.367065,7.554749,393.367065,57.554749,0.000000,"Pivot"};
@@ -16,11 +16,11 @@ item11[] = {"Informant_Found",4,218,382.048828,314.383972,513.276001,404.605713,
 item12[] = {"Board_Rescue_Hel",4,218,136.696411,515.492554,289.040039,608.730957,0.000000,"Board Rescue" \n "Helicopter"};
 item13[] = {"NATO_Lose_Syndikat",1,250,-24.440063,227.768707,65.559967,277.768677,0.000000,"NATO Lose" \n "Syndikat Win"};
 item14[] = {"Story_Units_KIA",4,218,-290.021729,65.181999,-180.766144,141.033600,10.000000,"Story Units" \n "KIA"};
-item15[] = {"Story_Units_KIA",4,218,-33.045540,2.200424,74.048706,77.338974,10.000000,"Story Units" \n "KIA"};
+item15[] = {"Story_Units_KIA",4,218,-34.959114,2.838287,72.135132,77.976837,10.000000,"Story Units" \n "KIA"};
 item16[] = {"Story_Units_KIA",4,218,213.710632,58.728271,324.234009,140.147888,10.000000,"Story Units" \n "KIA"};
 item17[] = {"Story_Units_KIA",4,218,239.261841,204.779846,354.400391,285.951660,10.000000,"Story Units" \n "KIA"};
 item18[] = {"Story_Units_KIA",4,218,161.834961,359.633423,282.001099,447.844055,10.000000,"Story Units" \n "KIA"};
-item19[] = {"Search_TImer_Exp",4,218,261.383667,294.273193,377.527832,371.422852,8.000000,"Search TImer" \n "Expires"};
+item19[] = {"Search_Timer_Exp",4,218,261.383667,294.273193,377.527832,371.422852,8.000000,"Search Timer" \n "Expires"};
 item20[] = {"Search_Timer_Exp",4,218,276.466919,127.352837,391.605347,201.485992,8.000000,"Search Timer" \n "Expires"};
 link0[] = {0,7};
 link1[] = {1,8};
@@ -49,7 +49,7 @@ link23[] = {18,13};
 link24[] = {19,13};
 link25[] = {20,13};
 globals[] = {0.000000,0,0,0,0,640,480,1,23,6316128,1,-656.993103,597.034485,679.007507,-114.487030,1966,1244,1};
-window[] = {2,-1,-1,-32000,-32000,1207,363,2283,178,3,1984};
+window[] = {2,-1,-1,-32000,-32000,1315,286,2206,286,3,1984};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -62,13 +62,23 @@ class FSM
                         name = "Start";
                         itemno = 0;
                         init = /*%FSM<STATEINIT""">*/"// defaults" \n
-                         "searchTimer = 10 * 60;" \n
+                         "_searchTimerInterval = 10 * 60;" \n
+                         "_searchTimer = 0;" \n
                          "" \n
                          "// parameters" \n
                          "params [" \n
-                         "	[""_stateCallback"", {}, [{}]]," \n
-                         "	[""_storyUnits"", [], [[]]]" \n
-                         "];"/*%FSM</STATEINIT""">*/;
+                         "  [""_stateCallback"", {}, [{}]]," \n
+                         "  [""_natoVehicles"", [], [[]]]," \n
+                         "  [""_natoUnits"", [], [[]]]," \n
+                         "  [""_unitInformant"", objNull, [objNull]]," \n
+                         "  [""_triggerAmbush"", objNull, [objNull]]," \n
+                         "  [""_triggerTanouka"", objNull, [objNull]]," \n
+                         "  [""_triggerFactory"", objNull, [objNull]]" \n
+                         "];" \n
+                         "" \n
+                         "// determine units important to the story" \n
+                         "_storyUnits = [] + _natoUnits;" \n
+                         "_storyUnits pushBack _unitInformant;"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -102,8 +112,7 @@ class FSM
                                         priority = 10.000000;
                                         to="NATO_Lose_Syndikat";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"private ""_dead"";" \n
-                                         "_dead = _storyUnits select { !alive _x };" \n
+                                        condition=/*%FSM<CONDITION""">*/"private _dead = _storyUnits select { !alive _x };" \n
                                          "count _dead > 0;"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
@@ -115,7 +124,11 @@ class FSM
                                         priority = 0.000000;
                                         to="Ambush";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"false"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"private _presentVehicles = _natoVehicles select {" \n
+                                         "  _x inArea _triggerAmbush" \n
+                                         "};" \n
+                                         "" \n
+                                         "(count _presentVehicles) == (count _natoVehicles);"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -138,8 +151,7 @@ class FSM
                                         priority = 10.000000;
                                         to="NATO_Lose_Syndikat";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"private ""_dead"";" \n
-                                         "_dead = _storyUnits select { !alive _x };" \n
+                                        condition=/*%FSM<CONDITION""">*/"private _dead = _storyUnits select { !alive _x };" \n
                                          "count _dead > 0;"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
@@ -151,7 +163,11 @@ class FSM
                                         priority = 0.000000;
                                         to="Pivot";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"false"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"private _syndikatUnits = allUnits select {" \n
+                                         "  (faction _x == ""IND_C_F"") && (_x inArea _triggerTanouka)" \n
+                                         "};" \n
+                                         "" \n
+                                         "(count _syndikatUnits) == 0;"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -163,7 +179,8 @@ class FSM
                 {
                         name = "Pivot";
                         itemno = 3;
-                        init = /*%FSM<STATEINIT""">*/"[""pivot""] call _stateCallback;"/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"_searchTimer = time + _searchTimerInterval;" \n
+                         "[""pivot""] call _stateCallback;"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -174,8 +191,7 @@ class FSM
                                         priority = 10.000000;
                                         to="NATO_Lose_Syndikat";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"private ""_dead"";" \n
-                                         "_dead = _storyUnits select { !alive _x };" \n
+                                        condition=/*%FSM<CONDITION""">*/"private _dead = _storyUnits select { !alive _x };" \n
                                          "count _dead > 0;"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
@@ -187,7 +203,7 @@ class FSM
                                         priority = 8.000000;
                                         to="NATO_Lose_Syndikat";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"false"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"time > _searchTimer;"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -198,7 +214,11 @@ class FSM
                                         priority = 0.000000;
                                         to="Search";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"false"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"private _present = _natoUnits select {" \n
+                                         "  _x inArea _triggerFactory" \n
+                                         "};" \n
+                                         "" \n
+                                         "(count _present) > 0;"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -221,20 +241,19 @@ class FSM
                                         priority = 10.000000;
                                         to="NATO_Lose_Syndikat";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"private ""_dead"";" \n
-                                         "_dead = _storyUnits select { !alive _x };" \n
+                                        condition=/*%FSM<CONDITION""">*/"private _dead = _storyUnits select { !alive _x };" \n
                                          "count _dead > 0;"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
-                                /*%FSM<LINK "Search_TImer_Exp">*/
-                                class Search_TImer_Exp
+                                /*%FSM<LINK "Search_Timer_Exp">*/
+                                class Search_Timer_Exp
                                 {
                                         itemno = 19;
                                         priority = 8.000000;
                                         to="NATO_Lose_Syndikat";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"false"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"time > _searchTimer;"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -245,7 +264,11 @@ class FSM
                                         priority = 0.000000;
                                         to="Rescue";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"false"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"private _units = _natoUnits select {" \n
+                                         "  (_x knowsAbout _unitInformant) >= 1.5;" \n
+                                         "};" \n
+                                         "" \n
+                                         "(count _units) > 0;"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -268,8 +291,7 @@ class FSM
                                         priority = 10.000000;
                                         to="NATO_Lose_Syndikat";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"private ""_dead"";" \n
-                                         "_dead = _storyUnits select { !alive _x };" \n
+                                        condition=/*%FSM<CONDITION""">*/"private _dead = _storyUnits select { !alive _x };" \n
                                          "count _dead > 0;"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
