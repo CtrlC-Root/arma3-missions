@@ -82,7 +82,8 @@ CC__scenario_client_init = {
     CC__scenario_informant,
     triggerAmbush,
     triggerTanouka,
-    triggerFactory
+    triggerFactory,
+    vehicleRescueHeli
   ] execFSM "local\scenario.fsm";
 };
 

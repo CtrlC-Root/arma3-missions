@@ -73,7 +73,8 @@ class FSM
                          "  [""_unitInformant"", objNull, [objNull]]," \n
                          "  [""_triggerAmbush"", objNull, [objNull]]," \n
                          "  [""_triggerTanouka"", objNull, [objNull]]," \n
-                         "  [""_triggerFactory"", objNull, [objNull]]" \n
+                         "  [""_triggerFactory"", objNull, [objNull]]," \n
+                         "  [""_vehicleRescueHeli"", objNull, [objNull]]" \n
                          "];" \n
                          "" \n
                          "// determine units important to the story" \n
@@ -303,7 +304,11 @@ class FSM
                                         priority = 0.000000;
                                         to="NATO_Win_Syndikat";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"false"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"private _units = _storyUnits select {" \n
+                                         "  (vehicle _x) == _vehicleRescueHeli;" \n
+                                         "};" \n
+                                         "" \n
+                                         "(count _units) == (count _storyUnits);"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
