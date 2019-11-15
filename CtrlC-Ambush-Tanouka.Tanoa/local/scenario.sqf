@@ -23,14 +23,10 @@ CC__scenario_server_init = {
   CC__scenario_nato_units = _units select [0, 2];
   publicVariable "CC__scenario_nato_units";
 
-  // pick the informant unit and remove the rest
-  private _informants = [
-    unitInformantA,
-    unitInformantB,
-    unitInformantC,
-    unitInformantD,
-    unitInformantE
-  ];
+  // pick one informant unit and remove the rest
+  private _informants = allUnits select {
+    _x getVariable ["cc_scenario_informant", false];
+  };
 
   _informants = _informants call BIS_fnc_arrayShuffle;
   CC__scenario_informant = _informants call BIS_fnc_arrayPop;
@@ -39,6 +35,10 @@ CC__scenario_server_init = {
   {
     deleteVehicle _x;
   } forEach _informants;
+
+  // stage the informant and prevent him from running away
+  CC__scenario_informant setUnitPos "MIDDLE"; // crouch
+  CC__scenario_informant disableAI "MOVE"; // movement
 
   // initialize scenario state (updated by FSM as mission progresses)
   CC__scenario_state = "start";
@@ -139,9 +139,6 @@ CC__scenario_fsm_intro = {
 };
 
 CC__scenario_fsm_ambush = {
-  // cancel the meet informant task
-  ["CANCELED", "meetInformant"] call BIS_fnc_taskSetState;
-
   // blow up the car bomb and lead vehicle
   vehicleCarBomb setDamage 1;
   vehicleNatoLead setDamage 1;
@@ -194,7 +191,7 @@ CC__scenario_fsm_pivot = {
 
   // TODO: start radio messages
 
-  // XXX: delete the original meet informant task as it's no longer relevant (after radio messages)
+  // XXX: delete the meet informant task (after radio messages)
   ["meetInformant"] call BIS_fnc_deleteTask;
 
   // XXX: create search task (after radio messages)
@@ -204,7 +201,7 @@ CC__scenario_fsm_pivot = {
     ["Search the factory for the informant.", "Locate Informant", ""],
     getMarkerPos "markerSearchFactory",
     "ASSIGNED",
-    10,
+    12,
     true,
     "search",
     true
@@ -216,24 +213,13 @@ CC__scenario_fsm_search = {
 };
 
 CC__scenario_fsm_rescue = {
-  // convince the remaining Syndikat units to be defensive and run away
-  private _syndikatUnits = allUnits select { faction _x == "IND_C_F" };
-
-  {
-    // can switch to combat mode if they see an enemy
-    _x setBehaviour "AWARE";
-
-    // will only return fire if fired on
-    _x setCombatMode "GREEN";
-
-    // permanent state of running away
-    _x allowFleeing 1;
-  } forEach _syndikatUnits;
-
-  // add the informant to the nato fire team so they can command him and
-  // disable some of the annoying civilian behavior
-  [CC__scenario_informant] join groupNatoFireTeam;
+  // add the informant to the nato fire team so they can command him, enable
+  // movement again, and  tweak some of the annoying civilian behavior
+  CC__scenario_informant setUnitRank "PRIVATE";
+  CC__scenario_informant enableAI "MOVE";
+  CC__scenario_informant setUnitPos "UP";
   CC__scenario_informant allowFleeing 0;
+  [CC__scenario_informant] join groupNatoFireTeam;  // changes locality
 
   // complete search task
   ["searchFactory", "SUCCEEDED"] call BIS_fnc_taskSetState;
@@ -250,7 +236,7 @@ CC__scenario_fsm_rescue = {
     ["Board the rescue helicopter.", "Exfiltrate", ""],
     position objectRescueHelipad,
     "ASSIGNED",
-    10,
+    14,
     true,
     "getin",
     true
@@ -258,6 +244,10 @@ CC__scenario_fsm_rescue = {
 };
 
 CC__scenario_fsm_nato_win = {
+  // complete the exfil task
+  ["exfil", "SUCCEEDED"] call BIS_fnc_taskSetState;
+
+  // end the mission for all players
   private _players = allPlayers - entities "HeadlessClient_F";
 
   {
@@ -270,6 +260,7 @@ CC__scenario_fsm_nato_win = {
 };
 
 CC__scenario_fsm_syndikat_win = {
+  // end the mission for all players
   private _players = allPlayers - entities "HeadlessClient_F";
 
   {
@@ -378,7 +369,7 @@ CC__scenario_convoy_setup = {
     _waypoint setWaypointType "MOVE";
     _waypoint setWaypointStatements [
       "(speed (vehicle this)) <= 0.01",
-      format ["hint '%1'", _x]
+      ""
     ];
 
     //_x limitSpeed 60;
