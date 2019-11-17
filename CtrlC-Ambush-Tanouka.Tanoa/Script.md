@@ -1,77 +1,85 @@
 # Script
 
-NATO forces have FOBs at Comms Alpha and Comms Bravo. NATO forces help the
+NATO forces have FOBs at Comms Alpha and Comms Bravo. The soldiers help the
 local police with high-risk operations. A local Syndikat gang runs drugs and
-other illegal contraband through the town of Tanouka. A local informant that
-has contacted the `Captain` and claims to have found one of the gang's weapon
-caches.
+other illegal contraband through the nearby town of Tanouka. The gang members
+use fear and intimidation to keep the local civilians in line and quiet. One
+of the workers at a nearby factory, who's family was killed by gang members,
+has decided to become an informant. He claims to have found one of the gang's
+weapon caches hidden at the factory.
 
-Two NATO fire teams (`Alpha 1-1` and `Alpha 2-1`) are dispatched from the FOB
-at Comms Bravo to meet with the informant at the sugar factory west of town.
-The informant will then lead the teams to where the weapon cache is hidden at
-the factory.
+* `Control`: NATO dispatch.
+* `Alpha 1`: NATO fire team in chase car.
+  * `Lt. James Wright`: Lieutenant, Team Leader.
+  * `Sgt. Dixon Watson`: Sergeant, Autorifleman.
+  * `Cpl. Frost Clark`: Corporal, Combat Life Saver.
+  * `Pvt. Jackson Hill`: Private, Grenadier.
+* `Alpha 2`: NATO fire team in lead car.
+* `Alpha 3`: NATO driver in chase car.
+* `Takis Christou`: Civilian, Confidential Informant.
+
+NATO fire teams are dispatched from the FOB at Comms Bravo to meet with the
+informant at the sugar factory west of Tanouka. The informant will then lead
+the teams to the weapon cache hidden at the factory. The mission starts as
+the fire teams pull back on to the road towards Tanouka after taking a pit
+stop.
 
 As the teams pass through Tanouka they are lured into an ambush using a staged
-car accident and a car bomb. The lead car with `Alpha 1-1` is destroyed. About
-a dozen Syndikat bandits attack the remaining fire team but are killed or
-driven off. The fire team decides to proceed to the factory on foot in order
+car accident and a car bomb. The lead car is destroyed and it's occupants
+killed. The driver of the chase car is also critically injured. About a dozen
+Syndikat gang members attack the remaining fire team but are killed or driven
+off. The remaining fire team decides to proceed to the factory on foot in order
 to locate the informant in case his cover was blown. They search the factory
-while repelling further attacks from Syndikat bandits until they find the
+while repelling further attacks from Syndikat gang members until they find the
 informant hiding out of fear. They escort the informant to the front of the
-factory where a NATO helicopter lands to exfiltrate everyone.
+factory where a NATO helicopter lands to exfiltrate everyone. The mission
+ends as the helicopter takes off and flies away from the factory.
 
 ## 01 - Intro
 
-The two fire teams are in vehicles about half-way between Comms Bravo and
-Tanouka. Fire team `Alpha 1-1` is in the lead car and `Alpha 1-2` is in the
-chase car. The `Major` is driving the chase car and the `Captain` is in the
-passenger seat.
+The cars slowly pull back on to the main road leading to Tanouka.
 
-1. `Major`: Where are we meeting your guy Captain?
-2. `Captain`: He'll meet us behind the factory Office. He should already be
-    there waiting for us now.
-3. `Major`: What's this guy's story anyways? Are we paying him for this
-    information? I know how much the locals like to search for non-existent
-    contraband at our expense.
-4. `Captain`: Not this guy. His wife and son were killed in that school
-    bombing last year. His wife was a teacher and his son was in class when
-    it happened.
-5. `Major`: Oh man, so it's personal.
-6. `Captain`: I'd say so, sir.
+1. `Lt. Wright`: Let's get back on the road.
+2. `Sgt. Watson`: The earlier we get there the better.
+3. `Lt. Wright`: Dixon, where are we meeting your CI?
+4. `Sgt. Watson`: Behind the front office, he should already be there now.
+5. `Lt. Wright`: What's this guy's story anyways? I thought the locals were
+  deathly afraid of the Syndikat. Why's he so willing to help?
+6. `Sgt. Watson`: His wife and son were killed in that school bombing last
+  year. His wife was a teacher and his son was in class when it happened.
+7. `Lt. Wright`: Oh man, so this is personal.
+8. `Sgt. Watson`: I'd say so, sir.
 
-The vehicles come up to the scene of a car accident in the middle of Tanouka.
-
-7. `Soldier`: Sir, there's an accident up ahead. I think we'll have to circle
-    around.
+The vehicles enter Tanouka and approach the scene of a car accident. It
+appears a truck took a turn too quickly and rolled over on it's side.
 
 ## 02 - Ambush
 
-A truck parked nearby explodes causing the lead vehicle to explode as well.
-The chase vehicle is severely damaged and no longer drivable. No one in the
-lead vehicle is injured though.
+The overturned truck explodes causing the lead car to also explode, critically
+injuring the driver of the chase car, and causing significant damage to the
+chase car rendering it undrivable.
 
-8. `Captain`: My god!
-9. `Major`: Everyone out of the car and find some cover!
+9. `Lt. Wright`: Everyone out!
 
-Everyone gets out of the second car.
+Everyone gets out of the chase car.
 
-10. `Major` to `Control`: Control, we just hit an IED, multiple KIA.
+10. `Lt. Wright` to `Control`: Control, we just hit an IED, multiple KIA.
 11. `Control`: Acknowledged. Secure the area and wait for backup.
-12. `Captain`: Major, I've got a bad feeling about this.
+12. `Sgt. Watson`: Guys, I've got a bad feeling about this.
 
-About a dozen Syndikat bandits who were hiding in and around the nearby
+About a dozen Syndikat gang members who were hiding in and around the nearby
 buildings start attacking the fire team. The fire team kill or repel the
-attack and at least the `Major` and `Captain` survive.
+attack and at least `Lt. Wright` and `Sgt. Watson` survive.
 
 ## 03 - Pivot
 
-13. `Major`: Captain, do you think your informant sold us out?
-14. `Captain`: No way Major, not on purpose. He probably needs our help.
-15. `Major`: How far are we from the factory?
-16. `Captain`: Probably less than a click west of here.
-17. `Major`: Alright then, let's go get him.
-18. `Major` to `Control`: Control, be advised, we're moving one click west to
-    the sugar factory to search for our informant. We think he's in danger.
+13. `Lt. Wright`: Dixon, do you think your CI sold us out?
+14. `Sgt. Watson`: No way, not on purpose. He probably needs our help.
+15. `Lt. Wright`: How far are we from the factory?
+16. `Sgt. Watson`: Probably less than a click west of here.
+17. `Lt. Wright`: Alright then, let's go get him.
+18. `Lt. Wright` to `Control`: Control, be advised, we're moving one click west
+  to the sugar factory to search for our CI. We think he's in danger.
 19. `Control`: Acknowledged, we'll keep an eye on you from above.
 
 The fire team run to the factory.
@@ -81,28 +89,36 @@ The fire team run to the factory.
 The fire team enter the factory.
 
 20. `Control`: Be advised, ISR reports a half dozen individuals in the area,
-    likely Syndikat.
-21. `Major` to `Control`: Acknowledged.
-22. `Major`: Just great. Stay alert. Watch rooftops and corners.
+    likely Syndikat gang members.
+21. `Lt. Wright` to `Control`: Acknowledged.
+22. `Lt. Wright`: Just great. Stay alert. Watch rooftops and corners.
 
-The fire team find the informant within a few minutes while handling any
-Syndikat bandits they find along the way. The informant was hiding somewhere
-in the factory.
+The fire team search the factory and engage the gang members who are also
+searching the factory for the CI. They eventually find the CI hiding
+somewhere in the factory.
 
 ## 05 - Rescue
 
-23. `Informant`: Thank god! I thought I was dead.
-24. `Major` to `Control`: Control, we've found our man.
-25. `Control`: Acknowledged. Be advised, your ride out is due to touch town
-    outside the factory entrance momentarily.
-26. `Captain` to `Informant`: What happened?
-27. `Informant`: I heard the explosion and then shooting. I was about to leave
-    when I saw a few of those bandits running towards the factory. So I hid.
-28. `Captain`: Well it's over now. Let's get out of here.
+23. `Takis`: Thank god! I thought I was dead.
+24. `Sgt. Watson`: You're alright now.
+25. `Lt. Wright` to `Control`: Control, we've found our CI.
+26. `Control`: Acknowledged. Be advised, `Viper 1` and `Viper 2` are inbound
+  in a UH-80 to pick you up. ETA 2 minutes.
+27. `Sgt. Watson` to `Takis`: What happened?
+28. `Takis`: I heard the explosion in town and then shooting. I was about to
+  leave when I saw gang members running towards the factory. So I hid.
+29. `Sgt. Watson`: You did the right thing. We'll get you out of here.
+30. `Lt. Wright`: Let's get out of here.
 
 A rescue helicopter dispatched from Comms Bravo lands outside the factory.
-Everyone gets inside and the mission ends.
+Everyone gets inside the helicopter.
+
+## 06 - Exfil
+
+The helicopter takes off and starts flying back to Comms Bravo. The mission
+ends successfully after it leaves the vicinity of the factory.
 
 ## References
 
 * https://en.wikipedia.org/wiki/List_of_U.S._government_and_military_acronyms
+* http://www.udxf.nl/MCL.pdf

@@ -8,7 +8,7 @@ class EditorData
 	toggles=1;
 	class ItemIDProvider
 	{
-		nextID=405;
+		nextID=406;
 	};
 	class MarkerIDProvider
 	{
@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=84;
+		nextID=95;
 	};
 	class Camera
 	{
-		pos[]={8308.2041,195.77951,10056.316};
-		dir[]={0.34289685,-0.63248503,0.69469845};
-		up[]={0.27998856,0.77444863,0.56724316};
-		aside[]={0.89682442,4.3011096e-007,-0.44266313};
+		pos[]={9816.0986,86.654663,9719.5918};
+		dir[]={0.23826204,-0.68946761,0.68416977};
+		up[]={0.22677746,0.72419339,0.65118456};
+		aside[]={0.94448882,8.9243986e-007,-0.32891658};
 	};
 };
 binarizationWanted=0;
@@ -420,6 +420,29 @@ class Mission
 					};
 					id=73;
 					atlOffset=-0.0070037842;
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="groupID";
+							expression="_this setGroupID [_value];";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"STRING"
+										};
+									};
+									value="Alpha 2";
+								};
+							};
+						};
+						nAttributes=1;
+					};
 				};
 				class Item1
 				{
@@ -441,6 +464,7 @@ class Mission
 							class Attributes
 							{
 								rank="LIEUTENANT";
+								name="unitJamesWright";
 								isPlayer=1;
 								isPlayable=1;
 							};
@@ -561,6 +585,7 @@ class Mission
 							{
 								skill=0.44999999;
 								rank="SERGEANT";
+								name="unitDixonWatson";
 								isPlayable=1;
 							};
 							id=82;
@@ -928,7 +953,7 @@ class Mission
 											"STRING"
 										};
 									};
-									value="Alpha 1-3";
+									value="Alpha 1";
 								};
 							};
 						};
@@ -954,6 +979,24 @@ class Mission
 					atlOffset=-0.0070037842;
 				};
 				class Item3
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={9820.3643,75.61512,9726.6182};
+						angles[]={0.058608156,5.2359877,6.2725215};
+					};
+					side="West";
+					flags=6;
+					class Attributes
+					{
+						name="vehicleNatoChase";
+					};
+					id=229;
+					type="B_T_LSV_01_unarmed_F";
+					atlOffset=-0.0060043335;
+				};
+				class Item4
 				{
 					dataType="Group";
 					side="West";
@@ -1044,7 +1087,7 @@ class Mission
 							};
 						};
 					};
-					id=231;
+					id=405;
 					atlOffset=-0.0060043335;
 					class CustomAttributes
 					{
@@ -1063,30 +1106,12 @@ class Mission
 											"STRING"
 										};
 									};
-									value="Alpha 1-2";
+									value="Alpha 3";
 								};
 							};
 						};
 						nAttributes=1;
 					};
-				};
-				class Item4
-				{
-					dataType="Object";
-					class PositionInfo
-					{
-						position[]={9820.3643,75.61512,9726.6182};
-						angles[]={0.058608156,5.2359877,6.2725215};
-					};
-					side="West";
-					flags=6;
-					class Attributes
-					{
-						name="vehicleNatoChase";
-					};
-					id=229;
-					type="B_T_LSV_01_unarmed_F";
-					atlOffset=-0.0060043335;
 				};
 			};
 			id=86;
@@ -2162,6 +2187,7 @@ class Mission
 									};
 									id=240;
 									type="I_C_Soldier_Bandit_3_F";
+									atlOffset=1.335144e-005;
 								};
 								class Item2
 								{
@@ -2169,7 +2195,7 @@ class Mission
 									class PositionInfo
 									{
 										position[]={8408.9287,20.809029,10127.402};
-										angles[]={-0,0.54839987,6.2325635};
+										angles[]={0,0.54839987,6.2325635};
 									};
 									side="Independent";
 									flags=5;
@@ -2850,7 +2876,7 @@ class Mission
 						};
 					};
 					id=223;
-					atlOffset=7.2008953;
+					atlOffset=7.2121048;
 				};
 				class Item2
 				{
@@ -2915,7 +2941,7 @@ class Mission
 															"STRING"
 														};
 													};
-													value="Male01GRE";
+													value="Male05GRE";
 												};
 											};
 										};
@@ -2934,11 +2960,49 @@ class Mission
 															"SCALAR"
 														};
 													};
-													value=0.97000003;
+													value=0.99043435;
 												};
 											};
 										};
-										nAttributes=2;
+										class Attribute2
+										{
+											property="unitName";
+											expression="_this setname _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Takis Christou";
+												};
+											};
+										};
+										class Attribute3
+										{
+											property="face";
+											expression="_this setface _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="GreekHead_A3_04";
+												};
+											};
+										};
+										nAttributes=4;
 									};
 								};
 							};
@@ -2961,7 +3025,7 @@ class Mission
 									class PositionInfo
 									{
 										position[]={8271.9072,19.431438,10366.392};
-										angles[]={-0,3.0287654,0};
+										angles[]={0,3.0287654,0};
 									};
 									side="Civilian";
 									flags=6;
@@ -3007,11 +3071,49 @@ class Mission
 															"SCALAR"
 														};
 													};
-													value=0.99000001;
+													value=0.99043435;
 												};
 											};
 										};
-										nAttributes=2;
+										class Attribute2
+										{
+											property="unitName";
+											expression="_this setname _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Takis Christou";
+												};
+											};
+										};
+										class Attribute3
+										{
+											property="face";
+											expression="_this setface _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="GreekHead_A3_04";
+												};
+											};
+										};
+										nAttributes=4;
 									};
 								};
 							};
@@ -3061,7 +3163,7 @@ class Mission
 															"STRING"
 														};
 													};
-													value="Male01GRE";
+													value="Male05GRE";
 												};
 											};
 										};
@@ -3080,11 +3182,49 @@ class Mission
 															"SCALAR"
 														};
 													};
-													value=0.99000001;
+													value=0.99043435;
 												};
 											};
 										};
-										nAttributes=2;
+										class Attribute2
+										{
+											property="unitName";
+											expression="_this setname _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Takis Christou";
+												};
+											};
+										};
+										class Attribute3
+										{
+											property="face";
+											expression="_this setface _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="GreekHead_A3_04";
+												};
+											};
+										};
+										nAttributes=4;
 									};
 								};
 							};
@@ -3135,7 +3275,7 @@ class Mission
 															"STRING"
 														};
 													};
-													value="Male01GRE";
+													value="Male05GRE";
 												};
 											};
 										};
@@ -3154,11 +3294,49 @@ class Mission
 															"SCALAR"
 														};
 													};
-													value=0.97000003;
+													value=0.99043435;
 												};
 											};
 										};
-										nAttributes=2;
+										class Attribute2
+										{
+											property="unitName";
+											expression="_this setname _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Takis Christou";
+												};
+											};
+										};
+										class Attribute3
+										{
+											property="face";
+											expression="_this setface _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="GreekHead_A3_04";
+												};
+											};
+										};
+										nAttributes=4;
 									};
 								};
 							};
@@ -3181,7 +3359,7 @@ class Mission
 									class PositionInfo
 									{
 										position[]={8374.4863,19.431438,10339.671};
-										angles[]={-0,2.4890478,0};
+										angles[]={0,2.489049,0};
 									};
 									side="Civilian";
 									flags=6;
@@ -3227,7 +3405,7 @@ class Mission
 															"SCALAR"
 														};
 													};
-													value=0.99000001;
+													value=0.99043435;
 												};
 											};
 										};
@@ -3242,7 +3420,7 @@ class Mission
 						};
 					};
 					id=233;
-					atlOffset=1.4776058;
+					atlOffset=0.0045833588;
 				};
 				class Item4
 				{
@@ -3274,7 +3452,7 @@ class Mission
 							class PositionInfo
 							{
 								position[]={8390.8057,20.754311,10339.539};
-								angles[]={-0,3.7351267,0};
+								angles[]={0,3.7351267,0};
 							};
 							side="Empty";
 							flags=4;
@@ -3379,7 +3557,7 @@ class Mission
 							class PositionInfo
 							{
 								position[]={8375.7559,19.852674,10341.883};
-								angles[]={-0,2.1542857,0};
+								angles[]={0,2.1542857,0};
 							};
 							side="Empty";
 							flags=4;
@@ -3420,7 +3598,7 @@ class Mission
 							class PositionInfo
 							{
 								position[]={8376.3721,19.852674,10342.185};
-								angles[]={-0,1.1870714,0};
+								angles[]={0,1.1870714,0};
 							};
 							side="Empty";
 							flags=4;
@@ -3461,7 +3639,7 @@ class Mission
 							class PositionInfo
 							{
 								position[]={8376.3018,19.852674,10341.512};
-								angles[]={-0,1.1870714,0};
+								angles[]={0,1.1870714,0};
 							};
 							side="Empty";
 							flags=4;
@@ -3502,7 +3680,7 @@ class Mission
 							class PositionInfo
 							{
 								position[]={8376.377,19.852674,10342.904};
-								angles[]={-0,1.1870714,0};
+								angles[]={0,1.1870714,0};
 							};
 							side="Empty";
 							flags=4;
@@ -3543,7 +3721,7 @@ class Mission
 							class PositionInfo
 							{
 								position[]={8376.9834,19.852674,10341.806};
-								angles[]={-0,1.1870714,0};
+								angles[]={0,1.1870714,0};
 							};
 							side="Empty";
 							flags=4;
@@ -3624,7 +3802,7 @@ class Mission
 							class PositionInfo
 							{
 								position[]={8376.9033,20.39197,10340.29};
-								angles[]={-0,2.1868072,0};
+								angles[]={0,2.1868072,0};
 							};
 							side="Empty";
 							flags=4;
@@ -3660,11 +3838,10 @@ class Mission
 						};
 					};
 					id=259;
-					atlOffset=0.0081615448;
 				};
 			};
 			id=131;
-			atlOffset=0.80825615;
+			atlOffset=0.42444611;
 		};
 		class Item3
 		{
@@ -3917,6 +4094,29 @@ class Mission
 						};
 					};
 					id=200;
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="groupID";
+							expression="_this setGroupID [_value];";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"STRING"
+										};
+									};
+									value="Viper 1";
+								};
+							};
+						};
+						nAttributes=1;
+					};
 				};
 				class Item2
 				{
@@ -4037,6 +4237,29 @@ class Mission
 						};
 					};
 					id=297;
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="groupID";
+							expression="_this setGroupID [_value];";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"STRING"
+										};
+									};
+									value="Viper 2";
+								};
+							};
+						};
+						nAttributes=1;
+					};
 				};
 			};
 			id=158;

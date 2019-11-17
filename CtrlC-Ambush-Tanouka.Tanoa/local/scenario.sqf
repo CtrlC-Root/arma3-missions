@@ -23,20 +23,11 @@ CC_Scenario_init = {
 };
 
 CC__scenario_server_init = {
-  // determine which nato units are critical to the story by sorting the fire team
-  // units in order of rank, players first followed by NPCs, and picking in order
-  private "_units";
-  _units = [
-    units groupNatoFireTeam,
-    [],
-    { if (isPlayer _x) then { (rankId _x) + 10; } else { rankId _x; } },
-    "DESCEND"
-  ] call BIS_fnc_sortBy;
-
+  // determine nato units and vehicles
   CC__scenario_nato_vehicles = [vehicleNatoLead, vehicleNatoChase];
   publicVariable "CC__scenario_nato_vehicles";
 
-  CC__scenario_nato_units = _units select [0, 2];
+  CC__scenario_nato_units = [unitJamesWright, unitDixonWatson];
   publicVariable "CC__scenario_nato_units";
 
   // pick one informant unit and remove the rest
