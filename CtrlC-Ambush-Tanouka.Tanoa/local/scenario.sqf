@@ -1,3 +1,19 @@
+/*
+Civilian Panic Animation?
+
+unitCivilian playMoveNow "ApanPknlMstpSnonWnonDnon_G01";
+unitCivilian disableAI "MOVE";
+unitCivilian disableAI "ANIM";
+
+unitCivilian playMoveNow "ApanPknlMstpSnonWnonDnon";
+unitCivilian playMove "ApanPercMstpSnonWnonDnon";
+unitCivilian playMove "AmovPercMstpSnonWnonDnon";
+unitCivilian enableAI "MOVE";
+unitCivilian enableAI "ANIM";
+
+animationState unitCivilian;
+*/
+
 CC_Scenario_init = {
   [
     "scenario",
@@ -37,8 +53,9 @@ CC__scenario_server_init = {
   } forEach _informants;
 
   // stage the informant and prevent him from running away
-  CC__scenario_informant setUnitPos "MIDDLE"; // crouch
-  CC__scenario_informant disableAI "MOVE"; // movement
+  CC__scenario_informant playActionNow "SitDown";
+  CC__scenario_informant disableAI "MOVE";
+  CC__scenario_informant disableAI "ANIM";
 
   // initialize scenario state (updated by FSM as mission progresses)
   CC__scenario_state = "start";
@@ -52,6 +69,7 @@ CC__scenario_server_init = {
       "fsm_pivot",
       "fsm_search",
       "fsm_rescue",
+      "fsm_exfil",
       "fsm_nato_win",
       "fsm_syndikat_win"
     ],
@@ -71,6 +89,7 @@ CC__scenario_client_init = {
   ["scenario", "fsm_pivot", CC__scenario_fsm_pivot] call CC_Module_event_register;
   ["scenario", "fsm_search", CC__scenario_fsm_search] call CC_Module_event_register;
   ["scenario", "fsm_rescue", CC__scenario_fsm_rescue] call CC_Module_event_register;
+  ["scenario", "fsm_exfil", CC__scenario_fsm_exfil] call CC_Module_event_register;
   ["scenario", "fsm_nato_win", CC__scenario_fsm_nato_win] call CC_Module_event_register;
   ["scenario", "fsm_syndikat_win", CC__scenario_fsm_syndikat_win] call CC_Module_event_register;
 
@@ -166,7 +185,7 @@ CC__scenario_fsm_ambush = {
   [
     groupNatoFireTeam,
     "defendConvoy",
-    ["Defend the convoy from attack.", "Defend", ""],
+    ["Defend the convoy from attack.", "Defend Convoy", ""],
     position vehicleNatoChase,
     "ASSIGNED",
     10,
@@ -191,8 +210,14 @@ CC__scenario_fsm_pivot = {
 
   // TODO: start radio messages
 
+  // XXX: temporary pause to prevent task alerts from overlapping
+  sleep 1;
+
   // XXX: delete the meet informant task (after radio messages)
   ["meetInformant"] call BIS_fnc_deleteTask;
+
+  // XXX: temporary pause to prevent task alerts from overlapping
+  sleep 1;
 
   // XXX: create search task (after radio messages)
   [
@@ -215,9 +240,9 @@ CC__scenario_fsm_search = {
 CC__scenario_fsm_rescue = {
   // add the informant to the nato fire team so they can command him, enable
   // movement again, and  tweak some of the annoying civilian behavior
-  CC__scenario_informant setUnitRank "PRIVATE";
+  CC__scenario_informant playActionNow "Stand";
   CC__scenario_informant enableAI "MOVE";
-  CC__scenario_informant setUnitPos "UP";
+  CC__scenario_informant enableAI "ANIM";
   CC__scenario_informant allowFleeing 0;
   [CC__scenario_informant] join groupNatoFireTeam;  // changes locality
 
@@ -229,11 +254,11 @@ CC__scenario_fsm_rescue = {
 
   // TODO: start radio messages
 
-  // create exfil task (after radio messages)
+  // create board transport task (after radio messages)
   [
     groupNatoFireTeam,
-    "exfil",
-    ["Board the rescue helicopter.", "Exfiltrate", ""],
+    "boardTransport",
+    ["Board the rescue helicopter.", "Board Transport", ""],
     position objectRescueHelipad,
     "ASSIGNED",
     14,
@@ -243,11 +268,17 @@ CC__scenario_fsm_rescue = {
   ] call BIS_fnc_taskCreate;
 };
 
-CC__scenario_fsm_nato_win = {
-  // complete the exfil task
-  ["exfil", "SUCCEEDED"] call BIS_fnc_taskSetState;
+CC__scenario_fsm_exfil = {
+  // let the rescue helicopter leave
+  missionNamespace setVariable ["CC__scenario_nato_exfil", true];
 
+  // complete the exfil task
+  ["boardTransport", "SUCCEEDED"] call BIS_fnc_taskSetState;
+};
+
+CC__scenario_fsm_nato_win = {
   // end the mission for all players
+  // XXX: how do we end it for spectators?
   private _players = allPlayers - entities "HeadlessClient_F";
 
   {
@@ -261,6 +292,7 @@ CC__scenario_fsm_nato_win = {
 
 CC__scenario_fsm_syndikat_win = {
   // end the mission for all players
+  // XXX: how do we end it for spectators?
   private _players = allPlayers - entities "HeadlessClient_F";
 
   {

@@ -7,7 +7,7 @@ item2[] = {"Ambush",2,250,-26.451111,-79.927490,63.548904,-29.927490,0.000000,"A
 item3[] = {"Pivot",2,250,303.367065,7.554749,393.367065,57.554749,0.000000,"Pivot"};
 item4[] = {"Search",2,250,415.987793,214.696671,505.987793,264.696716,0.000000,"Search"};
 item5[] = {"Rescue",2,250,307.389160,439.938263,397.389160,489.938293,0.000000,"Rescue"};
-item6[] = {"NATO_Win_Syndikat",1,250,-19.412354,569.653564,70.587677,619.653564,0.000000,"NATO Win" \n "Syndikat Lose"};
+item6[] = {"NATO_Win_Syndikat",1,250,-391.283173,462.493561,-301.283142,512.493591,0.000000,"NATO Win" \n "Syndikat Lose"};
 item7[] = {"Always",4,218,-527.967834,79.086945,-384.674072,177.352936,0.000000,"Always"};
 item8[] = {"Enter_Ambush",4,218,-238.371460,-85.822227,-114.182983,-3.644867,0.000000,"Enter Ambush"};
 item9[] = {"No_Syndikat_Left",4,218,139.712769,-85.822205,258.873535,-4.650391,0.000000,"No Syndikat" \n "Left"};
@@ -20,8 +20,9 @@ item15[] = {"Story_Units_KIA",4,218,-34.959114,2.838287,72.135132,77.976837,10.0
 item16[] = {"Story_Units_KIA",4,218,213.710632,58.728271,324.234009,140.147888,10.000000,"Story Units" \n "KIA"};
 item17[] = {"Story_Units_KIA",4,218,239.261841,204.779846,354.400391,285.951660,10.000000,"Story Units" \n "KIA"};
 item18[] = {"Story_Units_KIA",4,218,161.834961,359.633423,282.001099,447.844055,10.000000,"Story Units" \n "KIA"};
-item19[] = {"Search_Timer_Exp",4,218,261.383667,294.273193,377.527832,371.422852,8.000000,"Search Timer" \n "Expires"};
-item20[] = {"Search_Timer_Exp",4,218,276.466919,127.352837,391.605347,201.485992,8.000000,"Search Timer" \n "Expires"};
+item19[] = {"Exfil",2,250,-16.642395,558.579773,73.357605,608.579834,0.000000,"Exfil"};
+item20[] = {"Helicopter_Leaves",4,218,-240.277252,522.508911,-87.933624,615.747314,0.000000,"Helicopter" \n "Leaves Factory"};
+item21[] = {"Story_Units_KIA",4,218,-33.349304,386.423462,86.816833,474.634094,10.000000,"Story Units" \n "KIA"};
 link0[] = {0,7};
 link1[] = {1,8};
 link2[] = {1,14};
@@ -29,27 +30,27 @@ link3[] = {2,9};
 link4[] = {2,15};
 link5[] = {3,10};
 link6[] = {3,16};
-link7[] = {3,20};
-link8[] = {4,11};
-link9[] = {4,17};
-link10[] = {4,19};
-link11[] = {5,12};
-link12[] = {5,18};
-link13[] = {7,1};
-link14[] = {8,2};
-link15[] = {9,3};
-link16[] = {10,4};
-link17[] = {11,5};
-link18[] = {12,6};
-link19[] = {14,13};
-link20[] = {15,13};
-link21[] = {16,13};
-link22[] = {17,13};
-link23[] = {18,13};
-link24[] = {19,13};
-link25[] = {20,13};
-globals[] = {0.000000,0,0,0,0,640,480,1,23,6316128,1,-656.993103,597.034485,679.007507,-114.487030,1966,1244,1};
-window[] = {2,-1,-1,-32000,-32000,1315,286,2206,286,3,1984};
+link7[] = {4,11};
+link8[] = {4,17};
+link9[] = {5,12};
+link10[] = {5,18};
+link11[] = {7,1};
+link12[] = {8,2};
+link13[] = {9,3};
+link14[] = {10,4};
+link15[] = {11,5};
+link16[] = {12,19};
+link17[] = {14,13};
+link18[] = {15,13};
+link19[] = {16,13};
+link20[] = {17,13};
+link21[] = {18,13};
+link22[] = {19,20};
+link23[] = {19,21};
+link24[] = {20,6};
+link25[] = {21,13};
+globals[] = {0.000000,0,0,0,0,640,480,1,26,6316128,1,-656.993103,597.034485,679.007507,-114.487030,1966,1244,1};
+window[] = {2,-1,-1,-32000,-32000,1341,312,2232,312,3,1984};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -61,11 +62,7 @@ class FSM
                 {
                         name = "Start";
                         itemno = 0;
-                        init = /*%FSM<STATEINIT""">*/"// defaults" \n
-                         "_searchTimerInterval = 10 * 60;" \n
-                         "_searchTimer = 0;" \n
-                         "" \n
-                         "// parameters" \n
+                        init = /*%FSM<STATEINIT""">*/"// parameters" \n
                          "params [" \n
                          "  [""_stateCallback"", {}, [{}]]," \n
                          "  [""_natoVehicles"", [], [[]]]," \n
@@ -180,8 +177,7 @@ class FSM
                 {
                         name = "Pivot";
                         itemno = 3;
-                        init = /*%FSM<STATEINIT""">*/"_searchTimer = time + _searchTimerInterval;" \n
-                         "[""pivot""] call _stateCallback;"/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"[""pivot""] call _stateCallback;"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -194,17 +190,6 @@ class FSM
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"private _dead = _storyUnits select { !alive _x };" \n
                                          "count _dead > 0;"/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-                                };
-                                /*%FSM</LINK>*/
-                                /*%FSM<LINK "Search_Timer_Exp">*/
-                                class Search_Timer_Exp
-                                {
-                                        itemno = 20;
-                                        priority = 8.000000;
-                                        to="NATO_Lose_Syndikat";
-                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"time > _searchTimer;"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -244,17 +229,6 @@ class FSM
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"private _dead = _storyUnits select { !alive _x };" \n
                                          "count _dead > 0;"/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-                                };
-                                /*%FSM</LINK>*/
-                                /*%FSM<LINK "Search_Timer_Exp">*/
-                                class Search_Timer_Exp
-                                {
-                                        itemno = 19;
-                                        priority = 8.000000;
-                                        to="NATO_Lose_Syndikat";
-                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"time > _searchTimer;"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -302,7 +276,7 @@ class FSM
                                 {
                                         itemno = 12;
                                         priority = 0.000000;
-                                        to="NATO_Win_Syndikat";
+                                        to="Exfil";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"private _units = _storyUnits select {" \n
                                          "  (vehicle _x) == _vehicleRescueHeli;" \n
@@ -336,6 +310,41 @@ class FSM
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Exfil">*/
+                class Exfil
+                {
+                        name = "Exfil";
+                        itemno = 19;
+                        init = /*%FSM<STATEINIT""">*/"[""exfil""] call _stateCallback;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Story_Units_KIA">*/
+                                class Story_Units_KIA
+                                {
+                                        itemno = 21;
+                                        priority = 10.000000;
+                                        to="NATO_Lose_Syndikat";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"private _dead = _storyUnits select { !alive _x };" \n
+                                         "count _dead > 0;"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Helicopter_Leaves">*/
+                                class Helicopter_Leaves
+                                {
+                                        itemno = 20;
+                                        priority = 0.000000;
+                                        to="NATO_Win_Syndikat";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!(_vehicleRescueHeli inArea _triggerFactory);"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
                         };
                 };
                 /*%FSM</STATE>*/
