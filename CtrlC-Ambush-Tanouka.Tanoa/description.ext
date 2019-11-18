@@ -1,0 +1,196 @@
+class CfgRadio
+{
+  sounds[] = {};
+
+  // 01 - Intro
+  class Dialogue1 {
+    name = "Dialogue1";
+    sound[] = {"audio\1.ogg", db+0, 1.0};
+    title = "Let's hit it.";
+  };
+
+  class Dialogue2 {
+    name = "Dialogue2";
+    sound[] = {"audio\2.ogg", db+0, 1.0};
+    title = "Where are we meeting your CI?";
+  };
+
+  class Dialogue3 {
+    name = "Dialogue3";
+    sound[] = {"audio\3.ogg", db+0, 1.0};
+    title = "Behind the front office, he should already be there now.";
+  };
+
+  class Dialogue4 {
+    name = "Dialogue4";
+    sound[] = {"audio\4.ogg", db+0, 1.0};
+    title = "What's this guy's story anyways? I tought the locals were deathly afraid of the Syndikat. Why's he so willing to help?";
+  };
+
+  class Dialogue5 {
+    name = "Dialogue5";
+    sound[] = {"audio\5.ogg", db+0, 1.0};
+    title = "His wife and son were killed in that school bombing last year. His wife was a teacher and his son was in class when it happened.";
+  };
+
+  class Dialogue6 {
+    name = "Dialogue6";
+    sound[] = {"audio\6.ogg", db+0, 1.0};
+    title = "Oh man, so this is personal.";
+  };
+
+  class Dialogue7 {
+    name = "Dialogue7";
+    sound[] = {"audio\7.ogg", db+0, 1.0};
+    title = "I'd say so, sir.";
+  };
+
+  // 02 - Ambush
+  class Dialogue8 {
+    name = "Dialogue8";
+    sound[] = {"audio\8.ogg", db+0, 1.0};
+    title = "Everyone out!";
+  };
+
+  class Dialogue9 {
+    name = "Dialogue9";
+    sound[] = {"audio\9.ogg", db+0, 1.0};
+    title = "Control, we just hit an IED, multiple KIA.";
+  };
+
+  class Dialogue10 {
+    name = "Dialogue10";
+    sound[] = {"audio\10.ogg", db+0, 1.0};
+    title = "Acknowledged. Secure the area and wait for backup.";
+  };
+
+  class Dialogue11 {
+    name = "Dialogue11";
+    sound[] = {"audio\11.ogg", db+0, 1.0};
+    title = "Guys, I've got a bad feeling about this.";
+  };
+
+  // 03 - Pivot
+  class Dialogue12 {
+    name = "Dialogue12";
+    sound[] = {"audio\12.ogg", db+0, 1.0};
+    title = "Sergeant Watson, do you think your CI sold us out?";
+  };
+
+  class Dialogue13 {
+    name = "Dialogue13";
+    sound[] = {"audio\13.ogg", db+0, 1.0};
+    title = "No way, not on purpose. He probably needs our help.";
+  };
+
+  class Dialogue14 {
+    name = "Dialogue14";
+    sound[] = {"audio\14.ogg", db+0, 1.0};
+    title = "How far are we from the factory?";
+  };
+
+  class Dialogue15 {
+    name = "Dialogue15";
+    sound[] = {"audio\15.ogg", db+0, 1.0};
+    title = "Probably less than a click west of here.";
+  };
+
+  class Dialogue16 {
+    name = "Dialogue16";
+    sound[] = {"audio\16.ogg", db+0, 1.0};
+    title = "Alright then, let's go get him.";
+  };
+
+  class Dialogue17 {
+    name = "Dialogue17";
+    sound[] = {"audio\17.ogg", db+0, 1.0};
+    title = "Control, be advised, we're moving one click west to the sugar factory to search for our CI. We think he's in danger.";
+  };
+
+  class Dialogue18 {
+    name = "Dialogue18";
+    sound[] = {"audio\18.ogg", db+0, 1.0};
+    title = "Acknowledged, we'll keep an eye on you from above.";
+  };
+
+  // 04 - Search
+  class Dialogue19 {
+    name = "Dialogue19";
+    sound[] = {"audio\19.ogg", db+0, 1.0};
+    title = "Be advised, ISR reports a half dozen individuals in the area, likely Syndikat gang members.";
+  };
+
+  class Dialogue20 {
+    name = "Dialogue20";
+    sound[] = {"audio\20.ogg", db+0, 1.0};
+    title = "Acknowledged.";
+  };
+
+  class Dialogue21 {
+    name = "Dialogue21";
+    sound[] = {"audio\21.ogg", db+0, 1.0};
+    title = "Just great. Stay alert. Watch rooftops and corners.";
+  };
+
+  // 05 - Rescue
+  // CfgSounds: 22, 23
+  class Dialogue24 {
+    name = "Dialogue24";
+    sound[] = {"audio\24.ogg", db+0, 1.0};
+    title = "Control, we've found our CI.";
+  };
+
+  class Dialogue25 {
+    name = "Dialogue25";
+    sound[] = {"audio\25.ogg", db+0, 1.0};
+    title = "Acknowledged. Be advised, Viper 1 and Viper 2 are inbound in a UH-80 to pick you up. ETA 2 minutes.";
+  };
+
+  // CfgSounds: 26, 27, 28, 29
+  // 06 - Exfil
+};
+
+class CfgSounds {
+  sounds[] = {};
+
+  // 05 - Rescue
+  class Dialogue22 {
+    name = "Dialogue22";
+    sounds[] = {"audio\22.ogg", 1, 1, 10};
+    titles[] = {0, "Oh thank god! I thought I was dead."};
+  };
+
+  class Dialogue23 {
+    name = "Dialogue23";
+    sounds[] = {"audio\23.ogg", 1, 1, 10};
+    titles[] = {0, "Good thing we found you."};
+  };
+
+  class Dialogue26 {
+    name = "Dialogue26";
+    sounds[] = {"audio\26.ogg", 1, 1, 10};
+    titles[] = {0, "What happened?"};
+  };
+
+  class Dialogue27 {
+    name = "Dialogue27";
+    sounds[] = {"audio\27.ogg", 1, 1, 10};
+    titles[] = {
+      0, "I heard the explosion in town and then shooting.",
+      1, "I was about to leave when I saw gang members running towards the factory.",
+      2, "So I hid."
+    };
+  };
+
+  class Dialogue28 {
+    name = "Dialogue28";
+    sounds[] = {"audio\28.ogg", 1, 1, 10};
+    titles[] = {0, "You did the right thing. We'll get you out of here."};
+  };
+
+  class Dialogue29 {
+    name = "Dialogue29";
+    sounds[] = {"audio\29.ogg", 1, 1, 10};
+    titles[] = {0, "Let's get out of here."};
+  };
+};

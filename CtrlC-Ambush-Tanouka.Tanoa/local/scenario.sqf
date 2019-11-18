@@ -71,6 +71,9 @@ CC__scenario_server_init = {
 };
 
 CC__scenario_client_init = {
+  // XXX: debugging
+  [] call CC_Module_debug_enable;
+
   // client settings
   if (!isServer) exitWith { };
 
@@ -130,7 +133,7 @@ CC__scenario_fsm_state = {
 
 CC__scenario_fsm_intro = {
   // XXX: start convoy
-  [] call CC__scenario_convoy_setup;
+  [] spawn CC__scenario_convoy_setup;
 
   // create the meet informant task
   [
@@ -145,7 +148,8 @@ CC__scenario_fsm_intro = {
     false
   ] call BIS_fnc_taskCreate;
 
-  // TODO: start radio messages
+  // XXX: start radio messages
+  ["intro"] call CC__scenario_dialogue_play;
 };
 
 CC__scenario_fsm_ambush = {
@@ -170,7 +174,8 @@ CC__scenario_fsm_ambush = {
     _x enableSimulation true;
   } forEach _syndikatUnits;
 
-  // TODO: start radio messages
+  // XXX: start radio messages
+  ["ambush"] call CC__scenario_dialogue_play;
 
   // XXX: create defend task (after radio messages)
   [
@@ -199,7 +204,8 @@ CC__scenario_fsm_pivot = {
   // complete defend task
   ["defendConvoy", "SUCCEEDED"] call BIS_fnc_taskSetState;
 
-  // TODO: start radio messages
+  // XXX: start radio messages
+  ["pivot"] call CC__scenario_dialogue_play;
 
   // XXX: temporary pause to prevent task alerts from overlapping
   sleep 1;
@@ -225,7 +231,8 @@ CC__scenario_fsm_pivot = {
 };
 
 CC__scenario_fsm_search = {
-  // TODO: start radio messages
+  // XXX: start radio messages
+  ["search"] call CC__scenario_dialogue_play;
 };
 
 CC__scenario_fsm_rescue = {
@@ -243,7 +250,8 @@ CC__scenario_fsm_rescue = {
   // send the rescue helicopter
   missionNamespace setVariable ["CC__scenario_nato_rescue", true];
 
-  // TODO: start radio messages
+  // XXX: start radio messages
+  ["rescue"] call CC__scenario_dialogue_play;
 
   // create board transport task (after radio messages)
   [

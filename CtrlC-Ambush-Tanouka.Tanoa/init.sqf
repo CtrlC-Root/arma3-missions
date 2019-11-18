@@ -5,7 +5,8 @@ private "_scripts";
 _scripts = [
   "cc\init.sqf",
   "local\scenario.sqf",
-  "local\nato_route.sqf"
+  "local\nato_route.sqf",
+  "local\nato_dialogue.sqf"
 ];
 
 {
