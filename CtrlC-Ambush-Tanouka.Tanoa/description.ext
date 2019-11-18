@@ -1,3 +1,16 @@
+// Debugging
+enableDebugConsole = 1; // singleplayer and multiplayer host
+
+// Radio Channels
+disableChannels[] = {
+  // global
+  {0, true, true},
+
+  // side
+  {1, true, true}
+};
+
+// Radio Messages
 class CfgRadio {
   sounds[] = {};
 
@@ -149,6 +162,8 @@ class CfgRadio {
   // 06 - Exfil
 };
 
+
+// Sounds
 class CfgSounds {
   sounds[] = {};
 
