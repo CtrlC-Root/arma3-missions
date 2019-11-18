@@ -12,8 +12,10 @@ CC__scenario_dialogue_intro = [
 
 CC__scenario_dialogue_ambush = [
   ["radioToGroup", unitJamesWright, "Dialogue8", 1.29],
+  ["event", "dialogue_ambush_getout"],
   ["radioToCommand", unitJamesWright, "Dialogue9", 3.38],
   ["radioFromCommand", WEST, "Dialogue10", 3.04],
+  ["event", "dialogue_ambush_defend"],
   ["pause", 1],
   ["radioToGroup", unitDixonWatson, "Dialogue11", 2.53]
 ];
@@ -24,6 +26,7 @@ CC__scenario_dialogue_pivot = [
   ["radioToGroup", unitJamesWright, "Dialogue14", 1.96],
   ["radioToGroup", unitDixonWatson, "Dialogue15", 2.21],
   ["radioToGroup", unitJamesWright, "Dialogue16", 2.29],
+  ["event", "dialogue_pivot_search"],
   ["radioToCommand", unitJamesWright, "Dialogue17", 6.83],
   ["radioFromCommand", WEST, "Dialogue18", 2.56]
 ];
@@ -39,6 +42,7 @@ CC__scenario_dialogue_rescue = [
   ["speak", unitDixonWatson, "Dialogue23", 1.38],
   ["radioToCommand", unitJamesWright, "Dialogue24", 2.70],
   ["radioFromCommand", WEST, "Dialogue25", 7.81],
+  ["event", "dialogue_rescue_evac"],
   ["speak", unitDixonWatson, "Dialogue26", 1.07],
   ["speak", "CC__scenario_informant", "Dialogue27", 6.27],
   ["speak", unitDixonWatson, "Dialogue28", 2.45],
@@ -84,6 +88,21 @@ CC__scenario_dialogue_play_task = {
     private _args = _x select [1, count _x];
 
     switch (_type) do {
+      case "event": {
+        _args params [
+          ["_event", "", [""]]
+        ];
+
+        [
+          "scenario",
+          "dialogue_play_task",
+          "event: %1",
+          [_event]
+        ] call CC_Module_debug;
+
+        ["scenario", _event, [], true] call CC_Module_event_fire;
+      };
+
       case "radioToGroup": {
         _args params [
           ["_unit", objNull, [objNull]],

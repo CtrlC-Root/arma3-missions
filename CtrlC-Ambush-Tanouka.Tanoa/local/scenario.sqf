@@ -62,7 +62,11 @@ CC__scenario_server_init = {
       "fsm_rescue",
       "fsm_exfil",
       "fsm_nato_win",
-      "fsm_syndikat_win"
+      "fsm_syndikat_win",
+      "dialogue_ambush_getout",
+      "dialogue_ambush_defend",
+      "dialogue_pivot_search",
+      "dialogue_rescue_evac"
     ],
     { False },
     CC__scenario_debug_status,
@@ -81,8 +85,42 @@ CC__scenario_client_init = {
   ["scenario", "fsm_search", CC__scenario_fsm_search] call CC_Module_event_register;
   ["scenario", "fsm_rescue", CC__scenario_fsm_rescue] call CC_Module_event_register;
   ["scenario", "fsm_exfil", CC__scenario_fsm_exfil] call CC_Module_event_register;
-  ["scenario", "fsm_nato_win", CC__scenario_fsm_nato_win] call CC_Module_event_register;
-  ["scenario", "fsm_syndikat_win", CC__scenario_fsm_syndikat_win] call CC_Module_event_register;
+
+  [
+    "scenario",
+    "fsm_nato_win",
+    CC__scenario_fsm_nato_win
+  ] call CC_Module_event_register;
+
+  [
+    "scenario",
+    "fsm_syndikat_win",
+    CC__scenario_fsm_syndikat_win
+  ] call CC_Module_event_register;
+
+  [
+    "scenario",
+    "dialogue_ambush_getout",
+    CC__scenario_dialogue_ambush_getout
+  ] call CC_Module_event_register;
+
+  [
+    "scenario",
+    "dialogue_ambush_defend",
+    CC__scenario_dialogue_ambush_defend
+  ] call CC_Module_event_register;
+
+  [
+    "scenario",
+    "dialogue_pivot_search",
+    CC__scenario_dialogue_pivot_search
+  ] call CC_Module_event_register;
+
+  [
+    "scenario",
+    "dialogue_rescue_evac",
+    CC__scenario_dialogue_rescue_evac
+  ] call CC_Module_event_register;
 
   // run the scenario state machine
   CC__scenario_fsm = [
@@ -126,10 +164,13 @@ CC__scenario_fsm_state = {
 
   // run event handlers
   ["scenario", format ["fsm_%1", _state], [], true] call CC_Module_event_fire;
+
+  // start relevant dialogue
+  [_state] call CC__scenario_dialogue_play;
 };
 
 CC__scenario_fsm_intro = {
-  // XXX: start convoy
+  // start convoy
   [] spawn CC__scenario_convoy_setup;
 
   // create the meet informant task
@@ -144,9 +185,6 @@ CC__scenario_fsm_intro = {
     "meet",
     false
   ] call BIS_fnc_taskCreate;
-
-  // XXX: start radio messages
-  ["intro"] call CC__scenario_dialogue_play;
 };
 
 CC__scenario_fsm_ambush = {
@@ -170,11 +208,14 @@ CC__scenario_fsm_ambush = {
   {
     _x enableSimulation true;
   } forEach _syndikatUnits;
+};
 
-  // XXX: start radio messages
-  ["ambush"] call CC__scenario_dialogue_play;
+CC__scenario_dialogue_ambush_getout = {
+  // force everyone out of the chase car
+  [vehicleNatoChase] call CC_Vehicle_unload;
+};
 
-  // XXX: create defend task (after radio messages)
+CC__scenario_dialogue_ambush_defend = {
   [
     groupNatoFireTeam,
     "defendConvoy",
@@ -200,20 +241,16 @@ CC__scenario_fsm_pivot = {
 
   // complete defend task
   ["defendConvoy", "SUCCEEDED"] call BIS_fnc_taskSetState;
+};
 
-  // XXX: start radio messages
-  ["pivot"] call CC__scenario_dialogue_play;
-
-  // XXX: temporary pause to prevent task alerts from overlapping
-  sleep 1;
-
-  // XXX: delete the meet informant task (after radio messages)
+CC__scenario_dialogue_pivot_search = {
+  // delete the meet informant task
   ["meetInformant"] call BIS_fnc_deleteTask;
 
-  // XXX: temporary pause to prevent task alerts from overlapping
+  // XXX: slight pause to prevent overlapping notifications
   sleep 1;
 
-  // XXX: create search task (after radio messages)
+  // create search factory task
   [
     groupNatoFireTeam,
     "searchFactory",
@@ -228,8 +265,7 @@ CC__scenario_fsm_pivot = {
 };
 
 CC__scenario_fsm_search = {
-  // XXX: start radio messages
-  ["search"] call CC__scenario_dialogue_play;
+  // nothing to do
 };
 
 CC__scenario_fsm_rescue = {
@@ -246,11 +282,9 @@ CC__scenario_fsm_rescue = {
 
   // send the rescue helicopter
   missionNamespace setVariable ["CC__scenario_nato_rescue", true];
+};
 
-  // XXX: start radio messages
-  ["rescue"] call CC__scenario_dialogue_play;
-
-  // create board transport task (after radio messages)
+CC__scenario_dialogue_rescue_evac = {
   [
     groupNatoFireTeam,
     "boardTransport",
