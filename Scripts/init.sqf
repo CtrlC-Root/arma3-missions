@@ -5,6 +5,7 @@ waitUntil { !isNil "BIS_fnc_init" };
 private "_scripts";
 _scripts = [
   "cc\util\math.sqf",
+  "cc\util\vehicle.sqf",
 
   "cc\module.sqf",
   "cc\mod\convoy.sqf"
