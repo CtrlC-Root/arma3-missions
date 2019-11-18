@@ -13,7 +13,8 @@ CC__scenario_dialogue_intro = [
 CC__scenario_dialogue_ambush = [
   ["radioToGroup", unitJamesWright, "Dialogue8", 1.29],
   ["radioToCommand", unitJamesWright, "Dialogue9", 3.38],
-  ["radioFromCommand", "WEST", "Dialogue10", 3.04],
+  ["radioFromCommand", WEST, "Dialogue10", 3.04],
+  ["pause", 1],
   ["radioToGroup", unitDixonWatson, "Dialogue11", 2.53]
 ];
 
@@ -24,22 +25,22 @@ CC__scenario_dialogue_pivot = [
   ["radioToGroup", unitDixonWatson, "Dialogue15", 2.21],
   ["radioToGroup", unitJamesWright, "Dialogue16", 2.29],
   ["radioToCommand", unitJamesWright, "Dialogue17", 6.83],
-  ["radioFromCommand", "WEST", "Dialogue18", 2.56]
+  ["radioFromCommand", WEST, "Dialogue18", 2.56]
 ];
 
 CC__scenario_dialogue_search = [
-  ["radioFromCommand", "WEST", "Dialogue19", 6.00],
+  ["radioFromCommand", WEST, "Dialogue19", 6.00],
   ["radioToCommand", unitJamesWright, "Dialogue20", 1.07],
   ["radioToGroup", unitJamesWright, "Dialogue21", 3.89]
 ];
 
 CC__scenario_dialogue_rescue = [
-  ["speak", CC__scenario_informant, "Dialogue22", 2.20],
+  ["speak", "CC__scenario_informant", "Dialogue22", 2.20],
   ["speak", unitDixonWatson, "Dialogue23", 1.38],
   ["radioToCommand", unitJamesWright, "Dialogue24", 2.70],
-  ["radioFromCommand", "WEST", "Dialogue25", 7.81],
+  ["radioFromCommand", WEST, "Dialogue25", 7.81],
   ["speak", unitDixonWatson, "Dialogue26", 1.07],
-  ["speak", CC__scenario_informant, "Dialogue27", 6.27],
+  ["speak", "CC__scenario_informant", "Dialogue27", 6.27],
   ["speak", unitDixonWatson, "Dialogue28", 2.45],
   ["speak", unitJamesWright, "Dialogue29", 1.34]
 ];
@@ -121,7 +122,7 @@ CC__scenario_dialogue_play_task = {
 
       case "radioFromCommand": {
         _args params [
-          ["_side", "", [""]],
+          ["_side", sideUnknown, [sideUnknown]],
           ["_radioClass", "", [""]],
           ["_duration", 0, [0]]
         ];
@@ -133,16 +134,31 @@ CC__scenario_dialogue_play_task = {
           [_side, _radioClass, _duration]
         ] call CC_Module_debug;
 
-        [[_side, "HQ"], _radioClass] remoteExec ["commandRadio", 0];
+        [[_side, "Base"], _radioClass] remoteExec ["commandRadio", 0];
         sleep _duration;
       };
 
       case "speak": {
         _args params [
-          ["_unit", objNull, [objNull]],
+          ["_source", objNull, [objNull, ""]],
           ["_soundClass", "", [""]],
           ["_duration", 0, [0]]
         ];
+
+        private _unit = if ((typeName _source) == "STRING") then {
+          missionNamespace getVariable _source;
+        } else {
+          _source;
+        };
+
+        if ((typeName _unit) != "OBJECT") exitWith {
+          [
+            "scenario",
+            "dialogue_play_task",
+            "speak: unsupported source: %1: %2",
+            [_source, _unit]
+          ] call CC_Module_debug;
+        };
 
         [
           "scenario",
