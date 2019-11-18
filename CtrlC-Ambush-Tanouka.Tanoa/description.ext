@@ -1,5 +1,4 @@
-class CfgRadio
-{
+class CfgRadio {
   sounds[] = {};
 
   // 01 - Intro
@@ -156,41 +155,41 @@ class CfgSounds {
   // 05 - Rescue
   class Dialogue22 {
     name = "Dialogue22";
-    sounds[] = {"audio\22.ogg", 1, 1, 10};
+    sound[] = {"audio\22.ogg", 10, 1, 20};
     titles[] = {0, "Oh thank god! I thought I was dead."};
   };
 
   class Dialogue23 {
     name = "Dialogue23";
-    sounds[] = {"audio\23.ogg", 1, 1, 10};
+    sound[] = {"audio\23.ogg", 10, 1, 20};
     titles[] = {0, "Good thing we found you."};
   };
 
   class Dialogue26 {
     name = "Dialogue26";
-    sounds[] = {"audio\26.ogg", 1, 1, 10};
+    sound[] = {"audio\26.ogg", 10, 1, 20};
     titles[] = {0, "What happened?"};
   };
 
   class Dialogue27 {
     name = "Dialogue27";
-    sounds[] = {"audio\27.ogg", 1, 1, 10};
+    sound[] = {"audio\27.ogg", 10, 1, 20};
     titles[] = {
       0, "I heard the explosion in town and then shooting.",
-      1, "I was about to leave when I saw gang members running towards the factory.",
-      2, "So I hid."
+      2, "I was about to leave when I saw gang members running towards the factory.",
+      4, "So I hid."
     };
   };
 
   class Dialogue28 {
     name = "Dialogue28";
-    sounds[] = {"audio\28.ogg", 1, 1, 10};
+    sound[] = {"audio\28.ogg", 10, 1, 10};
     titles[] = {0, "You did the right thing. We'll get you out of here."};
   };
 
   class Dialogue29 {
     name = "Dialogue29";
-    sounds[] = {"audio\29.ogg", 1, 1, 10};
+    sound[] = {"audio\29.ogg", 10, 1, 10};
     titles[] = {0, "Let's get out of here."};
   };
 };
