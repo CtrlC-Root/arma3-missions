@@ -440,3 +440,129 @@ CC__scenario_nato_route = [
   [0.282005,2.22829,[8804.69,10235.6,-0.00823975],6.74495],
   [0.599998,2.00669,[8802.71,10235.3,-0.00107002],0.131229]
 ];
+
+CC__scenario_convoy_run = {
+  private ["_followDistance", "_vehicles", "_route"];
+  _followDistance = 12;
+  _vehicles = CC__scenario_nato_vehicles;
+  _route = CC__scenario_nato_route apply {
+    // [t, d, [x, y, z], s]
+    _x set [3, 12];
+    _x;
+  };
+
+  // initialize vehicle crew and route
+  {
+    // set group behavior to careless so they follow roads and use lights
+    private _driverGroup = group (driver _x);
+    _driverGroup setBehaviour "CARELESS";
+
+    // disable unit targeting and switching behavior based on enemy units
+    {
+      _x disableAI "TARGET";
+      _x disableAI "AUTOCOMBAT";
+    } forEach (units _driverGroup);
+
+    // determine the start and stop offsets
+    private ["_startOffset", "_stopOffset"];
+    _startOffset = _followDistance * ((count _vehicles) - _forEachIndex - 1);
+    _stopOffset = _followDistance * _forEachIndex;
+
+    // create a copy of the route for this vehicle
+    private "_localRoute";
+    _localRoute = [] + _route;
+
+    // remove points from the beginning based on the start offset
+    private ["_entry", "_distanceFromLast"];
+    while { _startOffset > 0 } do {
+      _entry = [_localRoute] call BIS_fnc_arrayShift;
+      _distanceFromLast = _entry select 1;
+      _startOffset = _startOffset - _distanceFromLast;
+    };
+
+    // remove points from the end based on the stop offset
+    while { _stopOffset > 0 } do {
+      _entry = _localRoute call BIS_fnc_arrayPop;
+      _distanceFromLast = _entry select 1;
+      _stopOffset = _stopOffset - _distanceFromLast;
+    };
+
+    // override speed for last point to convince vehicles to stop
+    _entry = _localRoute call BIS_fnc_arrayPop;
+    _entry set [3, 0];  // [t, d, [x, y, z], s]
+    _localRoute pushBack _entry;
+
+    // store the route in the vehicle
+    private "_localPoints";
+    _localPoints = _localRoute apply {
+      private ["_p", "_s"];
+      _p = _x select 2;
+      _s = _x select 3;
+
+      // [x, y, z, s]
+      _p + [_s];
+    };
+
+    // XXX
+    _x setVariable ["cc_convoy_route", _localRoute];
+    _x setVariable ["cc_convoy_points", _localPoints];
+  } forEach _vehicles;
+
+  // stage vehicles
+  {
+    ["scenario", "convoy_start", "stage: %1", [_x]] call CC_Module_debug;
+    private ["_localRoute", "_group", "_waypoint"];
+    _localRoute = (_x getVariable "cc_convoy_route");
+    _group = group (driver _x);
+
+    _entry = _localRoute select 0;
+    _waypoint = _group addWaypoint [_entry select 2, -1];
+    _waypoint setWaypointType "MOVE";
+    _waypoint setWaypointStatements [
+      "(speed (vehicle this)) <= 0.01",
+      "(vehicle this) setVariable ['cc_convoy_wp', 'start']"
+    ];
+
+    waitUntil { (_x getVariable ["cc_convoy_wp", ""]) == "start" };
+  } forEach _vehicles;
+
+  // start vehicles
+  {
+    ["scenario", "convoy_setup", "start: %1", [_x]] call CC_Module_debug;
+    private ["_localRoute", "_group", "_waypoint"];
+    _localRoute = (_x getVariable "cc_convoy_route");
+    _group = group (driver _x);
+
+    _entry = _localRoute select ((count _localRoute) - 1);
+    _waypoint = _group addWaypoint [_entry select 2, -1];
+    _waypoint setWaypointType "MOVE";
+    _waypoint setWaypointStatements [
+      "(speed (vehicle this)) <= 0.01",
+      ""
+    ];
+
+    //_x limitSpeed 60;
+    _x setDriveOnPath (_x getVariable "cc_convoy_points");
+  } forEach _vehicles;
+};
+
+CC__scenario_convoy_show = {
+  private ["_vehicle", "_route"];
+  _vehicle = _this select 0;
+  _route = _vehicle getVariable "cc_convoy_route";
+
+  // create first point
+  private ["_entry", "_objects"];
+  _entry = [_route] call BIS_fnc_arrayShift;
+  "VR_3DSelector_01_complete_F" createVehicle (_entry select 2);
+
+  // create middle points
+  while { (count _route) > 2 } do {
+    _entry = [_route] call BIS_fnc_arrayShift;
+    "VR_3DSelector_01_default_F" createVehicle (_entry select 2);
+  };
+
+  // create final point
+  _entry = _route call BIS_fnc_arrayPop;
+  "VR_3DSelector_01_incomplete_F" createVehicle (_entry select 2);
+};
