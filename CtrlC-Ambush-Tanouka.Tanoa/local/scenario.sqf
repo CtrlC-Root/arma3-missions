@@ -71,9 +71,6 @@ CC__scenario_server_init = {
 };
 
 CC__scenario_client_init = {
-  // XXX: debugging
-  [] call CC_Module_debug_enable;
-
   // client settings
   if (!isServer) exitWith { };
 
