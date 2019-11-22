@@ -206,7 +206,7 @@ CC__scenario_fsm_ambush = {
   };
 
   {
-    _x enableSimulation true;
+    _x enableSimulationGlobal true;
   } forEach _syndikatUnits;
 };
 
@@ -236,7 +236,7 @@ CC__scenario_fsm_pivot = {
   };
 
   {
-    _x enableSimulation true;
+    _x enableSimulationGlobal true;
   } forEach _syndikatUnits;
 
   // complete defend task
