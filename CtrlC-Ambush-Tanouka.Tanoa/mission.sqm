@@ -16,20 +16,26 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=95;
+		nextID=117;
 	};
 	class Camera
 	{
-		pos[]={9816.0986,86.654663,9719.5918};
-		dir[]={0.23826204,-0.68946761,0.68416977};
-		up[]={0.22677746,0.72419339,0.65118456};
-		aside[]={0.94448882,8.9243986e-007,-0.32891658};
+		pos[]={9813.959,86.656189,9716.1377};
+		dir[]={0.19735415,-0.66812247,0.7175597};
+		up[]={0.17720395,0.74392188,0.64428866};
+		aside[]={0.96431619,1.9220315e-006,-0.26521879};
 	};
 };
 binarizationWanted=0;
 addons[]=
 {
 	"A3_Characters_F_Exp",
+	"A3_Weapons_F_Exp",
+	"A3_Weapons_F_Acc",
+	"A3_Weapons_F",
+	"A3_Characters_F_Exp_Headgear",
+	"A3_Weapons_F_Items",
+	"A3_Characters_F_Exp_Vests",
 	"A3_Soft_F_Exp_LSV_01",
 	"A3_Modules_F_Effects",
 	"A3_Soft_F_Offroad_01",
@@ -48,7 +54,7 @@ class AddonsMetaData
 {
 	class List
 	{
-		items=13;
+		items=15;
 		class Item0
 		{
 			className="A3_Characters_F_Exp";
@@ -58,82 +64,96 @@ class AddonsMetaData
 		};
 		class Item1
 		{
+			className="A3_Weapons_F_Exp";
+			name="Arma 3 Apex - Weapons and Accessories";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+		class Item2
+		{
+			className="A3_Weapons_F";
+			name="Arma 3 Alpha - Weapons and Accessories";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+		class Item3
+		{
 			className="A3_Soft_F_Exp";
 			name="Arma 3 Apex - Unarmored Land Vehicles";
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
-		class Item2
+		class Item4
 		{
 			className="A3_Modules_F";
 			name="Arma 3 Alpha - Scripted Modules";
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
-		class Item3
+		class Item5
 		{
 			className="A3_Soft_F";
 			name="Arma 3 Alpha - Unarmored Land Vehicles";
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
-		class Item4
+		class Item6
 		{
 			className="A3_Soft_F_Gamma";
 			name="Arma 3 - Unarmored Land Vehicles";
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
-		class Item5
+		class Item7
 		{
 			className="A3_Signs_F";
 			name="Arma 3 - Signs";
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
-		class Item6
+		class Item8
 		{
 			className="A3_Structures_F_Mil";
 			name="Arma 3 - Military Buildings and Structures";
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
-		class Item7
+		class Item9
 		{
 			className="A3_Characters_F";
 			name="Arma 3 Alpha - Characters and Clothing";
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
-		class Item8
+		class Item10
 		{
 			className="A3_Structures_F_Ind";
 			name="Arma 3 - Industrial Structures";
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
-		class Item9
+		class Item11
 		{
 			className="A3_Structures_F";
 			name="Arma 3 - Buildings and Structures";
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
-		class Item10
+		class Item12
 		{
 			className="A3_Props_F_Exp";
 			name="Arma 3 Apex - Decorative and Mission Objects";
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
-		class Item11
+		class Item13
 		{
 			className="A3_Air_F_Exp";
 			name="Arma 3 Apex - Aircraft";
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
 		};
-		class Item12
+		class Item14
 		{
 			className="A3_Ui_F";
 			name="Arma 3 - User Interface";
@@ -587,6 +607,106 @@ class Mission
 								rank="SERGEANT";
 								name="unitDixonWatson";
 								isPlayable=1;
+								class Inventory
+								{
+									class primaryWeapon
+									{
+										name="arifle_MX_SW_khk_F";
+										optics="optic_Aco";
+										flashlight="acc_pointer_IR";
+										underBarrel="bipod_01_F_khk";
+										class primaryMuzzleMag
+										{
+											name="100Rnd_65x39_caseless_khaki_mag";
+											ammoLeft=100;
+										};
+									};
+									class handgun
+									{
+										name="hgun_P07_khk_F";
+										class primaryMuzzleMag
+										{
+											name="16Rnd_9x21_Mag";
+											ammoLeft=16;
+										};
+									};
+									class uniform
+									{
+										typeName="U_B_T_Soldier_AR_F";
+										isBackpack=0;
+										class MagazineCargo
+										{
+											items=4;
+											class Item0
+											{
+												name="HandGrenade";
+												count=1;
+												ammoLeft=1;
+											};
+											class Item1
+											{
+												name="SmokeShell";
+												count=1;
+												ammoLeft=1;
+											};
+											class Item2
+											{
+												name="SmokeShellGreen";
+												count=1;
+												ammoLeft=1;
+											};
+											class Item3
+											{
+												name="Chemlight_green";
+												count=1;
+												ammoLeft=1;
+											};
+										};
+										class ItemCargo
+										{
+											items=1;
+											class Item0
+											{
+												name="FirstAidKit";
+												count=1;
+											};
+										};
+									};
+									class vest
+									{
+										typeName="V_PlateCarrier2_tna_F";
+										isBackpack=0;
+										class MagazineCargo
+										{
+											items=3;
+											class Item0
+											{
+												name="100Rnd_65x39_caseless_khaki_mag";
+												count=5;
+												ammoLeft=100;
+											};
+											class Item1
+											{
+												name="16Rnd_9x21_Mag";
+												count=2;
+												ammoLeft=16;
+											};
+											class Item2
+											{
+												name="Chemlight_green";
+												count=1;
+												ammoLeft=1;
+											};
+										};
+									};
+									map="ItemMap";
+									compass="ItemCompass";
+									watch="ItemWatch";
+									radio="ItemRadio";
+									gps="ItemGPS";
+									hmd="NVGoggles_tna_F";
+									headgear="H_HelmetB_tna_F";
+								};
 							};
 							id=82;
 							type="B_T_Soldier_AR_F";
