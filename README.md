@@ -62,6 +62,9 @@ All missions are named using the `CtrlC-[Type]-[Name].[Map]` pattern.
   * https://community.bistudio.com/wiki/Initialization_Order
   * https://resources.bisimulations.com/wiki/Locality_in_Multiplayer
   * https://community.bistudio.com/wiki/Arma_3_Remote_Execution
+* FSM
+  * https://community.bistudio.com/wiki/FSM
+  * https://community.bistudio.com/wiki/FSM_Editor_Manual
 * Mission configuration
   * https://community.bistudio.com/wiki/Description.ext
   * https://community.bistudio.com/wiki/Loading_Screens
