@@ -1,0 +1,187 @@
+/*%FSM<COMPILE "C:\Program Files (x86)\Steam\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, fia">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"Start",0,250,-41.551727,-136.637924,48.448273,-86.637924,0.000000,"Start"};
+item1[] = {"Search",2,250,239.279541,-135.115173,329.279541,-85.115173,0.000000,"Search"};
+item2[] = {"Escape",2,250,519.039917,-136.914124,609.039917,-86.914124,0.000000,"Escape"};
+item3[] = {"FIA_Win",1,250,799.698975,-135.115173,889.698975,-85.115189,0.000000,"FIA Win"};
+item4[] = {"FIA_Lose",1,250,378.710083,150.941467,468.710083,200.941467,0.000000,"FIA Lose"};
+item5[] = {"Units_Dead",4,218,378.709900,-8.278687,468.709900,41.721313,10.000000,"Units" \n "Dead"};
+item6[] = {"HVT_Dead",4,218,519.939331,-10.977356,609.939331,39.022644,8.000000,"HVT" \n "Dead"};
+item7[] = {"HVT_Found",4,218,382.308167,-136.914154,472.308167,-86.914154,0.000000,"HVT" \n "Found"};
+item8[] = {"Exfil",4,218,665.665894,-136.014648,755.665894,-86.014648,0.000000,"Exfil"};
+item9[] = {"Always",8,218,91.753967,-134.215485,181.753967,-84.215485,0.000000,"Always"};
+link0[] = {0,9};
+link1[] = {1,5};
+link2[] = {1,7};
+link3[] = {2,5};
+link4[] = {2,6};
+link5[] = {2,8};
+link6[] = {5,4};
+link7[] = {6,4};
+link8[] = {7,2};
+link9[] = {8,3};
+link10[] = {9,1};
+globals[] = {0.000000,0,0,0,0,640,480,1,13,6316128,1,-483.057739,1211.692261,465.783630,-653.255188,1884,1244,1};
+window[] = {2,-1,-1,-1,-1,1315,286,2206,286,3,1902};
+*//*%FSM</HEAD>*/
+class FSM
+{
+        fsmName = "fia";
+        class States
+        {
+                /*%FSM<STATE "Start">*/
+                class Start
+                {
+                        name = "Start";
+                        itemno = 0;
+                        init = /*%FSM<STATEINIT""">*/"params [" \n
+                         "	[""_stateCallback"", {}, [{}]]," \n
+                         "	[""_fiaAssaultUnits"", [], [[]]]," \n
+                         "	[""_fiaCapturedUnit"", objNull, [objNull]]," \n
+                         "	[""_triggerVilla"", objNull, [objNull]]" \n
+                         "];" \n
+                         "" \n
+                         "// determine relevant story fia units" \n
+                         "_fiaUnits = [] + _fiaAssaultUnits;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Always">*/
+                                class Always
+                                {
+                                        itemno = 9;
+                                        priority = 0.000000;
+                                        to="Search";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Search">*/
+                class Search
+                {
+                        name = "Search";
+                        itemno = 1;
+                        init = /*%FSM<STATEINIT""">*/"[""fia_search""] call _stateCallback;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/"// prune dead units" \n
+                         "_fiaUnits = _fiaUnits select { alive _x; };"/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Units_Dead">*/
+                                class Units_Dead
+                                {
+                                        itemno = 5;
+                                        priority = 10.000000;
+                                        to="FIA_Lose";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"(count _fiaUnits) == 0;"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "HVT_Found">*/
+                                class HVT_Found
+                                {
+                                        itemno = 7;
+                                        priority = 0.000000;
+                                        to="Escape";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"private _units = _fiaUnits select {" \n
+                                         "	(_x knowsAbout _fiaCapturedUnit) >= 1.5;" \n
+                                         "};" \n
+                                         "" \n
+                                         "(count _units) > 0;"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Escape">*/
+                class Escape
+                {
+                        name = "Escape";
+                        itemno = 2;
+                        init = /*%FSM<STATEINIT""">*/"[""fia_escape""] call _stateCallback;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/"// prune dead units" \n
+                         "_fiaUnits = _fiaUnits select { alive _x; };"/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Units_Dead">*/
+                                class Units_Dead
+                                {
+                                        itemno = 5;
+                                        priority = 10.000000;
+                                        to="FIA_Lose";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"(count _fiaUnits) == 0;"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "HVT_Dead">*/
+                                class HVT_Dead
+                                {
+                                        itemno = 6;
+                                        priority = 8.000000;
+                                        to="FIA_Lose";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!(alive _fiaCapturedUnit);"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Exfil">*/
+                                class Exfil
+                                {
+                                        itemno = 8;
+                                        priority = 0.000000;
+                                        to="FIA_Win";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"private _presentUnits = _fiaUnits select {" \n
+                                         "	_x inArea _triggerVilla;" \n
+                                         "};" \n
+                                         "" \n
+                                         "" \n
+                                         "// all living fia units have left the villa" \n
+                                         "(count _presentUnits) == 0;"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "FIA_Win">*/
+                class FIA_Win
+                {
+                        name = "FIA_Win";
+                        itemno = 3;
+                        init = /*%FSM<STATEINIT""">*/"[""fia_win""] call _stateCallback;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "FIA_Lose">*/
+                class FIA_Lose
+                {
+                        name = "FIA_Lose";
+                        itemno = 4;
+                        init = /*%FSM<STATEINIT""">*/"[""fia_lose""] call _stateCallback;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                        };
+                };
+                /*%FSM</STATE>*/
+        };
+        initState="Start";
+        finalStates[] =
+        {
+                "FIA_Win",
+                "FIA_Lose",
+        };
+};
+/*%FSM</COMPILE>*/

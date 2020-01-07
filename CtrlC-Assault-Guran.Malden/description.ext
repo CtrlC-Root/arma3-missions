@@ -1,0 +1,11 @@
+// Debugging
+enableDebugConsole = 1; // singleplayer and multiplayer host
+
+// Radio Channels
+disableChannels[] = {
+  // global
+  {0, true, true},
+
+  // side
+  {1, true, true}
+};
