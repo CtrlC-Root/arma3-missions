@@ -68,9 +68,8 @@ CC__scenario_server_init = {
       "dialogue_pivot_search",
       "dialogue_rescue_evac"
     ],
-    { False },
-    CC__scenario_debug_status,
-    []
+    { False; },
+    CC__scenario_debug_status
   ];
 };
 

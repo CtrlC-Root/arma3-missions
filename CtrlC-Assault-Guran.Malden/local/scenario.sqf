@@ -32,8 +32,7 @@ CC__scenario_server_init = {
       "fsm_fia_win"
     ],
     { False },
-    CC__scenario_debug_status,
-    []
+    CC__scenario_debug_status
   ];
 };
 

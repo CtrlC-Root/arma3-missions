@@ -11,9 +11,6 @@ private _functions = [
 
   ["mod", "CC_fnc_moduleInit"],
   ["mod", "CC_fnc_moduleLog"],
-  ["mod", "CC_fnc_moduleDebug"],
-  ["mod", "CC_fnc_moduleDebugLocal"],
-  ["mod", "CC_fnc_moduleDebugToggleHud"],
   ["mod", "CC_fnc_moduleEventRegister"],
   ["mod", "CC_fnc_moduleEventFire"]
 ];
@@ -34,7 +31,9 @@ private _functions = [
 } forEach _functions;
 
 // load scripts
-private _scripts = [];
+private _scripts = [
+  "cc\debug\module.sqf"
+];
 
 {
   // debug

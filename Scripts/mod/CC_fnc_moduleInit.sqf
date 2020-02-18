@@ -52,15 +52,14 @@ if (isServer) then {
   _serverSettings params [
     ["_events", [], [[]]],
     ["_serverTask", {False}, [{}]],
-    ["_debugStatus", {""}, [{}]],
-    ["_debugActions", [], [[]]]
+    ["_statusTask", {""}, [{}]]
   ];
 
   // register the module globally and notify all clients
   [
     CC__modules,
     _name,
-    [_events, _serverTask, _debugStatus, _debugActions]
+    [_events, _serverTask, _statusTask]
   ] call BIS_fnc_setToPairs;
   publicVariable "CC__modules";
 
