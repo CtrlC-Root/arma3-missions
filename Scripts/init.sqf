@@ -4,7 +4,10 @@ waitUntil { !isNil "BIS_fnc_init" };
 // load functions
 private _functions = [
   "CC_fnc_arrayFlatten",
-  "CC_fnc_mathRound"
+  "CC_fnc_mathRound",
+  "CC_fnc_vehicleContains",
+  "CC_fnc_vehicleUnloadUnit",
+  "CC_fnc_vehicleUnload"
 ];
 
 {

@@ -212,7 +212,7 @@ CC__scenario_fsm_ambush = {
 
 CC__scenario_dialogue_ambush_getout = {
   // force everyone out of the chase car
-  [vehicleNatoChase] call CC_Vehicle_unload;
+  [vehicleNatoChase] call CC_fnc_vehicleUnload;
 };
 
 CC__scenario_dialogue_ambush_defend = {
