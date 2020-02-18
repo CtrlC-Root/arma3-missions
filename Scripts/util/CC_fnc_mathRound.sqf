@@ -6,10 +6,10 @@
  * @returns rounded value
  */
 
-// retrieve parameters
-private ["_value", "_digits"];
-_value = [_this, 0, 0, [0]] call BIS_fnc_param;
-_digits = [_this, 1, 2, [0]] call BIS_fnc_param;
+params [
+  ["_value", 0, [0]],
+  ["_digits", 2, [0]]
+];
 
 // corner case: round to integer
 if (_digits <= 0) exitWith {
