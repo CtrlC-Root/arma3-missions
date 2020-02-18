@@ -4,6 +4,7 @@ waitUntil { !isNil "BIS_fnc_init" };
 // load scripts
 private "_scripts";
 _scripts = [
+  "cc\util\array.sqf",
   "cc\util\math.sqf",
   "cc\util\vehicle.sqf",
 
