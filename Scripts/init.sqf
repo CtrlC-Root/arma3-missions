@@ -3,32 +3,38 @@ waitUntil { !isNil "BIS_fnc_init" };
 
 // load functions
 private _functions = [
-  "CC_fnc_arrayFlatten",
-  "CC_fnc_mathRound",
-  "CC_fnc_vehicleContains",
-  "CC_fnc_vehicleUnloadUnit",
-  "CC_fnc_vehicleUnload"
+  ["util", "CC_fnc_arrayFlatten"],
+  ["util", "CC_fnc_mathRound"],
+  ["util", "CC_fnc_vehicleContains"],
+  ["util", "CC_fnc_vehicleUnloadUnit"],
+  ["util", "CC_fnc_vehicleUnload"],
+
+  ["mod", "CC_fnc_moduleInit"],
+  ["mod", "CC_fnc_moduleLog"],
+  ["mod", "CC_fnc_moduleDebug"],
+  ["mod", "CC_fnc_moduleDebugLocal"],
+  ["mod", "CC_fnc_moduleDebugToggleHud"],
+  ["mod", "CC_fnc_moduleEventRegister"],
+  ["mod", "CC_fnc_moduleEventFire"]
 ];
 
 {
+  private _category = _x select 0;
+  private _name = _x select 1;
+
   // debug
-  diag_log format ["CC: loading function: %1", _x];
+  diag_log format ["CC: loading function: %1 / %2", _category, _name];
 
   // compile the function
-  private _filename = format ["cc\util\%1.sqf", _x];
+  private _filename = format ["cc\%1\%2.sqf", _category, _name];
   private _function = compile preprocessFileLineNumbers _filename;
 
   // store the function in the mission namespace
-  missionNamespace setVariable [_x, _function];
+  missionNamespace setVariable [_name, _function];
 } forEach _functions;
 
 // load scripts
-private _scripts = [
-  "cc\util\vehicle.sqf",
-
-  "cc\module.sqf",
-  "cc\mod\convoy.sqf"
-];
+private _scripts = [];
 
 {
   // debug

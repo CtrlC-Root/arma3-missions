@@ -510,7 +510,7 @@ CC__scenario_convoy_run = {
 
   // stage vehicles
   {
-    ["scenario", "convoy_start", "stage: %1", [_x]] call CC_Module_debug;
+    ["scenario", "convoy_start", "stage: %1", [_x]] call CC_fnc_moduleLog;
     private ["_localRoute", "_group", "_waypoint"];
     _localRoute = (_x getVariable "cc_convoy_route");
     _group = group (driver _x);
@@ -528,7 +528,7 @@ CC__scenario_convoy_run = {
 
   // start vehicles
   {
-    ["scenario", "convoy_setup", "start: %1", [_x]] call CC_Module_debug;
+    ["scenario", "convoy_setup", "start: %1", [_x]] call CC_fnc_moduleLog;
     private ["_localRoute", "_group", "_waypoint"];
     _localRoute = (_x getVariable "cc_convoy_route");
     _group = group (driver _x);

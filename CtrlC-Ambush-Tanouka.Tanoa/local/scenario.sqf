@@ -19,7 +19,7 @@ CC_Scenario_init = {
     "scenario",
     CC__scenario_server_init,
     CC__scenario_client_init
-  ] call CC_Module_init;
+  ] call CC_fnc_moduleInit;
 };
 
 CC__scenario_server_init = {
@@ -79,48 +79,48 @@ CC__scenario_client_init = {
   if (!isServer) exitWith { };
 
   // register server event handlers
-  ["scenario", "fsm_intro", CC__scenario_fsm_intro] call CC_Module_event_register;
-  ["scenario", "fsm_ambush", CC__scenario_fsm_ambush] call CC_Module_event_register;
-  ["scenario", "fsm_pivot", CC__scenario_fsm_pivot] call CC_Module_event_register;
-  ["scenario", "fsm_search", CC__scenario_fsm_search] call CC_Module_event_register;
-  ["scenario", "fsm_rescue", CC__scenario_fsm_rescue] call CC_Module_event_register;
-  ["scenario", "fsm_exfil", CC__scenario_fsm_exfil] call CC_Module_event_register;
+  ["scenario", "fsm_intro", CC__scenario_fsm_intro] call CC_fnc_moduleEventRegister;
+  ["scenario", "fsm_ambush", CC__scenario_fsm_ambush] call CC_fnc_moduleEventRegister;
+  ["scenario", "fsm_pivot", CC__scenario_fsm_pivot] call CC_fnc_moduleEventRegister;
+  ["scenario", "fsm_search", CC__scenario_fsm_search] call CC_fnc_moduleEventRegister;
+  ["scenario", "fsm_rescue", CC__scenario_fsm_rescue] call CC_fnc_moduleEventRegister;
+  ["scenario", "fsm_exfil", CC__scenario_fsm_exfil] call CC_fnc_moduleEventRegister;
 
   [
     "scenario",
     "fsm_nato_win",
     CC__scenario_fsm_nato_win
-  ] call CC_Module_event_register;
+  ] call CC_fnc_moduleEventRegister;
 
   [
     "scenario",
     "fsm_syndikat_win",
     CC__scenario_fsm_syndikat_win
-  ] call CC_Module_event_register;
+  ] call CC_fnc_moduleEventRegister;
 
   [
     "scenario",
     "dialogue_ambush_getout",
     CC__scenario_dialogue_ambush_getout
-  ] call CC_Module_event_register;
+  ] call CC_fnc_moduleEventRegister;
 
   [
     "scenario",
     "dialogue_ambush_defend",
     CC__scenario_dialogue_ambush_defend
-  ] call CC_Module_event_register;
+  ] call CC_fnc_moduleEventRegister;
 
   [
     "scenario",
     "dialogue_pivot_search",
     CC__scenario_dialogue_pivot_search
-  ] call CC_Module_event_register;
+  ] call CC_fnc_moduleEventRegister;
 
   [
     "scenario",
     "dialogue_rescue_evac",
     CC__scenario_dialogue_rescue_evac
-  ] call CC_Module_event_register;
+  ] call CC_fnc_moduleEventRegister;
 
   // run the scenario state machine
   CC__scenario_fsm = [
@@ -147,7 +147,7 @@ CC__scenario_debug_status = {
 CC__scenario_fsm_state = {
   // only run on the server
   if (!isServer) exitWith {
-    ["scenario", "fsm_state", "not called on server"] call CC_Module_debug;
+    ["not called on server"] call BIS_fnc_error;
   };
 
   // retrieve parameters
@@ -156,14 +156,14 @@ CC__scenario_fsm_state = {
   ];
 
   // debug
-  ["scenario", "fsm_state", "%1", [_state]] call CC_Module_debug;
+  ["scenario", "fsm_state", "%1", [_state]] call CC_fnc_moduleLog;
 
   // update the scenario state
   CC__scenario_state = _state;
   publicVariable "CC__scenario_state";
 
   // run event handlers
-  ["scenario", format ["fsm_%1", _state], [], true] call CC_Module_event_fire;
+  ["scenario", format ["fsm_%1", _state], [], true] call CC_fnc_moduleEventFire;
 
   // start relevant dialogue
   [_state] call CC__scenario_dialogue_play;

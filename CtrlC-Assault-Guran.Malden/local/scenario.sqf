@@ -3,7 +3,7 @@ CC_Scenario_init = {
     "scenario",
     CC__scenario_server_init,
     CC__scenario_client_init
-  ] call CC_Module_init;
+  ] call CC_fnc_moduleInit;
 };
 
 CC__scenario_server_init = {
@@ -46,43 +46,43 @@ CC__scenario_client_init = {
     "scenario",
     "fsm_nato_peaceful",
     CC__scenario_fsm_nato_peaceful
-  ] call CC_Module_event_register;
+  ] call CC_fnc_moduleEventRegister;
 
   [
     "scenario",
     "fsm_nato_alarmed",
     CC__scenario_fsm_nato_alarmed
-  ] call CC_Module_event_register;
+  ] call CC_fnc_moduleEventRegister;
 
   [
     "scenario",
     "fsm_nato_lose",
     CC__scenario_fsm_nato_lose
-  ] call CC_Module_event_register;
+  ] call CC_fnc_moduleEventRegister;
 
   [
     "scenario",
     "fsm_fia_search",
     CC__scenario_fsm_fia_search
-  ] call CC_Module_event_register;
+  ] call CC_fnc_moduleEventRegister;
 
   [
     "scenario",
     "fsm_fia_escape",
     CC__scenario_fsm_fia_escape
-  ] call CC_Module_event_register;
+  ] call CC_fnc_moduleEventRegister;
 
   [
     "scenario",
     "fsm_fia_lose",
     CC__scenario_fsm_fia_lose
-  ] call CC_Module_event_register;
+  ] call CC_fnc_moduleEventRegister;
 
   [
     "scenario",
     "fsm_fia_win",
     CC__scenario_fsm_fia_win
-  ] call CC_Module_event_register;
+  ] call CC_fnc_moduleEventRegister;
 
   // run the scenario state machines
   CC__scenario_nato_fsm = [
@@ -131,7 +131,7 @@ CC__scenario_debug_status = {
 CC__scenario_fsm_state = {
   // only run on the server
   if (!isServer) exitWith {
-    ["scenario", "fsm_state", "not called on server"] call CC_Module_debug;
+    ["not called on server"] call BIS_fnc_error;
   };
 
   // retrieve parameters
@@ -140,10 +140,10 @@ CC__scenario_fsm_state = {
   ];
 
   // debug
-  ["scenario", "fsm_state", "%1", [_state]] call CC_Module_debug;
+  ["scenario", "fsm_state", "%1", [_state]] call CC_fnc_moduleLog;
 
   // run event handlers
-  ["scenario", format ["fsm_%1", _state], [], true] call CC_Module_event_fire;
+  ["scenario", format ["fsm_%1", _state], [], true] call CC_fnc_moduleEventFire;
 };
 
 CC__scenario_fsm_nato_peaceful = {

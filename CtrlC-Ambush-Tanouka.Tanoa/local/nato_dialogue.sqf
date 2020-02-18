@@ -65,16 +65,11 @@ CC__scenario_dialogue_play = {
 
   private _index = [CC__scenario_dialogue, _segment] call BIS_fnc_findInPairs;
   if (_index < 0) exitWith {
-    [
-      "scenario",
-      "dialogue_play",
-      "segment not found: %1",
-      [_segment]
-    ] call CC_Module_debug;
+    ["segment not found: %1", _segment] call BIS_fnc_error;
   };
 
   private _dialogue = ((CC__scenario_dialogue select _index) select 1);
-  ["scenario", "dialogue_play", "start segment: %1", [_segment]] call CC_Module_debug;
+  ["scenario", "dialogue_play", "start segment: %1", [_segment]] call CC_fnc_moduleLog;
   [_dialogue] spawn CC__scenario_dialogue_play_task;
 };
 
@@ -98,9 +93,9 @@ CC__scenario_dialogue_play_task = {
           "dialogue_play_task",
           "event: %1",
           [_event]
-        ] call CC_Module_debug;
+        ] call CC_fnc_moduleLog;
 
-        ["scenario", _event, [], true] call CC_Module_event_fire;
+        ["scenario", _event, [], true] call CC_fnc_moduleEventFire;
       };
 
       case "radioToGroup": {
@@ -115,7 +110,7 @@ CC__scenario_dialogue_play_task = {
           "dialogue_play_task",
           "radio to group: %1, %2, %3",
           [_unit, _radioClass, _duration]
-        ] call CC_Module_debug;
+        ] call CC_fnc_moduleLog;
 
         [_unit, _radioClass] remoteExec ["groupRadio", 0];
         sleep _duration;
@@ -133,7 +128,7 @@ CC__scenario_dialogue_play_task = {
           "dialogue_play_task",
           "radio to command: %1, %2, %3",
           [_unit, _radioClass, _duration]
-        ] call CC_Module_debug;
+        ] call CC_fnc_moduleLog;
 
         [_unit, _radioClass] remoteExec ["commandRadio", 0];
         sleep _duration;
@@ -151,7 +146,7 @@ CC__scenario_dialogue_play_task = {
           "dialogue_play_task",
           "radio from command: %1, %2, %3",
           [_side, _radioClass, _duration]
-        ] call CC_Module_debug;
+        ] call CC_fnc_moduleLog;
 
         [[_side, "Base"], _radioClass] remoteExec ["commandRadio", 0];
         sleep _duration;
@@ -176,7 +171,7 @@ CC__scenario_dialogue_play_task = {
             "dialogue_play_task",
             "speak: unsupported source: %1: %2",
             [_source, _unit]
-          ] call CC_Module_debug;
+          ] call CC_fnc_moduleLog;
         };
 
         [
@@ -184,7 +179,7 @@ CC__scenario_dialogue_play_task = {
           "dialogue_play_task",
           "speak: %1, %2, %3",
           [_unit, _soundClass, _duration]
-        ] call CC_Module_debug;
+        ] call CC_fnc_moduleLog;
 
         // XXX: investigate [from, to] alternative syntax for say command
         [_unit, _soundClass] remoteExec ["say", 0];
@@ -201,13 +196,13 @@ CC__scenario_dialogue_play_task = {
           "dialogue_play_task",
           "pause: %1",
           [_duration]
-        ] call CC_Module_debug;
+        ] call CC_fnc_moduleLog;
 
         sleep _duration;
       };
 
       default {
-        ["scenario", "dialogue_play_task", "unknown type: %1", [_type]] call CC_Module_debug;
+        ["scenario", "dialogue_play_task", "unknown type: %1", [_type]] call CC_fnc_moduleLog;
       };
     };
   } forEach _dialogue;
