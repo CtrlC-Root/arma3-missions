@@ -48,7 +48,8 @@ the editor.
 
 ## Missions
 
-All missions are named using the `CtrlC-[Type]-[Name].[Map]` pattern.
+All missions are named using the `CtrlC-[Type]-[Name].[Map]` pattern. The name
+usually refers to a distinct location on the map.
 
 ## References
 
