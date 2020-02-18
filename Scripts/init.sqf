@@ -1,11 +1,26 @@
 // wait for BIS functions to be loaded
 waitUntil { !isNil "BIS_fnc_init" };
 
+// load functions
+private _functions = [
+  "CC_fnc_arrayFlatten",
+  "CC_fnc_mathRound"
+];
+
+{
+  // debug
+  diag_log format ["CC: loading function: %1", _x];
+
+  // compile the function
+  private _filename = format ["cc\util\%1.sqf", _x];
+  private _function = compile preprocessFileLineNumbers _filename;
+
+  // store the function in the mission namespace
+  missionNamespace setVariable [_x, _function];
+} forEach _functions;
+
 // load scripts
-private "_scripts";
-_scripts = [
-  "cc\util\array.sqf",
-  "cc\util\math.sqf",
+private _scripts = [
   "cc\util\vehicle.sqf",
 
   "cc\module.sqf",
@@ -17,8 +32,7 @@ _scripts = [
   diag_log format ["CC: loading script: %1", _x];
 
   // execute the module script
-  private "_script";
-  _script = [] execVM _x;
+  private _script = [] execVM _x;
 
   // wait for the script to finish executing
   waitUntil {

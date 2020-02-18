@@ -59,7 +59,7 @@ CC_Vehicle_contains = {
 
   // retrieve all group units
   private _groupUnits = _groups apply { units _x };
-  private _allUnits = [_groupUnits] call CC_Array_flatten;
+  private _allUnits = [_groupUnits] call CC_fnc_arrayFlatten;
   private _insideUnits = _allUnits select { vehicle _x == _vehicle };
 
   // evaluate the selection
