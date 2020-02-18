@@ -21,7 +21,6 @@ _scripts = [
 
 // initialize modules
 hintSilent "Initializing modules...";
-[] call CC_Convoy_init;
 
 // initialize scenario
 hintSilent "Initializing scenario...";
