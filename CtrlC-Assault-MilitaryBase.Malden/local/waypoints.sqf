@@ -89,7 +89,7 @@ CC_scenario_waypointCheck = {
 
   // retrieve the list of groups for this waypoint
   private _groups = [CC__scenario_waypoints, _point] call BIS_fnc_getFromPairs;
-  if (isNull _groups) exitWith {
+  if (isNil "_groups") exitWith {
     ["point not found: %1", _point] call BIS_fnc_error;
   };
 

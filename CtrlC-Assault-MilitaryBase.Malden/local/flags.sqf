@@ -46,7 +46,7 @@ CC_scenario_checkFlag = {
   };
 
   private _value = [CC__scenario_flags, _name] call BIS_fnc_getFromPairs;
-  if (isNull _value) exitWith {
+  if (isNil "_value") exitWith {
     ["flag not found: %1", _name] call BIS_fnc_error;
   };
 
