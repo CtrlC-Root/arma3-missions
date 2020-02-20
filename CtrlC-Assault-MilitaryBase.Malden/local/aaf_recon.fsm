@@ -1,0 +1,331 @@
+/*%FSM<COMPILE "C:\Program Files (x86)\Steam\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, aaf_recon">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"Start",0,250,-25.000000,-150.000000,75.000000,-100.000000,0.000000,"Start"};
+item1[] = {"Disable_Comms",2,250,500.000000,-150.000000,600.000000,-100.000000,0.000000,"Disable" \n "Comms"};
+item2[] = {"Destroy_Anti_Air",2,250,750.000000,-150.000000,850.000000,-100.000000,0.000000,"Destroy" \n "Anti Air"};
+item3[] = {"Overwatch_HQ",2,250,1000.000000,-150.000000,1100.000000,-100.000000,0.000000,"Overwatch" \n "HQ"};
+item4[] = {"Phase_1",8,218,125.000000,-150.000000,225.000000,-100.000000,0.000000,"Phase 1"};
+item5[] = {"Comms_Disabled",4,218,625.000000,-150.000000,725.000000,-100.000000,0.000000,"Comms" \n "Disabled"};
+item6[] = {"Anti_Air_Destroy",4,218,875.000000,-150.000000,975.000000,-100.000000,0.000000,"Anti Air" \n "Destroyed"};
+item7[] = {"Phase_2",4,218,125.000000,0.000000,225.000000,50.000000,0.000000,"Phase 2"};
+item8[] = {"Assault_Comms_B",2,250,250.000000,0.000000,350.000000,50.000000,0.000000,"Assault" \n "Comms B"};
+item9[] = {"Assault_Comms_A",2,250,250.000000,-150.000000,350.000000,-100.000000,0.000000,"Assault" \n "Comms A"};
+item10[] = {"Comms_A_Clear",4,218,375.000000,-150.000000,475.000000,-100.000000,0.000000,"Comms A" \n "Clear"};
+item11[] = {"Comms_B_Clear",4,218,375.000000,0.000000,475.000000,50.000000,0.000000,"Comms B" \n "Clear"};
+item12[] = {"Overwatch_Barrac",2,250,500.000000,0.000000,600.000000,50.000000,0.000000,"Overwatch" \n "Barracks"};
+item13[] = {"AAF_Win",1,250,250.000000,150.000000,350.000000,200.000000,0.000000,"AAF Win"};
+item14[] = {"Phase_3",4,218,125.000000,150.000000,225.000000,200.000000,0.000000,"Phase 3"};
+item15[] = {"",7,210,1046.000000,-79.000000,1054.000000,-71.000000,0.000000,""};
+item16[] = {"",7,210,171.000000,-79.000000,179.000000,-71.000000,0.000000,""};
+item17[] = {"",7,210,546.000000,71.000000,554.000000,79.000000,0.000000,""};
+item18[] = {"",7,210,171.000000,71.000000,179.000000,79.000000,0.000000,""};
+item19[] = {"Recon_KIA",4,218,1250.000000,-225.000000,1350.000000,-175.000000,0.000000,"Recon" \n "KIA"};
+item20[] = {"AAF_Lose",1,250,1375.000000,-225.000000,1475.000000,-175.000000,0.000000,"AAF Lose"};
+item21[] = {"",7,210,296.000000,-204.000000,304.000000,-196.000000,0.000000,""};
+item22[] = {"",7,210,546.000000,-204.000000,554.000000,-196.000000,0.000000,""};
+item23[] = {"",7,210,796.000000,-204.000000,804.000000,-196.000000,0.000000,""};
+item24[] = {"",7,210,1046.000000,-204.000000,1054.000000,-196.000000,0.000000,""};
+item25[] = {"",7,210,296.000000,-54.000000,304.000000,-46.000000,0.000000,""};
+item26[] = {"",7,210,546.000000,-54.000000,554.000000,-46.000000,0.000000,""};
+item27[] = {"",7,210,1296.000000,-54.000000,1304.000000,-46.000000,0.000000,""};
+link0[] = {0,4};
+link1[] = {1,5};
+link2[] = {1,22};
+link3[] = {2,6};
+link4[] = {2,23};
+link5[] = {3,15};
+link6[] = {3,24};
+link7[] = {4,9};
+link8[] = {5,2};
+link9[] = {6,3};
+link10[] = {7,8};
+link11[] = {8,11};
+link12[] = {8,25};
+link13[] = {9,10};
+link14[] = {9,21};
+link15[] = {10,1};
+link16[] = {11,12};
+link17[] = {12,17};
+link18[] = {12,26};
+link19[] = {14,13};
+link20[] = {15,16};
+link21[] = {16,7};
+link22[] = {17,18};
+link23[] = {18,14};
+link24[] = {19,20};
+link25[] = {21,22};
+link26[] = {22,23};
+link27[] = {23,24};
+link28[] = {24,19};
+link29[] = {25,26};
+link30[] = {26,27};
+link31[] = {27,19};
+globals[] = {0.000000,0,0,0,0,640,480,1,34,6316128,1,-165.964783,1632.912964,514.378052,-673.415955,1884,1244,1};
+window[] = {2,-1,-1,-1,-1,1312,159,2079,283,3,1902};
+*//*%FSM</HEAD>*/
+class FSM
+{
+        fsmName = "aaf_recon";
+        class States
+        {
+                /*%FSM<STATE "Start">*/
+                class Start
+                {
+                        name = "Start";
+                        itemno = 0;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Phase_1">*/
+                                class Phase_1
+                                {
+                                        itemno = 4;
+                                        priority = 0.000000;
+                                        to="Assault_Comms_A";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Disable_Comms">*/
+                class Disable_Comms
+                {
+                        name = "Disable_Comms";
+                        itemno = 1;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Recon_KIA">*/
+                                class Recon_KIA
+                                {
+                                        itemno = 19;
+                                        priority = 0.000000;
+                                        to="AAF_Lose";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Comms_Disabled">*/
+                                class Comms_Disabled
+                                {
+                                        itemno = 5;
+                                        priority = 0.000000;
+                                        to="Destroy_Anti_Air";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Destroy_Anti_Air">*/
+                class Destroy_Anti_Air
+                {
+                        name = "Destroy_Anti_Air";
+                        itemno = 2;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Recon_KIA">*/
+                                class Recon_KIA
+                                {
+                                        itemno = 19;
+                                        priority = 0.000000;
+                                        to="AAF_Lose";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Anti_Air_Destroy">*/
+                                class Anti_Air_Destroy
+                                {
+                                        itemno = 6;
+                                        priority = 0.000000;
+                                        to="Overwatch_HQ";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Overwatch_HQ">*/
+                class Overwatch_HQ
+                {
+                        name = "Overwatch_HQ";
+                        itemno = 3;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Recon_KIA">*/
+                                class Recon_KIA
+                                {
+                                        itemno = 19;
+                                        priority = 0.000000;
+                                        to="AAF_Lose";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Phase_2">*/
+                                class Phase_2
+                                {
+                                        itemno = 7;
+                                        priority = 0.000000;
+                                        to="Assault_Comms_B";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Assault_Comms_B">*/
+                class Assault_Comms_B
+                {
+                        name = "Assault_Comms_B";
+                        itemno = 8;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Recon_KIA">*/
+                                class Recon_KIA
+                                {
+                                        itemno = 19;
+                                        priority = 0.000000;
+                                        to="AAF_Lose";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Comms_B_Clear">*/
+                                class Comms_B_Clear
+                                {
+                                        itemno = 11;
+                                        priority = 0.000000;
+                                        to="Overwatch_Barrac";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Assault_Comms_A">*/
+                class Assault_Comms_A
+                {
+                        name = "Assault_Comms_A";
+                        itemno = 9;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Recon_KIA">*/
+                                class Recon_KIA
+                                {
+                                        itemno = 19;
+                                        priority = 0.000000;
+                                        to="AAF_Lose";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Comms_A_Clear">*/
+                                class Comms_A_Clear
+                                {
+                                        itemno = 10;
+                                        priority = 0.000000;
+                                        to="Disable_Comms";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Overwatch_Barrac">*/
+                class Overwatch_Barrac
+                {
+                        name = "Overwatch_Barrac";
+                        itemno = 12;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Recon_KIA">*/
+                                class Recon_KIA
+                                {
+                                        itemno = 19;
+                                        priority = 0.000000;
+                                        to="AAF_Lose";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Phase_3">*/
+                                class Phase_3
+                                {
+                                        itemno = 14;
+                                        priority = 0.000000;
+                                        to="AAF_Win";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "AAF_Win">*/
+                class AAF_Win
+                {
+                        name = "AAF_Win";
+                        itemno = 13;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "AAF_Lose">*/
+                class AAF_Lose
+                {
+                        name = "AAF_Lose";
+                        itemno = 20;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                        };
+                };
+                /*%FSM</STATE>*/
+        };
+        initState="Start";
+        finalStates[] =
+        {
+                "AAF_Win",
+                "AAF_Lose",
+        };
+};
+/*%FSM</COMPILE>*/
