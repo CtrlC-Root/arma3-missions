@@ -8,11 +8,11 @@ class EditorData
 	toggles=1;
 	class ItemIDProvider
 	{
-		nextID=593;
+		nextID=626;
 	};
 	class MarkerIDProvider
 	{
-		nextID=29;
+		nextID=35;
 	};
 	class LayerIndexProvider
 	{
@@ -20,10 +20,10 @@ class EditorData
 	};
 	class Camera
 	{
-		pos[]={9829.1475,27.918346,2781.9778};
-		dir[]={0.098554999,-0.45695779,0.88414711};
-		up[]={0.050634243,0.88943213,0.45423955};
-		aside[]={0.99395883,-3.0741649e-007,-0.11079358};
+		pos[]={9810.6387,707.49194,3015.5632};
+		dir[]={-0.079449266,-0.61106265,0.78761876};
+		up[]={-0.061330821,0.79157382,0.60798967};
+		aside[]={0.99498355,-6.7909059e-007,0.10036808};
 	};
 };
 binarizationWanted=0;
@@ -217,7 +217,7 @@ class Mission
 					name="Recon";
 					class Entities
 					{
-						items=3;
+						items=4;
 						class Item0
 						{
 							dataType="Object";
@@ -742,9 +742,18 @@ class Mission
 								nAttributes=1;
 							};
 						};
+						class Item3
+						{
+							dataType="Marker";
+							position[]={9838.4648,1.2873471,2837.9038};
+							name="markerAafCobra";
+							text="Cobra";
+							type="n_recon";
+							id=625;
+						};
 					};
 					id=9;
-					atlOffset=0.00071465969;
+					atlOffset=-0.034721494;
 				};
 				class Item1
 				{
@@ -818,7 +827,7 @@ class Mission
 					name="Overwatch";
 					class Entities
 					{
-						items=2;
+						items=3;
 						class Item0
 						{
 							dataType="Object";
@@ -845,7 +854,7 @@ class Mission
 							side="Independent";
 							class Entities
 							{
-								items=2;
+								items=7;
 								class Item0
 								{
 									dataType="Object";
@@ -879,6 +888,73 @@ class Mission
 									};
 									id=507;
 									type="I_UAV_AI";
+								};
+								class Item2
+								{
+									dataType="Waypoint";
+									position[]={7971.187,31.520985,9611.8867};
+									expCond="[""aaf_cas_request""] call CC_scenario_checkFlag";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=593;
+									type="Move";
+									atlOffset=0.50000191;
+									class AttachedTo
+									{
+										id=505;
+										offset[]={0,0.5,0};
+									};
+								};
+								class Item3
+								{
+									dataType="Waypoint";
+									position[]={8999.7598,0,9613.2354};
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=594;
+									type="Move";
+									atlOffset=62.820972;
+								};
+								class Item4
+								{
+									dataType="Waypoint";
+									position[]={9000.6377,0.00022888184,5549.5439};
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=595;
+									type="Move";
+									atlOffset=32.462997;
+								};
+								class Item5
+								{
+									dataType="Waypoint";
+									position[]={9502.6748,0,4846.8301};
+									expActiv="[""aaf_cas_ready""] call CC_scenario_setFlag";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=600;
+									type="Move";
+									atlOffset=27.436172;
+								};
+								class Item6
+								{
+									dataType="Waypoint";
+									loiterRadius=400;
+									position[]={9746.4043,38.889999,3915.5029};
+									type="Loiter";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=596;
 								};
 							};
 							class Attributes
@@ -944,9 +1020,19 @@ class Mission
 								nAttributes=1;
 							};
 						};
+						class Item2
+						{
+							dataType="Marker";
+							position[]={7971.9971,30.874001,9630.6201};
+							name="markerAafCondor";
+							text="Condor";
+							type="n_uav";
+							id=598;
+							atlOffset=4.3869019e-005;
+						};
 					};
 					id=223;
-					atlOffset=1.9073486e-006;
+					atlOffset=-0.012205124;
 				};
 				class Item7
 				{
@@ -960,10 +1046,10 @@ class Mission
 				class Item8
 				{
 					dataType="Layer";
-					name="Mechanized Infantry";
+					name="Marines";
 					class Entities
 					{
-						items=8;
+						items=12;
 						class Item0
 						{
 							dataType="Object";
@@ -1005,7 +1091,7 @@ class Mission
 							side="Independent";
 							class Entities
 							{
-								items=4;
+								items=9;
 								class Item0
 								{
 									dataType="Object";
@@ -1018,11 +1104,52 @@ class Mission
 									flags=4;
 									class Attributes
 									{
-										name="vehicleAafGorgon1D";
 									};
 									id=495;
 									type="I_crew_F";
 									atlOffset=-0.01499939;
+									class CustomAttributes
+									{
+										class Attribute0
+										{
+											property="speaker";
+											expression="_this setspeaker _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Male05GRE";
+												};
+											};
+										};
+										class Attribute1
+										{
+											property="pitch";
+											expression="_this setpitch _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"SCALAR"
+														};
+													};
+													value=0.97000003;
+												};
+											};
+										};
+										nAttributes=2;
+									};
 								};
 								class Item1
 								{
@@ -1036,11 +1163,52 @@ class Mission
 									flags=4;
 									class Attributes
 									{
-										name="vehicleAafGorgon1G";
 									};
 									id=496;
 									type="I_crew_F";
 									atlOffset=-0.01499939;
+									class CustomAttributes
+									{
+										class Attribute0
+										{
+											property="speaker";
+											expression="_this setspeaker _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Male02GRE";
+												};
+											};
+										};
+										class Attribute1
+										{
+											property="pitch";
+											expression="_this setpitch _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"SCALAR"
+														};
+													};
+													value=1.01;
+												};
+											};
+										};
+										nAttributes=2;
+									};
 								};
 								class Item2
 								{
@@ -1054,7 +1222,6 @@ class Mission
 									flags=6;
 									class Attributes
 									{
-										name="vehicleAafGorgon1C";
 									};
 									id=497;
 									type="I_crew_F";
@@ -1106,7 +1273,7 @@ class Mission
 								{
 									dataType="Waypoint";
 									position[]={8319.7803,25.479267,5295.6128};
-									expCond="missionNamespace getVariable [""cc__scenario_aaf_invasion"", false];";
+									expCond="[""aaf_marines_request""] call CC_scenario_checkFlag";
 									class Effects
 									{
 									};
@@ -1120,10 +1287,72 @@ class Mission
 										offset[]={0,0.5,0};
 									};
 								};
+								class Item4
+								{
+									dataType="Waypoint";
+									position[]={8460.5596,0.99502939,4872.458};
+									expCond="[group this, ""beach""] call CC_scenario_waypointCheck";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=601;
+									type="Move";
+								};
+								class Item5
+								{
+									dataType="Waypoint";
+									position[]={9317.6895,0.928877,4540.5352};
+									combatMode="GREEN";
+									combat="AWARE";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=605;
+									type="Move";
+								};
+								class Item6
+								{
+									dataType="Waypoint";
+									position[]={9396.1875,1.3651209,4550.4141};
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=606;
+									type="Move";
+									atlOffset=8.8214874e-006;
+								};
+								class Item7
+								{
+									dataType="Waypoint";
+									position[]={9452.959,1.8233154,4526.938};
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=607;
+									type="Move";
+								};
+								class Item8
+								{
+									dataType="Waypoint";
+									position[]={9526.3213,16.395468,4414.1719};
+									type="TransportUnload";
+									expCond="[group this, ""hq_stage""] call CC_scenario_waypointCheck";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=608;
+								};
 							};
 							class Attributes
 							{
-								combatMode="GREEN";
+								name="groupGorgon1";
+								combatMode="BLUE";
+								behaviour="CARELESS";
 							};
 							class CrewLinks
 							{
@@ -1200,7 +1429,7 @@ class Mission
 							side="Independent";
 							class Entities
 							{
-								items=4;
+								items=9;
 								class Item0
 								{
 									dataType="Object";
@@ -1213,10 +1442,51 @@ class Mission
 									flags=4;
 									class Attributes
 									{
-										name="vehicleAafGorgon2D";
 									};
 									id=500;
 									type="I_crew_F";
+									class CustomAttributes
+									{
+										class Attribute0
+										{
+											property="speaker";
+											expression="_this setspeaker _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Male05GRE";
+												};
+											};
+										};
+										class Attribute1
+										{
+											property="pitch";
+											expression="_this setpitch _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"SCALAR"
+														};
+													};
+													value=1;
+												};
+											};
+										};
+										nAttributes=2;
+									};
 								};
 								class Item1
 								{
@@ -1230,10 +1500,51 @@ class Mission
 									flags=4;
 									class Attributes
 									{
-										name="vehicleAafGorgon2G";
 									};
 									id=501;
 									type="I_crew_F";
+									class CustomAttributes
+									{
+										class Attribute0
+										{
+											property="speaker";
+											expression="_this setspeaker _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Male06GRE";
+												};
+											};
+										};
+										class Attribute1
+										{
+											property="pitch";
+											expression="_this setpitch _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"SCALAR"
+														};
+													};
+													value=0.99000001;
+												};
+											};
+										};
+										nAttributes=2;
+									};
 								};
 								class Item2
 								{
@@ -1247,16 +1558,57 @@ class Mission
 									flags=6;
 									class Attributes
 									{
-										name="vehicleAafGorgon2C";
 									};
 									id=502;
 									type="I_crew_F";
+									class CustomAttributes
+									{
+										class Attribute0
+										{
+											property="speaker";
+											expression="_this setspeaker _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Male03GRE";
+												};
+											};
+										};
+										class Attribute1
+										{
+											property="pitch";
+											expression="_this setpitch _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"SCALAR"
+														};
+													};
+													value=0.97000003;
+												};
+											};
+										};
+										nAttributes=2;
+									};
 								};
 								class Item3
 								{
 									dataType="Waypoint";
 									position[]={8305.3984,25.090191,5302.9888};
-									expCond="missionNamespace getVariable [""cc__scenario_aaf_invasion"", false];";
+									expCond="[""aaf_marines_request""] call CC_scenario_checkFlag";
 									class Effects
 									{
 									};
@@ -1270,10 +1622,71 @@ class Mission
 										offset[]={0,0.5,0};
 									};
 								};
+								class Item4
+								{
+									dataType="Waypoint";
+									position[]={8447.0518,1.3619434,4877.1182};
+									expCond="[group this, ""beach""] call CC_scenario_waypointCheck";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=602;
+									type="Move";
+								};
+								class Item5
+								{
+									dataType="Waypoint";
+									position[]={9317.7188,0.94878113,4540.1909};
+									combatMode="GREEN";
+									combat="AWARE";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=609;
+									type="Move";
+								};
+								class Item6
+								{
+									dataType="Waypoint";
+									position[]={9396.0908,1.384311,4550.1704};
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=610;
+									type="Move";
+								};
+								class Item7
+								{
+									dataType="Waypoint";
+									position[]={9452.6836,1.8326294,4526.7236};
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=611;
+									type="Move";
+								};
+								class Item8
+								{
+									dataType="Waypoint";
+									position[]={9505.0273,17.121613,4405.3989};
+									type="TransportUnload";
+									expCond="[group this, ""hq_stage""] call CC_scenario_waypointCheck";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=612;
+								};
 							};
 							class Attributes
 							{
-								combatMode="GREEN";
+								name="groupGorgon2";
+								combatMode="BLUE";
+								behaviour="CARELESS";
 							};
 							class CrewLinks
 							{
@@ -1349,7 +1762,7 @@ class Mission
 							side="Independent";
 							class Entities
 							{
-								items=4;
+								items=9;
 								class Item0
 								{
 									dataType="Object";
@@ -1362,10 +1775,51 @@ class Mission
 									flags=4;
 									class Attributes
 									{
-										name="vehicleAafStrider1D";
 									};
 									id=515;
 									type="I_soldier_F";
+									class CustomAttributes
+									{
+										class Attribute0
+										{
+											property="speaker";
+											expression="_this setspeaker _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Male01GRE";
+												};
+											};
+										};
+										class Attribute1
+										{
+											property="pitch";
+											expression="_this setpitch _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"SCALAR"
+														};
+													};
+													value=1.03;
+												};
+											};
+										};
+										nAttributes=2;
+									};
 								};
 								class Item1
 								{
@@ -1379,10 +1833,51 @@ class Mission
 									flags=4;
 									class Attributes
 									{
-										name="vehicleAafStrider1G";
 									};
 									id=516;
 									type="I_soldier_F";
+									class CustomAttributes
+									{
+										class Attribute0
+										{
+											property="speaker";
+											expression="_this setspeaker _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Male03GRE";
+												};
+											};
+										};
+										class Attribute1
+										{
+											property="pitch";
+											expression="_this setpitch _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"SCALAR"
+														};
+													};
+													value=1.02;
+												};
+											};
+										};
+										nAttributes=2;
+									};
 								};
 								class Item2
 								{
@@ -1396,7 +1891,6 @@ class Mission
 									flags=6;
 									class Attributes
 									{
-										name="vehicleAafStrider1C";
 									};
 									id=517;
 									type="I_soldier_F";
@@ -1447,7 +1941,7 @@ class Mission
 								{
 									dataType="Waypoint";
 									position[]={8291.2861,24.519087,5311.2222};
-									expCond="missionNamespace getVariable [""cc__scenario_aaf_invasion"", false];";
+									expCond="[""aaf_marines_request""] call CC_scenario_checkFlag";
 									class Effects
 									{
 									};
@@ -1461,10 +1955,74 @@ class Mission
 										offset[]={0,0.5,0};
 									};
 								};
+								class Item4
+								{
+									dataType="Waypoint";
+									position[]={8449.6152,1.6764452,4889.27};
+									expCond="[group this, ""beach""] call CC_scenario_waypointCheck";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=603;
+									type="Move";
+								};
+								class Item5
+								{
+									dataType="Waypoint";
+									position[]={9317.4404,0.89818728,4540.873};
+									combatMode="GREEN";
+									combat="AWARE";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=613;
+									type="Move";
+								};
+								class Item6
+								{
+									dataType="Waypoint";
+									position[]={9396,1.3625307,4550.6045};
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=614;
+									type="Move";
+									atlOffset=-1.8715858e-005;
+								};
+								class Item7
+								{
+									dataType="Waypoint";
+									position[]={9452.71,1.7954402,4527.311};
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=615;
+									type="Move";
+									atlOffset=-1.8835068e-005;
+								};
+								class Item8
+								{
+									dataType="Waypoint";
+									position[]={9520.2734,13.903668,4443.1929};
+									expCond="[group this, ""hq_stage""] call CC_scenario_waypointCheck";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=616;
+									type="Move";
+									atlOffset=9.5367432e-007;
+								};
 							};
 							class Attributes
 							{
-								combatMode="GREEN";
+								name="groupStrider1";
+								combatMode="BLUE";
+								behaviour="CARELESS";
 							};
 							class CrewLinks
 							{
@@ -1540,7 +2098,7 @@ class Mission
 							side="Independent";
 							class Entities
 							{
-								items=4;
+								items=9;
 								class Item0
 								{
 									dataType="Object";
@@ -1553,11 +2111,52 @@ class Mission
 									flags=4;
 									class Attributes
 									{
-										name="vehicleAafStrider2D";
 									};
 									id=520;
 									type="I_soldier_F";
 									atlOffset=-0.01199913;
+									class CustomAttributes
+									{
+										class Attribute0
+										{
+											property="speaker";
+											expression="_this setspeaker _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Male03GRE";
+												};
+											};
+										};
+										class Attribute1
+										{
+											property="pitch";
+											expression="_this setpitch _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"SCALAR"
+														};
+													};
+													value=0.97000003;
+												};
+											};
+										};
+										nAttributes=2;
+									};
 								};
 								class Item1
 								{
@@ -1571,11 +2170,52 @@ class Mission
 									flags=4;
 									class Attributes
 									{
-										name="vehicleAafStrider2G";
 									};
 									id=521;
 									type="I_soldier_F";
 									atlOffset=-0.01199913;
+									class CustomAttributes
+									{
+										class Attribute0
+										{
+											property="speaker";
+											expression="_this setspeaker _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Male03GRE";
+												};
+											};
+										};
+										class Attribute1
+										{
+											property="pitch";
+											expression="_this setpitch _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"SCALAR"
+														};
+													};
+													value=1.03;
+												};
+											};
+										};
+										nAttributes=2;
+									};
 								};
 								class Item2
 								{
@@ -1589,17 +2229,58 @@ class Mission
 									flags=6;
 									class Attributes
 									{
-										name="vehicleAafStrider2C";
 									};
 									id=522;
 									type="I_soldier_F";
 									atlOffset=-0.01199913;
+									class CustomAttributes
+									{
+										class Attribute0
+										{
+											property="speaker";
+											expression="_this setspeaker _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="Male02GRE";
+												};
+											};
+										};
+										class Attribute1
+										{
+											property="pitch";
+											expression="_this setpitch _value;";
+											class Value
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"SCALAR"
+														};
+													};
+													value=1.05;
+												};
+											};
+										};
+										nAttributes=2;
+									};
 								};
 								class Item3
 								{
 									dataType="Waypoint";
 									position[]={8278.71,24.47151,5317.751};
-									expCond="missionNamespace getVariable [""cc__scenario_aaf_invasion"", false];";
+									expCond="[""aaf_marines_request""] call CC_scenario_checkFlag";
 									class Effects
 									{
 									};
@@ -1613,10 +2294,74 @@ class Mission
 										offset[]={0,0.5,0};
 									};
 								};
+								class Item4
+								{
+									dataType="Waypoint";
+									position[]={8435.8711,1.1725836,4890.04};
+									expCond="[group this, ""beach""] call CC_scenario_waypointCheck";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=604;
+									type="Move";
+								};
+								class Item5
+								{
+									dataType="Waypoint";
+									position[]={9317.4258,0.91810793,4540.4878};
+									combatMode="GREEN";
+									combat="AWARE";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=617;
+									type="Move";
+								};
+								class Item6
+								{
+									dataType="Waypoint";
+									position[]={9395.9629,1.3778553,4550.3784};
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=618;
+									type="Move";
+									atlOffset=-8.4638596e-006;
+								};
+								class Item7
+								{
+									dataType="Waypoint";
+									position[]={9452.4736,1.8080416,4527.0552};
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=619;
+									type="Move";
+									atlOffset=-1.513958e-005;
+								};
+								class Item8
+								{
+									dataType="Waypoint";
+									position[]={9484.2861,15.341446,4422.9619};
+									expCond="[group this, ""hq_stage""] call CC_scenario_waypointCheck";
+									class Effects
+									{
+									};
+									showWP="NEVER";
+									id=620;
+									type="Move";
+									atlOffset=1.9073486e-006;
+								};
 							};
 							class Attributes
 							{
-								combatMode="GREEN";
+								name="groupStrider2";
+								combatMode="BLUE";
+								behaviour="CARELESS";
 							};
 							class CrewLinks
 							{
@@ -1722,13 +2467,53 @@ class Mission
 							type="I_MRAP_03_hmg_F";
 							atlOffset=-0.01199913;
 						};
+						class Item8
+						{
+							dataType="Marker";
+							position[]={8321.5596,24.375,5308.6162};
+							name="markerAafGorgon1";
+							text="Gorgon 1";
+							type="n_mech_inf";
+							id=621;
+							atlOffset=0.00029182434;
+						};
+						class Item9
+						{
+							dataType="Marker";
+							position[]={8306.9561,23.987,5314.5981};
+							name="markerAafGorgon2";
+							text="Gorgon 2";
+							type="n_mech_inf";
+							id=622;
+							atlOffset=0.00025177002;
+						};
+						class Item10
+						{
+							dataType="Marker";
+							position[]={8293.2324,23.166,5324.0981};
+							name="markerAafStrider1";
+							text="Strider 1";
+							type="n_armor";
+							id=623;
+							atlOffset=0.00040626526;
+						};
+						class Item11
+						{
+							dataType="Marker";
+							position[]={8279.1572,23.115999,5329.2012};
+							name="markerAafStrider2";
+							text="Strider 2";
+							type="n_armor";
+							id=624;
+							atlOffset=-7.8201294e-005;
+						};
 					};
 					id=318;
-					atlOffset=0.10490799;
+					atlOffset=0.21273232;
 				};
 			};
 			id=8;
-			atlOffset=-127.07806;
+			atlOffset=-128.0932;
 		};
 		class Item1
 		{

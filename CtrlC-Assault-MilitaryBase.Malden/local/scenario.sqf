@@ -9,7 +9,10 @@ CC_Scenario_init = {
 CC__scenario_server_init = {
   // flags
   CC__scenario_flags = [
-    ["csat_comms_disabled", false]
+    ["csat_comms_disabled", false],
+    ["aaf_cas_request", false],
+    ["aaf_cas_ready", false],
+    ["aaf_marines_request", false]
   ];
 
   publicVariable "CC__scenario_flags";
@@ -23,6 +26,40 @@ CC__scenario_server_init = {
   ];
 
   publicVariable "CC__scenario_waypoints";
+
+  // TODO: use the module server task for this instead
+  CC__scenario_markers = [
+    ["markerAafCobra", groupAafCobra],
+    ["markerAafCondor", vehicleAafCondor],
+    ["markerAafGorgon1", vehicleAafGorgon1],
+    ["markerAafGorgon2", vehicleAafGorgon2],
+    ["markerAafStrider1", vehicleAafStrider1],
+    ["markerAafStrider2", vehicleAafStrider2]
+  ];
+
+  0 = [] spawn {
+    while { true } do {
+      // update markers
+      {
+        private _marker = _x select 0;
+        private _target = _x select 1;
+
+        if (typeName _target == "GROUP") then {
+          _target = leader _target;
+        };
+
+        // update marker to unit's
+        private _position = getPos _target;
+        _marker setMarkerPos [
+          _position select 0,
+          _position select 1
+        ];
+      } forEach CC__scenario_markers;
+
+      // XXX: rate limit
+      sleep 0.25;
+    };
+  };
 
   // settings
   [
