@@ -59,6 +59,8 @@ usually refers to a distinct location on the map.
   * https://community.bistudio.com/wiki/Category:Arma_3:_Functions
   * https://community.bistudio.com/wiki/Arma_3:_Event_Handlers
   * https://community.bistudio.com/wiki/Arma_3_Actions
+* Editor
+  * https://community.bistudio.com/wiki/Arma_3_Functions_Library
 * Engine
   * https://community.bistudio.com/wiki/Initialization_Order
   * https://resources.bisimulations.com/wiki/Locality_in_Multiplayer
