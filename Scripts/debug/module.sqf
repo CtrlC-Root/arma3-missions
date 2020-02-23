@@ -59,11 +59,11 @@ CC__debug_enable_local = {
     "DEBUG: Toggle Status HUD",
     CC__debug_toggle_hud,
     [],
-    0.1,
+    100,
     false,
     true,
     "",
-    "(_target getVariable ['cc_debug', false]) && (_target == _this)"
+    "(_originalTarget getVariable ['cc_debug', false]) && (_originalTarget == _this)"
   ]];
 
   // store user actions
