@@ -4,15 +4,19 @@ waitUntil { !isNil "BIS_fnc_init" };
 // load functions
 private _functions = [
   ["util", "CC_fnc_arrayFlatten"],
+  ["util", "CC_fnc_arrayFormat"],
   ["util", "CC_fnc_mathRound"],
   ["util", "CC_fnc_vehicleContains"],
   ["util", "CC_fnc_vehicleUnloadUnit"],
   ["util", "CC_fnc_vehicleUnload"],
+  ["util", "CC_fnc_addActions"],
 
   ["mod", "CC_fnc_moduleInit"],
   ["mod", "CC_fnc_moduleLog"],
   ["mod", "CC_fnc_moduleEventRegister"],
-  ["mod", "CC_fnc_moduleEventFire"]
+  ["mod", "CC_fnc_moduleEventFire"],
+
+  ["convoy", "CC_fnc_convoyRecordRoute"]
 ];
 
 {
