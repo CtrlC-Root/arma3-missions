@@ -16,7 +16,8 @@ private _functions = [
   ["mod", "CC_fnc_moduleEventRegister"],
   ["mod", "CC_fnc_moduleEventFire"],
 
-  ["convoy", "CC_fnc_convoyRecordRoute"]
+  ["convoy", "CC_fnc_convoyRecordRoute"],
+  ["convoy", "CC_fnc_convoyShowRoute"]
 ];
 
 {
