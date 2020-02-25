@@ -31,14 +31,116 @@ if (_name == "") exitWith {
   ["empty module name"] call BIS_fnc_error;
 };
 
-// initialize client and exit early
+// define the server task worker
+private _serverTaskWorker = {
+  // [[module name, [script handle, start time, elapsed time, last result]], ...]
+  // last result -> true if task should run again
+  CC__module_tasks = [];
+
+  // manage server tasks while the module system is active
+  while { !(isNil "CC__modules") } do {
+    // start server tasks and track elapsed time for running tasks
+    {
+      // parse the module settings
+      _x params ["_moduleName", "_moduleSettings"];
+      _moduleSettings params ["_events", "_serverTask", "_statusTask"];
+
+      // retrieve or create the cache entry
+      private _state = [CC__module_tasks, _moduleName] call BIS_fnc_getFromPairs;
+      if (isNil "_state") then {
+        // scriptDone scriptNull -> true
+        _state = [scriptNull, 0, 0, true];
+        CC__module_tasks pushBack [_moduleName, _state];
+      };
+
+      // parse the state values
+      _state params ["_script", "_startTime", "_elapsedTime", "_lastResult"];
+
+      // check if the task is finished running
+      if (scriptDone _script) then {
+        // run the task again if the last result was true
+        if (_lastResult) then {
+          [[], _serverTask, _state] call CC_fnc_timedSpawn;
+        };
+      } else {
+        // update the elapsed time
+        _elapsedTime = time - _startTime;
+        _state set [2, _elapsedTime];
+      };
+    } forEach CC__modules;
+
+    // terminate tasks and prune cache entries
+    CC__module_tasks = CC__module_tasks select {
+      // parse the cache settings
+      _x params ["_moduleName", "_state"];
+      _state params ["_script", "_startTime", "_elapsedTime", "_lastResult"];
+
+      // determine if the module is still loaded
+      private _moduleIndex = [CC__modules, _moduleName] call BIS_fnc_findInPairs;
+      private _moduleLoaded = (_moduleIndex >= 0);
+
+      // prune the server task if the module is no longer loaded
+      if (!_moduleLoaded) exitWith {
+        // terminate the script if it's still running
+        if (!(scriptDone _script)) then {
+          [
+            "module",
+            "server_task",
+            "terminating task for unloaded module: %1",
+            [_moduleName]
+          ] call CC_fnc_moduleLog;
+
+          terminate _script;
+        };
+
+        [
+          "module",
+          "server_task",
+          "pruning task for unloaded module: %1",
+          [_moduleName]
+        ] call CC_fnc_moduleLog;
+
+        // drop the cache entry
+        false;
+      };
+
+      // keep the cache entry
+      true;
+    };
+
+    // rate limit to 10 Hz
+    sleep (1.0 / 10.0);
+  };
+
+  // stop all running tasks
+  {
+    _x params ["_moduleName", "_state"];
+    _state params ["_script", "_startTime", "_elapsedTime", "_lastResult"];
+
+    if (!(scriptDone _script)) then {
+      terminate _script;
+    };
+  } forEach CC__module_tasks;
+
+  // erase variables
+  CC__module_tasks = nil;
+};
+
+// initialize the module
 if (isServer) then {
+  // initialize the module's server state
   ["module", "init", "server: %1", [_name]] call CC_fnc_moduleLog;
 
   // initialize global and local module lists
   if (isNil "CC__modules" || isNil "CC__modules_local") then {
     CC__modules = [];
     CC__modules_local = [];
+  };
+
+  // start the module task worker
+  if (isNil "CC__modules_server_task") then {
+    ["module", "init", "starting task worker"] call CC_fnc_moduleLog;
+    CC__modules_server_task = [] spawn _serverTaskWorker;
   };
 
   // check if the module is already initialized
@@ -62,9 +164,8 @@ if (isServer) then {
     [_events, _serverTask, _statusTask]
   ] call BIS_fnc_setToPairs;
   publicVariable "CC__modules";
-
-  // TODO: start the server worker if necessary
 } else {
+  // initialize the module's client state
   ["module", "init", "client: %1", [_name]] call CC_fnc_moduleLog;
 
   // initialize the local module list
