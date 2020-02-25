@@ -21,11 +21,12 @@ _scripts = [
 
 // initialize modules
 hintSilent "Initializing modules...";
-[] call CC_debug_init; // XXX: debugging
+[] call CC_debug_init; // XXX: initialize debug module
+[] call CC_debug_config; // XXX: enable debug interface for player
 
 // initialize scenario
 hintSilent "Initializing scenario...";
-[] call CC_Scenario_init;
+[] call CC_scenario_init;
 
 // clear the screen
 hintSilent "";

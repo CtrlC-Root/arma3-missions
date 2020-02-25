@@ -1,12 +1,12 @@
-CC_Scenario_init = {
+CC_scenario_init = {
   [
     "scenario",
-    CC__scenario_server_init,
-    CC__scenario_client_init
+    CC__scenario_serverInit,
+    CC__scenario_clientInit
   ] call CC_fnc_moduleInit;
 };
 
-CC__scenario_server_init = {
+CC__scenario_serverInit = {
   // flags
   CC__scenario_flags = [
     ["csat_comms_disabled", false],
@@ -39,12 +39,29 @@ CC__scenario_server_init = {
   // settings
   [
     [],
-    CC__scenario_server_task,
-    CC__scenario_status
+    CC__scenario_serverTask,
+    CC__scenario_statusTask
   ];
 };
 
-CC__scenario_server_task = {
+CC__scenario_clientInit = {
+  // XXX: shortcut to disable comms
+  {
+    _x addAction [
+      "Disable Comms",
+      { ["csat_comms_disabled"] call CC_scenario_setFlag; },
+      nil,
+      1.5,
+      false,
+      true,
+      "",
+      "!(['csat_comms_disabled'] call CC_scenario_checkFlag)",
+      5
+    ];
+  } forEach [deviceTerminalA, deviceTerminalB];
+};
+
+CC__scenario_serverTask = {
   // update markers
   {
     private _marker = _x select 0;
@@ -66,24 +83,7 @@ CC__scenario_server_task = {
   true;
 };
 
-CC__scenario_client_init = {
-  // XXX: shortcut to disable comms
-  {
-    _x addAction [
-      "Disable Comms",
-      { ["csat_comms_disabled"] call CC_scenario_setFlag; },
-      nil,
-      1.5,
-      false,
-      true,
-      "",
-      "!(['csat_comms_disabled'] call CC_scenario_checkFlag)",
-      5
-    ];
-  } forEach [deviceTerminalA, deviceTerminalB];
-};
-
-CC__scenario_status = {
+CC__scenario_statusTask = {
   private _parts = [];
 
   {
