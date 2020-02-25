@@ -10,6 +10,7 @@ private _functions = [
   ["util", "CC_fnc_vehicleUnloadUnit"],
   ["util", "CC_fnc_vehicleUnload"],
   ["util", "CC_fnc_addActions"],
+  ["util", "CC_fnc_timedSpawn"],
 
   ["mod", "CC_fnc_moduleInit"],
   ["mod", "CC_fnc_moduleLog"],
