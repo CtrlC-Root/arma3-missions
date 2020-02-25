@@ -10,7 +10,7 @@ CC__debug_serverInit = {
   // settings
   [
     [],
-    { False; },
+    { false; },
     { ""; }
   ];
 };
