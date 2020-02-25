@@ -8,7 +8,7 @@ class EditorData
 	toggles=1;
 	class ItemIDProvider
 	{
-		nextID=626;
+		nextID=707;
 	};
 	class MarkerIDProvider
 	{
@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=190;
+		nextID=232;
 	};
 	class Camera
 	{
-		pos[]={9810.6387,707.49194,3015.5632};
-		dir[]={-0.079449266,-0.61106265,0.78761876};
-		up[]={-0.061330821,0.79157382,0.60798967};
-		aside[]={0.99498355,-6.7909059e-007,0.10036808};
+		pos[]={9825.5771,54.308994,2762.9084};
+		dir[]={-0.048264742,-0.46986741,0.88146031};
+		up[]={-0.025692595,0.88269287,0.46922827};
+		aside[]={0.99853796,-1.5444821e-006,0.054674413};
 	};
 };
 binarizationWanted=0;
@@ -179,12 +179,40 @@ class AddonsMetaData
 randomSeed=6634407;
 class ScenarioData
 {
-	author="ctrlc-root";
+	author="CtrlC-Root";
+};
+class CustomAttributes
+{
+	class Category0
+	{
+		name="Scenario";
+		class Attribute0
+		{
+			property="EnableDebugConsole";
+			expression="true";
+			class Value
+			{
+				class data
+				{
+					class type
+					{
+						type[]=
+						{
+							"SCALAR"
+						};
+					};
+					value=1;
+				};
+			};
+		};
+		nAttributes=1;
+	};
 };
 class Mission
 {
 	class Intel
 	{
+		briefingName="CtrlC-Assault-MilitaryBase";
 		timeOfChanges=1800.0002;
 		startWeather=0.30000001;
 		startWind=0.1;
@@ -1091,7 +1119,7 @@ class Mission
 							side="Independent";
 							class Entities
 							{
-								items=9;
+								items=6;
 								class Item0
 								{
 									dataType="Object";
@@ -1278,7 +1306,7 @@ class Mission
 									{
 									};
 									showWP="NEVER";
-									id=523;
+									id=651;
 									type="Move";
 									atlOffset=0.48500061;
 									class AttachedTo
@@ -1290,69 +1318,30 @@ class Mission
 								class Item4
 								{
 									dataType="Waypoint";
-									position[]={8460.5596,0.99502939,4872.458};
-									expCond="[group this, ""beach""] call CC_scenario_waypointCheck";
+									position[]={8316.7227,25.204819,5275.6709};
 									class Effects
 									{
 									};
 									showWP="NEVER";
-									id=601;
+									id=652;
 									type="Move";
 								};
 								class Item5
 								{
 									dataType="Waypoint";
-									position[]={9317.6895,0.928877,4540.5352};
-									combatMode="GREEN";
-									combat="AWARE";
+									position[]={8338.8594,24.74,5263.3179};
 									class Effects
 									{
 									};
 									showWP="NEVER";
-									id=605;
+									id=653;
 									type="Move";
-								};
-								class Item6
-								{
-									dataType="Waypoint";
-									position[]={9396.1875,1.3651209,4550.4141};
-									class Effects
-									{
-									};
-									showWP="NEVER";
-									id=606;
-									type="Move";
-									atlOffset=8.8214874e-006;
-								};
-								class Item7
-								{
-									dataType="Waypoint";
-									position[]={9452.959,1.8233154,4526.938};
-									class Effects
-									{
-									};
-									showWP="NEVER";
-									id=607;
-									type="Move";
-								};
-								class Item8
-								{
-									dataType="Waypoint";
-									position[]={9526.3213,16.395468,4414.1719};
-									type="TransportUnload";
-									expCond="[group this, ""hq_stage""] call CC_scenario_waypointCheck";
-									class Effects
-									{
-									};
-									showWP="NEVER";
-									id=608;
 								};
 							};
 							class Attributes
 							{
 								name="groupGorgon1";
 								combatMode="BLUE";
-								behaviour="CARELESS";
 							};
 							class CrewLinks
 							{
@@ -1429,7 +1418,7 @@ class Mission
 							side="Independent";
 							class Entities
 							{
-								items=9;
+								items=6;
 								class Item0
 								{
 									dataType="Object";
@@ -1613,7 +1602,7 @@ class Mission
 									{
 									};
 									showWP="NEVER";
-									id=527;
+									id=658;
 									type="Move";
 									atlOffset=0.5;
 									class AttachedTo
@@ -1625,68 +1614,30 @@ class Mission
 								class Item4
 								{
 									dataType="Waypoint";
-									position[]={8447.0518,1.3619434,4877.1182};
-									expCond="[group this, ""beach""] call CC_scenario_waypointCheck";
+									position[]={8302.4063,24.807505,5283.647};
 									class Effects
 									{
 									};
 									showWP="NEVER";
-									id=602;
+									id=659;
 									type="Move";
 								};
 								class Item5
 								{
 									dataType="Waypoint";
-									position[]={9317.7188,0.94878113,4540.1909};
-									combatMode="GREEN";
-									combat="AWARE";
+									position[]={8338.833,24.74,5263.2793};
 									class Effects
 									{
 									};
 									showWP="NEVER";
-									id=609;
+									id=660;
 									type="Move";
-								};
-								class Item6
-								{
-									dataType="Waypoint";
-									position[]={9396.0908,1.384311,4550.1704};
-									class Effects
-									{
-									};
-									showWP="NEVER";
-									id=610;
-									type="Move";
-								};
-								class Item7
-								{
-									dataType="Waypoint";
-									position[]={9452.6836,1.8326294,4526.7236};
-									class Effects
-									{
-									};
-									showWP="NEVER";
-									id=611;
-									type="Move";
-								};
-								class Item8
-								{
-									dataType="Waypoint";
-									position[]={9505.0273,17.121613,4405.3989};
-									type="TransportUnload";
-									expCond="[group this, ""hq_stage""] call CC_scenario_waypointCheck";
-									class Effects
-									{
-									};
-									showWP="NEVER";
-									id=612;
 								};
 							};
 							class Attributes
 							{
 								name="groupGorgon2";
 								combatMode="BLUE";
-								behaviour="CARELESS";
 							};
 							class CrewLinks
 							{
@@ -1762,7 +1713,7 @@ class Mission
 							side="Independent";
 							class Entities
 							{
-								items=9;
+								items=6;
 								class Item0
 								{
 									dataType="Object";
@@ -1946,7 +1897,7 @@ class Mission
 									{
 									};
 									showWP="NEVER";
-									id=531;
+									id=665;
 									type="Move";
 									atlOffset=0.5;
 									class AttachedTo
@@ -1958,71 +1909,30 @@ class Mission
 								class Item4
 								{
 									dataType="Waypoint";
-									position[]={8449.6152,1.6764452,4889.27};
-									expCond="[group this, ""beach""] call CC_scenario_waypointCheck";
+									position[]={8288.5518,24.172342,5291.3931};
 									class Effects
 									{
 									};
 									showWP="NEVER";
-									id=603;
+									id=666;
 									type="Move";
 								};
 								class Item5
 								{
 									dataType="Waypoint";
-									position[]={9317.4404,0.89818728,4540.873};
-									combatMode="GREEN";
-									combat="AWARE";
+									position[]={8338.8203,24.74,5263.2441};
 									class Effects
 									{
 									};
 									showWP="NEVER";
-									id=613;
+									id=667;
 									type="Move";
-								};
-								class Item6
-								{
-									dataType="Waypoint";
-									position[]={9396,1.3625307,4550.6045};
-									class Effects
-									{
-									};
-									showWP="NEVER";
-									id=614;
-									type="Move";
-									atlOffset=-1.8715858e-005;
-								};
-								class Item7
-								{
-									dataType="Waypoint";
-									position[]={9452.71,1.7954402,4527.311};
-									class Effects
-									{
-									};
-									showWP="NEVER";
-									id=615;
-									type="Move";
-									atlOffset=-1.8835068e-005;
-								};
-								class Item8
-								{
-									dataType="Waypoint";
-									position[]={9520.2734,13.903668,4443.1929};
-									expCond="[group this, ""hq_stage""] call CC_scenario_waypointCheck";
-									class Effects
-									{
-									};
-									showWP="NEVER";
-									id=616;
-									type="Move";
-									atlOffset=9.5367432e-007;
 								};
 							};
 							class Attributes
 							{
 								name="groupStrider1";
 								combatMode="BLUE";
-								behaviour="CARELESS";
 							};
 							class CrewLinks
 							{
@@ -2098,7 +2008,7 @@ class Mission
 							side="Independent";
 							class Entities
 							{
-								items=9;
+								items=6;
 								class Item0
 								{
 									dataType="Object";
@@ -2285,7 +2195,7 @@ class Mission
 									{
 									};
 									showWP="NEVER";
-									id=535;
+									id=672;
 									type="Move";
 									atlOffset=0.48800087;
 									class AttachedTo
@@ -2297,71 +2207,30 @@ class Mission
 								class Item4
 								{
 									dataType="Waypoint";
-									position[]={8435.8711,1.1725836,4890.04};
-									expCond="[group this, ""beach""] call CC_scenario_waypointCheck";
+									position[]={8277.1543,23.539871,5297.7119};
 									class Effects
 									{
 									};
 									showWP="NEVER";
-									id=604;
+									id=673;
 									type="Move";
 								};
 								class Item5
 								{
 									dataType="Waypoint";
-									position[]={9317.4258,0.91810793,4540.4878};
-									combatMode="GREEN";
-									combat="AWARE";
+									position[]={8338.7949,24.74,5263.2686};
 									class Effects
 									{
 									};
 									showWP="NEVER";
-									id=617;
+									id=674;
 									type="Move";
-								};
-								class Item6
-								{
-									dataType="Waypoint";
-									position[]={9395.9629,1.3778553,4550.3784};
-									class Effects
-									{
-									};
-									showWP="NEVER";
-									id=618;
-									type="Move";
-									atlOffset=-8.4638596e-006;
-								};
-								class Item7
-								{
-									dataType="Waypoint";
-									position[]={9452.4736,1.8080416,4527.0552};
-									class Effects
-									{
-									};
-									showWP="NEVER";
-									id=619;
-									type="Move";
-									atlOffset=-1.513958e-005;
-								};
-								class Item8
-								{
-									dataType="Waypoint";
-									position[]={9484.2861,15.341446,4422.9619};
-									expCond="[group this, ""hq_stage""] call CC_scenario_waypointCheck";
-									class Effects
-									{
-									};
-									showWP="NEVER";
-									id=620;
-									type="Move";
-									atlOffset=1.9073486e-006;
 								};
 							};
 							class Attributes
 							{
 								name="groupStrider2";
 								combatMode="BLUE";
-								behaviour="CARELESS";
 							};
 							class CrewLinks
 							{
@@ -4498,11 +4367,11 @@ class Mission
 	{
 		class LinkIDProvider
 		{
-			nextID=4;
+			nextID=3;
 		};
 		class Links
 		{
-			items=4;
+			items=3;
 			class Item0
 			{
 				linkID=0;
@@ -4528,16 +4397,6 @@ class Mission
 				linkID=2;
 				item0=66;
 				item1=348;
-				class CustomData
-				{
-					type="Sync";
-				};
-			};
-			class Item3
-			{
-				linkID=3;
-				item0=66;
-				item1=30;
 				class CustomData
 				{
 					type="Sync";

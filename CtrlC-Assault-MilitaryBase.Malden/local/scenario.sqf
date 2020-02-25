@@ -20,14 +20,13 @@ CC__scenario_server_init = {
   // waypoints
   private _aafVehicleGroups = [groupGorgon1, groupGorgon2, groupStrider1, groupStrider2];
   CC__scenario_waypoints = [
-    ["beach", _aafVehicleGroups + []],
-    ["hq_stage", _aafVehicleGroups + []],
-    ["hq_exfil", _aafVehicleGroups + []]
+    ["aaf_marines_beach", +_aafVehicleGroups],
+    ["aaf_marines_insert", +_aafVehicleGroups]
   ];
 
   publicVariable "CC__scenario_waypoints";
 
-  // TODO: use the module server task for this instead
+  // dynamic markers
   CC__scenario_markers = [
     ["markerAafCobra", groupAafCobra],
     ["markerAafCondor", vehicleAafCondor],
@@ -37,36 +36,34 @@ CC__scenario_server_init = {
     ["markerAafStrider2", vehicleAafStrider2]
   ];
 
-  0 = [] spawn {
-    while { true } do {
-      // update markers
-      {
-        private _marker = _x select 0;
-        private _target = _x select 1;
-
-        if (typeName _target == "GROUP") then {
-          _target = leader _target;
-        };
-
-        // update marker to unit's
-        private _position = getPos _target;
-        _marker setMarkerPos [
-          _position select 0,
-          _position select 1
-        ];
-      } forEach CC__scenario_markers;
-
-      // XXX: rate limit
-      sleep 0.25;
-    };
-  };
-
   // settings
   [
     [],
-    { False; },
+    CC__scenario_server_task,
     CC__scenario_status
   ];
+};
+
+CC__scenario_server_task = {
+  // update markers
+  {
+    private _marker = _x select 0;
+    private _target = _x select 1;
+
+    if (typeName _target == "GROUP") then {
+      _target = leader _target;
+    };
+
+    // update marker to unit's
+    private _position = getPos _target;
+    _marker setMarkerPos [
+      _position select 0,
+      _position select 1
+    ];
+  } forEach CC__scenario_markers;
+
+  // run again
+  true;
 };
 
 CC__scenario_client_init = {
