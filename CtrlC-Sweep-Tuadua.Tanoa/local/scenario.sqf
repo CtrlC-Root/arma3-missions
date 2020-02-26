@@ -29,6 +29,28 @@ CC__scenario_serverInit = {
     ["markerNatoKilo", groupNatoKilo]
   ];
 
+  // detect explosions that damage the weapon cache crates
+  CC__scenario_syndikat_crates = [
+    crateSyndikatAmmo,
+    crateSyndikatWeapons,
+    crateSyndikatLaunchers
+  ];
+
+  {
+    _x addEventHandler ["Explosion", {
+      params ["_object", "_damage"];
+      if (_damage >= 0.4) exitWith {
+        // destroy all the crate objects
+        {
+          _x setDamage 1;
+        } forEach CC__scenario_syndikat_crates;
+
+        // set the scenario flag
+        ["nato_cache_destroyed"] call CC_scenario_setFlag;
+      };
+    }];
+  } forEach CC__scenario_syndikat_crates;
+
   // module settings
   [
     [
@@ -44,24 +66,6 @@ CC__scenario_serverInit = {
     CC__scenario_debugStatus,
     []
   ];
-};
-
-CC__scenario_fsmReportState = {
-  // only run on the server
-  if (!isServer) exitWith {
-    ["not called on server"] call BIS_fnc_error;
-  };
-
-  // retrieve parameters
-  params [
-    ["_state", "", [""]]
-  ];
-
-  // debug
-  ["scenario", "fsm_state", "%1", [_state]] call CC_fnc_moduleLog;
-
-  // run event handlers
-  ["scenario", format ["fsm_%1", _state], [], true] call CC_fnc_moduleEventFire;
 };
 
 CC__scenario_clientInit = {
@@ -156,27 +160,119 @@ CC__scenario_debugStatus = {
   _parts joinString "\n";
 };
 
+CC__scenario_fsmReportState = {
+  // only run on the server
+  if (!isServer) exitWith {
+    ["not called on server"] call BIS_fnc_error;
+  };
+
+  // retrieve parameters
+  params [
+    ["_state", "", [""]]
+  ];
+
+  // debug
+  ["scenario", "fsm_state", "%1", [_state]] call CC_fnc_moduleLog;
+
+  // run event handlers
+  ["scenario", format ["fsm_%1", _state], [], true] call CC_fnc_moduleEventFire;
+};
+
 CC__scenario_fsm_insert = {
-  systemChat "FSM Insert";
+  // request transport for insert
+  ["nato_insert_request"] call CC_scenario_setFlag;
+
+  // update tasks
+  [
+    groupNatoViper,
+    "insert",
+    ["Insert into Tuadua island.", "Insert", ""],
+    getMarkerPos "markerNatoInsert",
+    "ASSIGNED",
+    2,
+    false,
+    "insert",
+    false
+  ] call BIS_fnc_taskCreate;
+
+  // TODO: fade in cinematic
 };
 
 CC__scenario_fsm_sweep = {
-  systemChat "FSM Sweep";
+  // update tasks
+  ["insert", "SUCCEEDED"] call BIS_fnc_taskSetState;
+
+  [
+    groupNatoViper,
+    "sweep",
+    ["Sweep the village for Syndikat members.", "Sweep Village", ""],
+    getMarkerPos "markerNatoSweep",
+    "ASSIGNED",
+    4,
+    true,
+    "search",
+    true
+  ] call BIS_fnc_taskCreate;
 };
 
 CC__scenario_fsm_locate_cache = {
-  systemChat "FSM Locate Cache";
+  // update tasks
+  ["sweep", "SUCCEEDED"] call BIS_fnc_taskSetState;
+
+  [
+    groupNatoViper,
+    "locateCache",
+    ["Locate the Syndikat weapon cache.", "Locate Cache", ""],
+    objNull,
+    "ASSIGNED",
+    6,
+    true,
+    "scout",
+    false
+  ] call BIS_fnc_taskCreate;
 };
 
 CC__scenario_fsm_destroy_cache = {
-  systemChat "FSM Destroy Cache";
+  // update tasks
+  ["locateCache", "SUCCEEDED"] call BIS_fnc_taskSetState;
+
+  [
+    groupNatoViper,
+    "destroyCache",
+    ["Destroy the Syndikat weapon cache.", "Destroy Cache", ""],
+    getPos triggerWeaponCache,
+    "ASSIGNED",
+    8,
+    true,
+    "destroy",
+    true
+  ] call BIS_fnc_taskCreate;
 };
 
 CC__scenario_fsm_exfil = {
-  systemChat "FSM Exfil";
+  // request transport for exfil
+  ["nato_exfil_request"] call CC_scenario_setFlag;
+
+  // update tasks
+  ["destroyCache", "SUCCEEDED"] call BIS_fnc_taskSetState;
+
+  [
+    groupNatoViper,
+    "exfil",
+    ["Exfiltrate from Tuadua island.", "Exfil", ""],
+    getMarkerPos "markerNatoExfil",
+    "ASSIGNED",
+    10,
+    true,
+    "takeoff",
+    true
+  ] call BIS_fnc_taskCreate;
 };
 
 CC__scenario_fsm_nato_win = {
+  // update tasks
+  ["exfil", "SUCCEEDED"] call BIS_fnc_taskSetState;
+
   // end the mission for all players
   // XXX: how do we end it for spectators?
   private _players = allPlayers - entities "HeadlessClient_F";
@@ -191,6 +287,8 @@ CC__scenario_fsm_nato_win = {
 };
 
 CC__scenario_fsm_nato_lose = {
+  // TODO: fail all outstanding tasks?
+
   // end the mission for all players
   // XXX: how do we end it for spectators?
   private _players = allPlayers - entities "HeadlessClient_F";
