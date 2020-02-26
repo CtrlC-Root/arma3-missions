@@ -20,10 +20,10 @@ class EditorData
 	};
 	class Camera
 	{
-		pos[]={8729.4219,33.599087,1239.5031};
-		dir[]={-0.06550803,-0.79697329,0.60048515};
-		up[]={-0.086430304,0.60401839,0.79226774};
-		aside[]={0.99412537,3.965215e-007,0.10845033};
+		pos[]={8726.585,31.341002,1210.2063};
+		dir[]={0.018696861,-0.53119689,0.84710872};
+		up[]={0.011721118,0.84722644,0.53108841};
+		aside[]={0.99981958,5.2100177e-007,-0.022067659};
 	};
 };
 binarizationWanted=0;
@@ -96,11 +96,133 @@ class AddonsMetaData
 randomSeed=7446489;
 class ScenarioData
 {
-	author="ctrlc-root";
+	author="CtrlC-Root";
+	overviewText="Locate and destroy a Syndikat weapons shipment.";
+	saving=0;
+	respawn=4;
+	class Header
+	{
+		gameType="Coop";
+		minPlayers=1;
+		maxPlayers=4;
+	};
+	wreckRemovalMaxTime=3600;
 };
 class CustomAttributes
 {
 	class Category0
+	{
+		name="Multiplayer";
+		class Attribute0
+		{
+			property="ReviveUnconsciousStateMode";
+			expression="false";
+			class Value
+			{
+				class data
+				{
+					class type
+					{
+						type[]=
+						{
+							"SCALAR"
+						};
+					};
+					value=1;
+				};
+			};
+		};
+		class Attribute1
+		{
+			property="RespawnTemplates";
+			expression="true";
+			class Value
+			{
+				class data
+				{
+					class type
+					{
+						type[]=
+						{
+							"ARRAY"
+						};
+					};
+					class value
+					{
+						items=2;
+						class Item0
+						{
+							class data
+							{
+								class type
+								{
+									type[]=
+									{
+										"STRING"
+									};
+								};
+								value="EndMission";
+							};
+						};
+						class Item1
+						{
+							class data
+							{
+								class type
+								{
+									type[]=
+									{
+										"STRING"
+									};
+								};
+								value="SwitchPlayer";
+							};
+						};
+					};
+				};
+			};
+		};
+		class Attribute2
+		{
+			property="ReviveMode";
+			expression="false";
+			class Value
+			{
+				class data
+				{
+					class type
+					{
+						type[]=
+						{
+							"SCALAR"
+						};
+					};
+					value=1;
+				};
+			};
+		};
+		class Attribute3
+		{
+			property="ReviveRequiredItems";
+			expression="false";
+			class Value
+			{
+				class data
+				{
+					class type
+					{
+						type[]=
+						{
+							"SCALAR"
+						};
+					};
+					value=2;
+				};
+			};
+		};
+		nAttributes=4;
+	};
+	class Category1
 	{
 		name="Scenario";
 		class Attribute0
@@ -127,6 +249,7 @@ class CustomAttributes
 };
 class Mission
 {
+	appId=395180;
 	class Intel
 	{
 		briefingName="CtrlC-Sweep-Tuadua";
@@ -1434,6 +1557,8 @@ class Mission
 										sizeA=10;
 										sizeB=10;
 										sizeC=10;
+										timeout[]={1,1,1};
+										interuptable=1;
 										activationBy="WEST";
 										isServerOnly=1;
 									};
@@ -1956,6 +2081,8 @@ class Mission
 										sizeA=5;
 										sizeB=4;
 										sizeC=3;
+										timeout[]={2,2,2};
+										interuptable=1;
 										activationBy="WEST";
 										isRectangle=1;
 										isServerOnly=1;
@@ -1968,7 +2095,7 @@ class Mission
 								{
 									dataType="Trigger";
 									position[]={8719.3691,0.9133724,1267.439};
-									angle=2.1071179;
+									angle=2.1071184;
 									class Attributes
 									{
 										name="triggerHouseB";
@@ -1976,6 +2103,8 @@ class Mission
 										sizeA=2.25;
 										sizeB=2.5;
 										sizeC=3;
+										timeout[]={2,2,2};
+										interuptable=1;
 										activationBy="WEST";
 										isRectangle=1;
 										isServerOnly=1;
@@ -1988,7 +2117,7 @@ class Mission
 								{
 									dataType="Trigger";
 									position[]={8730.0576,1.5301695,1277.986};
-									angle=3.2439718;
+									angle=3.2439735;
 									class Attributes
 									{
 										name="triggerHouseC";
@@ -1996,6 +2125,7 @@ class Mission
 										sizeA=3;
 										sizeB=4.1999998;
 										sizeC=3;
+										timeout[]={2,2,2};
 										activationBy="WEST";
 										isRectangle=1;
 										isServerOnly=1;
@@ -2016,6 +2146,7 @@ class Mission
 										sizeA=4;
 										sizeB=3;
 										sizeC=3;
+										timeout[]={2,2,2};
 										interuptable=1;
 										activationBy="WEST";
 										isRectangle=1;
