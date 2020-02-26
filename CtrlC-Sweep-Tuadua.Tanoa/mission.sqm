@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=8;
+		nextID=16;
 	};
 	class Camera
 	{
-		pos[]={8902.9238,84.964882,1323.9885};
-		dir[]={-0.82296008,-0.20546098,-0.52988195};
-		up[]={-0.172864,0.9786126,-0.11130047};
-		aside[]={-0.54141867,-1.1669763e-006,0.84089178};
+		pos[]={8861.417,204.28506,1229.683};
+		dir[]={-0.10609701,-0.92206329,-0.37254724};
+		up[]={-0.25253132,0.38714424,-0.88673067};
+		aside[]={-0.96187145,5.169597e-006,0.273936};
 	};
 };
 binarizationWanted=0;
@@ -342,6 +342,7 @@ class Mission
 									position[]={8175.752,11.252812,1398.328};
 									type="TransportUnload";
 									description="Insert: Get Out";
+									expActiv="[""nato_insert_complete""] call CC_scenario_setFlag";
 									class Effects
 									{
 									};
@@ -491,14 +492,15 @@ class Mission
 								class Item20
 								{
 									dataType="Waypoint";
-									position[]={11075.007,0,1920.8514};
+									position[]={11075.007,0.00019788742,1920.851};
+									expActiv="[""nato_exfil_complete""] call CC_scenario_setFlag";
 									class Effects
 									{
 									};
 									showWP="NEVER";
 									id=66;
 									type="Move";
-									atlOffset=5.4108005;
+									atlOffset=5.4109998;
 								};
 								class Item21
 								{
@@ -1000,7 +1002,7 @@ class Mission
 							class Attributes
 							{
 								name="triggerWeaponCache";
-								onActivation="[""nato_weapon_cache""] call CC_scenario_setFlag";
+								onActivation="[""nato_cache_found""] call CC_scenario_setFlag";
 								sizeA=10;
 								sizeB=10;
 								sizeC=10;
@@ -1346,7 +1348,7 @@ class Mission
 						{
 							dataType="Trigger";
 							position[]={8730.0576,1.5301695,1277.986};
-							angle=3.243973;
+							angle=3.2439721;
 							class Attributes
 							{
 								name="triggerHouseC";
@@ -1909,7 +1911,7 @@ class Mission
 					position[]={8176.3901,10.009,1398.481};
 					name="markerNatoInsert";
 					type="mil_start";
-					angle=104.41499;
+					angle=104.41498;
 					id=34;
 					atlOffset=0.00030612946;
 				};
@@ -1919,7 +1921,7 @@ class Mission
 					position[]={8744.5225,3.843199,1342.355};
 					name="markerNatoExfil";
 					type="mil_end";
-					angle=193.92747;
+					angle=193.92741;
 					id=44;
 				};
 			};
