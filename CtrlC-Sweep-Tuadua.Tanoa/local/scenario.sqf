@@ -191,7 +191,7 @@ CC__scenario_fsm_insert = {
     "ASSIGNED",
     2,
     false,
-    "insert",
+    "land",
     false
   ] call BIS_fnc_taskCreate;
 
