@@ -545,24 +545,3 @@ CC__scenario_convoy_run = {
     _x setDriveOnPath (_x getVariable "cc_convoy_points");
   } forEach _vehicles;
 };
-
-CC__scenario_convoy_show = {
-  private ["_vehicle", "_route"];
-  _vehicle = _this select 0;
-  _route = _vehicle getVariable "cc_convoy_route";
-
-  // create first point
-  private ["_entry", "_objects"];
-  _entry = [_route] call BIS_fnc_arrayShift;
-  "VR_3DSelector_01_complete_F" createVehicle (_entry select 2);
-
-  // create middle points
-  while { (count _route) > 2 } do {
-    _entry = [_route] call BIS_fnc_arrayShift;
-    "VR_3DSelector_01_default_F" createVehicle (_entry select 2);
-  };
-
-  // create final point
-  _entry = _route call BIS_fnc_arrayPop;
-  "VR_3DSelector_01_incomplete_F" createVehicle (_entry select 2);
-};

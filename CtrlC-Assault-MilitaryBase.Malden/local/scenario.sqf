@@ -1,12 +1,12 @@
-CC_Scenario_init = {
+CC_scenario_init = {
   [
     "scenario",
-    CC__scenario_server_init,
-    CC__scenario_client_init
+    CC__scenario_serverInit,
+    CC__scenario_clientInit
   ] call CC_fnc_moduleInit;
 };
 
-CC__scenario_server_init = {
+CC__scenario_serverInit = {
   // flags
   CC__scenario_flags = [
     ["csat_comms_disabled", false],
@@ -20,14 +20,13 @@ CC__scenario_server_init = {
   // waypoints
   private _aafVehicleGroups = [groupGorgon1, groupGorgon2, groupStrider1, groupStrider2];
   CC__scenario_waypoints = [
-    ["beach", _aafVehicleGroups + []],
-    ["hq_stage", _aafVehicleGroups + []],
-    ["hq_exfil", _aafVehicleGroups + []]
+    ["aaf_marines_beach", +_aafVehicleGroups],
+    ["aaf_marines_insert", +_aafVehicleGroups]
   ];
 
   publicVariable "CC__scenario_waypoints";
 
-  // TODO: use the module server task for this instead
+  // dynamic markers
   CC__scenario_markers = [
     ["markerAafCobra", groupAafCobra],
     ["markerAafCondor", vehicleAafCondor],
@@ -37,39 +36,15 @@ CC__scenario_server_init = {
     ["markerAafStrider2", vehicleAafStrider2]
   ];
 
-  0 = [] spawn {
-    while { true } do {
-      // update markers
-      {
-        private _marker = _x select 0;
-        private _target = _x select 1;
-
-        if (typeName _target == "GROUP") then {
-          _target = leader _target;
-        };
-
-        // update marker to unit's
-        private _position = getPos _target;
-        _marker setMarkerPos [
-          _position select 0,
-          _position select 1
-        ];
-      } forEach CC__scenario_markers;
-
-      // XXX: rate limit
-      sleep 0.25;
-    };
-  };
-
   // settings
   [
     [],
-    { False; },
-    CC__scenario_status
+    CC__scenario_serverTask,
+    CC__scenario_statusTask
   ];
 };
 
-CC__scenario_client_init = {
+CC__scenario_clientInit = {
   // XXX: shortcut to disable comms
   {
     _x addAction [
@@ -86,7 +61,29 @@ CC__scenario_client_init = {
   } forEach [deviceTerminalA, deviceTerminalB];
 };
 
-CC__scenario_status = {
+CC__scenario_serverTask = {
+  // update markers
+  {
+    private _marker = _x select 0;
+    private _target = _x select 1;
+
+    if (typeName _target == "GROUP") then {
+      _target = leader _target;
+    };
+
+    // update marker to unit's
+    private _position = getPos _target;
+    _marker setMarkerPos [
+      _position select 0,
+      _position select 1
+    ];
+  } forEach CC__scenario_markers;
+
+  // run again
+  true;
+};
+
+CC__scenario_statusTask = {
   private _parts = [];
 
   {
