@@ -5,6 +5,7 @@ private "_scripts";
 _scripts = [
   "cc\init.sqf",
   "local\flags.sqf",
+  "local\nato_briefing.sqf",
   "local\scenario.sqf"
 ];
 
@@ -20,8 +21,7 @@ _scripts = [
 
 // initialize modules
 hintSilent "Initializing modules...";
-[] call CC_debug_init; // XXX: initialize debug module
-[] call CC_debug_config; // XXX: enable debug interface for player
+[] call CC_debug_init;
 
 // initialize scenario
 hintSilent "Initializing scenario...";

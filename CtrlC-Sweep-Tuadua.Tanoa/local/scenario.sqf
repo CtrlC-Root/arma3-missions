@@ -69,59 +69,45 @@ CC__scenario_serverInit = {
 };
 
 CC__scenario_clientInit = {
-  // only run on the server
-  if (!isServer) exitWith {};
+  // configure player clients
+  if (hasInterface) then {
+    // create briefings
+    if (faction player == "BLU_CTRG_F") then {
+      [player, CC__scenario_nato_briefing] call CC__scenario_createBriefing;
+    };
+  };
 
-  [
-    "scenario",
-    "fsm_insert",
-    CC__scenario_fsm_insert
-  ] call CC_fnc_moduleEventRegister;
+  // configure the server client
+  if (isServer) then {
+    // register module event handlers
+    private _events = [
+      ["fsm_insert",        CC__scenario_fsm_insert],
+      ["fsm_sweep",         CC__scenario_fsm_sweep],
+      ["fsm_locate_cache",  CC__scenario_fsm_locate_cache],
+      ["fsm_destroy_cache", CC__scenario_fsm_destroy_cache],
+      ["fsm_exfil",         CC__scenario_fsm_exfil],
+      ["fsm_nato_win",      CC__scenario_fsm_nato_win],
+      ["fsm_nato_lose",     CC__scenario_fsm_nato_lose]
+    ];
 
-  [
-    "scenario",
-    "fsm_sweep",
-    CC__scenario_fsm_sweep
-  ] call CC_fnc_moduleEventRegister;
+    {
+      _x params [
+        ["_event", "", [""]],
+        ["_handler", {}, [{}]]
+      ];
 
-  [
-    "scenario",
-    "fsm_locate_cache",
-    CC__scenario_fsm_locate_cache
-  ] call CC_fnc_moduleEventRegister;
+      ["scenario", _event, _handler] call CC_fnc_moduleEventRegister;
+    } forEach _events;
 
-  [
-    "scenario",
-    "fsm_destroy_cache",
-    CC__scenario_fsm_destroy_cache
-  ] call CC_fnc_moduleEventRegister;
-
-  [
-    "scenario",
-    "fsm_exfil",
-    CC__scenario_fsm_exfil
-  ] call CC_fnc_moduleEventRegister;
-
-  [
-    "scenario",
-    "fsm_nato_win",
-    CC__scenario_fsm_nato_win
-  ] call CC_fnc_moduleEventRegister;
-
-  [
-    "scenario",
-    "fsm_nato_lose",
-    CC__scenario_fsm_nato_lose
-  ] call CC_fnc_moduleEventRegister;
-
-  // run the scenario state machine
-  CC__scenario_nato_viper_fsm = [
-    CC__scenario_fsmReportState,
-    CC_scenario_setFlag,
-    CC_scenario_clearFlag,
-    CC_scenario_checkFlag,
-    groupNatoViper
-  ] execFSM "local\nato_viper.fsm";
+    // start finite state machines
+    CC__scenario_nato_viper_fsm = [
+      CC__scenario_fsmReportState,
+      CC_scenario_setFlag,
+      CC_scenario_clearFlag,
+      CC_scenario_checkFlag,
+      groupNatoViper
+    ] execFSM "local\nato_viper.fsm";
+  };
 };
 
 CC__scenario_serverTask = {
@@ -158,6 +144,31 @@ CC__scenario_debugStatus = {
   } forEach CC__scenario_flags;
 
   _parts joinString "\n";
+};
+
+CC__scenario_createBriefing = {
+  params [
+    ["_unit", objNull, [objNull]],
+    ["_briefing", [], [[]]]
+  ];
+
+  // copy the briefing array and reverse the entries because they show up in
+  // the diary list in reverse order
+  _briefing = +_briefing;
+  reverse _briefing;
+
+  // create the diary records
+  {
+    _x params ["_variableName", "_title", "_text"];
+    missionNamespace setVariable [
+      _variableName,
+      _unit createDiaryRecord ["Diary", [_title, _text]]
+    ];
+  } forEach _briefing;
+};
+
+CC__scenario_diaryLink = {
+  processDiaryLink createDiaryLink ["Diary", _this, ""];
 };
 
 CC__scenario_fsmReportState = {
