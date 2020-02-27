@@ -16,7 +16,7 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=58;
+		nextID=78;
 	};
 	class Camera
 	{
@@ -164,6 +164,8 @@ class ScenarioData
 	author="CtrlC-Root";
 	overviewText="Locate and destroy a Syndikat weapons shipment.";
 	overViewPicture="preview.paa";
+	onLoadMission="Locate and destroy a Syndikat weapons shipment.";
+	loadScreen="preview.paa";
 	saving=0;
 	respawn=4;
 	class Header
