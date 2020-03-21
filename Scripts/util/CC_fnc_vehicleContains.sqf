@@ -2,7 +2,7 @@
  * Check if a given vehicle contains a particular selection of group units.
  *
  * @param 0 vehicle
- * @param 1 selection (one of "all", "none")
+ * @param 1 selection (one of "all", "alive", "none")
  * @param 2 array of groups
  * @returns true, false, or objNull in case of error
  */
@@ -22,6 +22,10 @@ private _insideUnits = _allUnits select { vehicle _x == _vehicle };
 switch (_selection) do {
   case "all": {
     (count _insideUnits) == (count _allUnits);
+  };
+
+  case "alive": {
+    ({ alive _x } count _insideUnits) == ({ alive _x } count _allUnits);
   };
 
   case "none": {

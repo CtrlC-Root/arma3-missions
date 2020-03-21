@@ -4,6 +4,8 @@ hintSilent "Loading scripts...";
 private "_scripts";
 _scripts = [
   "cc\init.sqf",
+  "local\flags.sqf",
+  "local\nato_briefing.sqf",
   "local\scenario.sqf"
 ];
 
@@ -19,10 +21,11 @@ _scripts = [
 
 // initialize modules
 hintSilent "Initializing modules...";
+[] call CC_debug_init;
 
 // initialize scenario
 hintSilent "Initializing scenario...";
-[] call CC_Scenario_init;
+[] call CC_scenario_init;
 
 // clear the screen
 hintSilent "";
