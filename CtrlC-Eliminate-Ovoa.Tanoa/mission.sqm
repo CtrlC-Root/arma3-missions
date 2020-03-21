@@ -16,10 +16,10 @@ class EditorData
 	};
 	class Camera
 	{
-		pos[]={12178.363,318.29666,14570.586};
-		dir[]={-0.58469689,0.42092386,-0.69366652};
-		up[]={0.27120456,0.90713245,0.32174659};
-		aside[]={-0.76470643,4.2174943e-006,0.64457119};
+		pos[]={12067.792,87.046356,14277.771};
+		dir[]={0.20932114,-0.24945077,-0.94561696};
+		up[]={0.05392535,0.96834636,-0.24360748};
+		aside[]={-0.97650337,2.7191709e-007,-0.21616167};
 	};
 };
 binarizationWanted=0;
@@ -355,18 +355,58 @@ class Mission
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={14084.23,10.066868,11930.459};
-						angles[]={6.2618566,4.7142739,0.10362703};
+						position[]={14084.23,10.066889,11930.46};
+						angles[]={6.2618575,4.7142739,0.10362019};
 					};
 					side="West";
 					flags=5;
 					class Attributes
 					{
-						isPlayer=1;
 					};
 					id=106;
 					type="B_soldier_AR_F";
-					atlOffset=-9.5367432e-007;
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="speaker";
+							expression="_this setspeaker _value;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"STRING"
+										};
+									};
+									value="Male09ENG";
+								};
+							};
+						};
+						class Attribute1
+						{
+							property="pitch";
+							expression="_this setpitch _value;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"SCALAR"
+										};
+									};
+									value=1.04;
+								};
+							};
+						};
+						nAttributes=2;
+					};
 				};
 				class Item2
 				{
@@ -741,7 +781,7 @@ class Mission
 				};
 			};
 			id=25;
-			atlOffset=-0.0063734055;
+			atlOffset=-0.0063724518;
 		};
 		class Item1
 		{
@@ -758,7 +798,7 @@ class Mission
 			};
 			id=32;
 			type="B_MRAP_01_hmg_F";
-			atlOffset=-0.0063734055;
+			atlOffset=-0.0063724518;
 		};
 		class Item2
 		{
@@ -2290,7 +2330,7 @@ class Mission
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={12513.977,63.560726,14229.28};
+						position[]={12515.105,63.560726,14229.692};
 						angles[]={0,3.3508203,0};
 					};
 					side="West";
@@ -2352,32 +2392,136 @@ class Mission
 					class PositionInfo
 					{
 						position[]={12617.396,1.3317758,14475.542};
-						angles[]={0,3.0707819,0};
+						angles[]={0,3.0707846,0};
 					};
 					side="East";
 					flags=7;
 					class Attributes
 					{
+						isPlayable=1;
 					};
 					id=249;
 					type="O_ghillie_lsh_F";
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="speaker";
+							expression="_this setspeaker _value;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"STRING"
+										};
+									};
+									value="Male01PER";
+								};
+							};
+						};
+						class Attribute1
+						{
+							property="pitch";
+							expression="_this setpitch _value;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"SCALAR"
+										};
+									};
+									value=1.03;
+								};
+							};
+						};
+						class Attribute2
+						{
+							property="face";
+							expression="_this setface _value;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"STRING"
+										};
+									};
+									value="";
+								};
+							};
+						};
+						nAttributes=3;
+					};
 				};
 				class Item1
 				{
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={12613.921,1.5881418,14475.477};
-						angles[]={0,3.0132866,0};
+						position[]={12613.921,1.5881307,14475.477};
+						angles[]={0,3.0132935,0};
 					};
 					side="East";
 					flags=5;
 					class Attributes
 					{
+						isPlayable=1;
 					};
 					id=251;
 					type="O_spotter_F";
-					atlOffset=1.1086464e-005;
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="speaker";
+							expression="_this setspeaker _value;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"STRING"
+										};
+									};
+									value="Male02PER";
+								};
+							};
+						};
+						class Attribute1
+						{
+							property="pitch";
+							expression="_this setpitch _value;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"SCALAR"
+										};
+									};
+									value=0.97000003;
+								};
+							};
+						};
+						nAttributes=2;
+					};
 				};
 			};
 			class Attributes
@@ -2563,6 +2707,7 @@ class Mission
 					};
 					id=261;
 					type="B_soldier_AR_F";
+					atlOffset=-0.00027084351;
 				};
 			};
 			class Attributes
